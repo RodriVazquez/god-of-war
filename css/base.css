@@ -1,0 +1,168 @@
+/* ===========================================================
+   BASE — reset, tipografía global, cabecera y pie
+   =========================================================== */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+* { margin: 0; }
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--fondo);
+  color: var(--texto);
+  font-family: var(--cuerpo);
+  font-size: var(--t-md);
+  line-height: 1.7;
+  min-height: 100vh;
+  transition: background-color var(--transicion), color var(--transicion);
+}
+
+img { display: block; max-width: 100%; height: auto; }
+
+a { color: inherit; text-decoration: none; }
+
+h1, h2, h3 {
+  font-family: var(--display);
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -.01em;
+}
+
+/* Foco visible para teclado — requisito de accesibilidad */
+:focus-visible {
+  outline: 2px solid var(--acento-claro);
+  outline-offset: 3px;
+}
+
+/* ---------- Utilidades ---------- */
+
+.contenedor {
+  width: 100%;
+  max-width: var(--ancho-max);
+  margin-inline: auto;
+  padding-inline: var(--e-3);
+}
+
+.solo-lectores {
+  position: absolute;
+  width: 1px; height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+
+.rotulo {
+  font-family: var(--utilidad);
+  font-size: var(--t-sm);
+  text-transform: uppercase;
+  letter-spacing: .22em;
+  color: var(--acento);
+}
+
+/* ---------- Cabecera ---------- */
+
+.cabecera {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: color-mix(in srgb, var(--fondo) 88%, transparent);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--borde);
+}
+
+.cabecera__interior {
+  display: flex;
+  align-items: center;
+  gap: var(--e-3);
+  min-height: 68px;
+}
+
+.marca {
+  font-family: var(--display);
+  font-size: var(--t-lg);
+  letter-spacing: .04em;
+  white-space: nowrap;
+}
+
+.marca span { color: var(--acento); }
+
+.navegacion {
+  display: flex;
+  gap: var(--e-3);
+  margin-left: auto;
+  font-family: var(--utilidad);
+  font-size: var(--t-md);
+  text-transform: uppercase;
+  letter-spacing: .12em;
+}
+
+.navegacion a {
+  color: var(--texto-suave);
+  padding-block: var(--e-1);
+  border-bottom: 1px solid transparent;
+  transition: color var(--transicion), border-color var(--transicion);
+}
+
+.navegacion a:hover,
+.navegacion a[aria-current="page"] {
+  color: var(--texto);
+  border-bottom-color: var(--acento);
+}
+
+/* ---------- Interruptor de saga (elemento firma) ---------- */
+
+.interruptor {
+  display: flex;
+  border: 1px solid var(--borde);
+  background: var(--superficie);
+}
+
+.interruptor button {
+  font-family: var(--utilidad);
+  font-size: var(--t-sm);
+  text-transform: uppercase;
+  letter-spacing: .14em;
+  color: var(--texto-suave);
+  background: none;
+  border: none;
+  padding: .4rem .9rem;
+  cursor: pointer;
+  transition: color var(--transicion), background-color var(--transicion);
+}
+
+.interruptor button[aria-pressed="true"] {
+  color: var(--fondo);
+  background: var(--acento);
+}
+
+/* ---------- Pie ---------- */
+
+.pie {
+  border-top: 1px solid var(--borde);
+  margin-top: var(--e-6);
+  padding-block: var(--e-4);
+  color: var(--texto-suave);
+  font-size: var(--t-sm);
+}
+
+.pie p + p { margin-top: var(--e-1); }
+
+/* ---------- Movimiento reducido ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+}
+
+@media (max-width: 720px) {
+  .cabecera__interior { flex-wrap: wrap; padding-block: var(--e-2); }
+  .navegacion { order: 3; width: 100%; margin-left: 0; overflow-x: auto; }
+  .interruptor { margin-left: auto; }
+}

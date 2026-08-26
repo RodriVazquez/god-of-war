@@ -1,0 +1,59 @@
+/* ===========================================================
+   VARIABLES — el corazón del sitio
+   Cambiar el atributo data-saga en <html> reescribe la paleta
+   entera. Todo el CSS usa estos nombres, nunca colores sueltos.
+   =========================================================== */
+
+:root {
+  /* --- Saga nórdica (tema por defecto): acero, bronce, escarcha --- */
+  --fondo:          #0d1316;
+  --superficie:     #141d22;
+  --superficie-alta:#1b262c;
+  --borde:          #25343c;
+  --texto:          #d7e2e7;
+  --texto-suave:    #8ea2ac;
+  --acento:         #b0813f;
+  --acento-claro:   #d9ab63;
+  --acento-frio:    #79c2d6;
+  --sombra:         rgba(0, 0, 0, .55);
+
+  /* --- Tipografías --- */
+  --display: "Eczar", Georgia, serif;
+  --cuerpo:  "Spectral", Georgia, serif;
+  --utilidad:"Barlow Condensed", "Arial Narrow", sans-serif;
+
+  /* --- Escala tipográfica (fluida, se adapta al ancho) --- */
+  --t-xs:  .75rem;
+  --t-sm:  .875rem;
+  --t-md:  1rem;
+  --t-lg:  1.25rem;
+  --t-xl:  clamp(1.5rem, 1.1rem + 1.8vw, 2.25rem);
+  --t-2xl: clamp(2rem, 1.3rem + 3.2vw, 3.5rem);
+  --t-3xl: clamp(3rem, 1.5rem + 6.5vw, 7rem);
+
+  /* --- Espaciado --- */
+  --e-1: .5rem;
+  --e-2: 1rem;
+  --e-3: 1.5rem;
+  --e-4: 2.5rem;
+  --e-5: 4rem;
+  --e-6: 6rem;
+
+  --ancho-max: 1160px;
+  --radio: 2px;          /* casi nulo: piedra tallada, no botón de app */
+  --transicion: 280ms cubic-bezier(.2, .7, .3, 1);
+}
+
+/* --- Saga griega: ceniza, ocre, sangre --- */
+[data-saga="griega"] {
+  --fondo:          #120e0b;
+  --superficie:     #1c1611;
+  --superficie-alta:#261e17;
+  --borde:          #3a2c20;
+  --texto:          #e2d6c4;
+  --texto-suave:    #a89279;
+  --acento:         #c08a2e;
+  --acento-claro:   #e2b45c;
+  --acento-frio:    #a8362a;   /* acá el "frío" pasa a ser sangre */
+  --sombra:         rgba(0, 0, 0, .6);
+}

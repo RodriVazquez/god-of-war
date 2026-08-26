@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="es" data-saga="nordica">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>God of War — De Esparta a los Nueve Reinos</title>
+  <meta name="description" content="Recorrido por las dos sagas de God of War: personajes, reinos y cronología de los nueve juegos.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600&family=Eczar:wght@600;800&family=Spectral:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+
+  <header class="cabecera">
+    <div class="contenedor cabecera__interior">
+      <a class="marca" href="index.html">God of <span>War</span></a>
+
+      <nav class="navegacion" aria-label="Principal">
+        <a href="index.html" aria-current="page">Inicio</a>
+        <a href="personajes.html">Personajes</a>
+        <a href="#reinos-seccion">Reinos</a>
+        <a href="#cronologia-seccion">Cronología</a>
+      </nav>
+
+      <div class="interruptor" role="group" aria-label="Elegir saga">
+        <button type="button" data-cambiar-saga="griega" aria-pressed="false">Griega</button>
+        <button type="button" data-cambiar-saga="nordica" aria-pressed="true">Nórdica</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ============ PORTADA ============ -->
+    <section class="portada">
+      <svg class="anillo" viewBox="0 0 400 400" aria-hidden="true">
+        <g class="anillo__externo">
+          <circle cx="200" cy="200" r="190" stroke-width="1" opacity=".5"/>
+          <circle cx="200" cy="200" r="180" stroke-width="6"
+                  stroke-dasharray="2 26" opacity=".8"/>
+        </g>
+        <g class="anillo__medio">
+          <circle cx="200" cy="200" r="145" stroke-width="1"
+                  stroke-dasharray="40 14" opacity=".6"/>
+        </g>
+        <g class="anillo__interno">
+          <circle cx="200" cy="200" r="108" stroke-width="1" opacity=".35"/>
+          <circle cx="200" cy="200" r="100" stroke-width="10"
+                  stroke-dasharray="1 41" opacity=".9"/>
+        </g>
+      </svg>
+
+      <div class="portada__texto contenedor">
+        <p class="rotulo">Santa Monica Studio · 2005 – 2023</p>
+        <h1>God of War</h1>
+        <p class="portada__bajada">
+          Nueve juegos, dos mitologías y un mismo hombre intentando dejar de ser
+          lo que fue. Elegí una saga arriba y el sitio entero cambia de piel.
+        </p>
+      </div>
+
+      <p class="portada__aviso">Bajá para empezar</p>
+    </section>
+
+    <!-- ============ LAS DOS SAGAS ============ -->
+    <section class="seccion contenedor revelar">
+      <div class="seccion__encabezado">
+        <p class="rotulo">Dos mitologías</p>
+        <h2>El Olimpo y el Árbol del Mundo</h2>
+        <p>
+          La saga griega es venganza a cielo abierto. La nórdica es lo que pasa
+          después, cuando la venganza ya no alcanza. Tocá una para ver el sitio
+          con sus colores.
+        </p>
+      </div>
+
+      <div class="sagas">
+        <button class="saga" type="button" data-cambiar-saga="griega">
+          <p class="rotulo">2005 – 2013 · seis juegos</p>
+          <h3>Saga griega</h3>
+          <p>
+            Kratos sirve a Ares, lo mata, ocupa su trono y termina arrasando el
+            Olimpo. Ocre, ceniza y sangre.
+          </p>
+        </button>
+
+        <button class="saga" type="button" data-cambiar-saga="nordica">
+          <p class="rotulo">2018 – 2023 · tres entregas</p>
+          <h3>Saga nórdica</h3>
+          <p>
+            Un padre, un hijo y unas cenizas que hay que llevar hasta el pico más
+            alto de los Nueve Reinos. Acero, bronce y escarcha.
+          </p>
+        </button>
+      </div>
+    </section>
+
+    <!-- ============ PERSONAJES DESTACADOS ============ -->
+    <section class="seccion contenedor revelar">
+      <div class="seccion__encabezado">
+        <p class="rotulo">Quiénes son</p>
+        <h2>Personajes</h2>
+        <p>Cuatro de los principales. El listado completo tiene filtros y buscador.</p>
+      </div>
+
+      <ul class="rejilla" id="destacados"></ul>
+
+      <p style="margin-top: var(--e-3)">
+        <a class="volver" href="personajes.html">Ver todos los personajes →</a>
+      </p>
+    </section>
+
+    <!-- ============ REINOS ============ -->
+    <section class="seccion contenedor revelar" id="reinos-seccion">
+      <div class="seccion__encabezado">
+        <p class="rotulo">Geografía</p>
+        <h2>Los Nueve Reinos</h2>
+        <p>Ramas del Árbol del Mundo, conectadas por la sala de viaje del templo de Tyr.</p>
+      </div>
+
+      <ul class="rejilla" id="reinos"></ul>
+    </section>
+
+    <!-- ============ CRONOLOGÍA ============ -->
+    <section class="seccion contenedor revelar" id="cronologia-seccion">
+      <div class="seccion__encabezado">
+        <p class="rotulo">Orden de salida</p>
+        <h2>Cronología</h2>
+        <p>De la PlayStation 2 a la PS5. Ojo: el orden de lanzamiento no es el orden de la historia.</p>
+      </div>
+
+      <ul class="cronologia" id="cronologia"></ul>
+    </section>
+
+  </main>
+
+  <footer class="pie">
+    <div class="contenedor">
+      <p>Sitio de fans con fines educativos. God of War es propiedad de Sony Interactive Entertainment y Santa Monica Studio.</p>
+      <p>Trabajo práctico — [tu nombre], [materia], [año].</p>
+    </div>
+  </footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/render.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
