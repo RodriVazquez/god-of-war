@@ -27,6 +27,53 @@ function iniciarInterruptor() {
   });
 }
 
+/* ---------- 1b. Progreso del consejo de las valquirias ----------
+   Estado compartido entre valquirias.html (donde se destraba) y la
+   ficha de personaje (donde se valida el bloqueo de Sigrún). Una
+   sola fuente de verdad, guardada bajo la clave gow-valquirias. */
+
+const CLAVE_VALQUIRIAS = "gow-valquirias";
+
+function valquiriasVisitadas() {
+  try {
+    const guardado = localStorage.getItem(CLAVE_VALQUIRIAS);
+    return guardado ? JSON.parse(guardado) : [];
+  } catch {
+    return [];
+  }
+}
+
+function consejoCompleto() {
+  const corruptas = VALQUIRIAS.filter((v) => !v.reina).map((v) => v.id);
+  const visitadas = valquiriasVisitadas();
+  return corruptas.every((id) => visitadas.includes(id));
+}
+
+/* Única función de bloqueo. Se usa en la ficha de personaje y en
+   la página del consejo. Hoy solo aplica a Sigrún, pero está pensada
+   para poder sumar otros ids ocultos sin tocar los llamados. */
+function estaBloqueado(id) {
+  if (id === "sigrun") return !consejoCompleto();
+  return false;
+}
+
+function marcarVisitada(id) {
+  const visitadas = valquiriasVisitadas();
+  if (!visitadas.includes(id)) {
+    visitadas.push(id);
+    localStorage.setItem(CLAVE_VALQUIRIAS, JSON.stringify(visitadas));
+  }
+}
+
+function desbloquearConsejo() {
+  const ids = VALQUIRIAS.filter((v) => !v.reina).map((v) => v.id);
+  localStorage.setItem(CLAVE_VALQUIRIAS, JSON.stringify(ids));
+}
+
+function reiniciarConsejo() {
+  localStorage.removeItem(CLAVE_VALQUIRIAS);
+}
+
 /* ---------- 2. Revelado al hacer scroll ---------- */
 
 function iniciarRevelado() {
@@ -94,21 +141,55 @@ function iniciarPortada() {
 let filtroPersonajes = "todos";
 let busquedaPersonajes = "";
 
+/* Los personajes marcados como oculta:true (hoy solo Sigrún) no
+   aparecen nunca en el listado ni cuentan en el contador: se acceden
+   solo por URL directa y con validación de bloqueo aparte. */
+function personajesReales() {
+  return PERSONAJES.filter((p) => !p.oculta);
+}
+
 function personajesVisibles() {
-  return PERSONAJES.filter((p) => {
+  return personajesReales().filter((p) => {
     const pasaFiltro = filtroPersonajes === "todos" || p.saga.includes(filtroPersonajes);
     const texto = (p.nombre + " " + p.epiteto + " " + p.resumen).toLowerCase();
     return pasaFiltro && texto.includes(busquedaPersonajes);
   });
 }
 
+/* La colección de valquirias aparece como tarjeta 21 al final del
+   listado. Participa del filtro (es nórdica) y del buscador. */
+function coleccionValquiriasEncaja() {
+  const pasaFiltro = filtroPersonajes === "todos" || filtroPersonajes === "nordica";
+  const texto = "las valquirias consejo colección nórdica";
+  return pasaFiltro && texto.includes(busquedaPersonajes);
+}
+
 function actualizarListadoPersonajes() {
   const visibles = personajesVisibles();
-  pintar("#listado", visibles, tarjetaPersonaje, "No hay personajes con esos criterios. Probá otro filtro.");
+  const conColeccion = coleccionValquiriasEncaja();
+
+  const partes = visibles.map(tarjetaPersonaje);
+  if (conColeccion) {
+    partes.push(tarjetaColeccion(
+      "valquirias.html",
+      "Las Valquirias",
+      "Las nueve integrantes del consejo. Recorrelas de a una para desbloquear a Sigrún."
+    ));
+  }
+
+  const destino = document.querySelector("#listado");
+  if (destino) {
+    destino.innerHTML = partes.length
+      ? partes.join("")
+      : `<li class="vacio">No hay personajes con esos criterios. Probá otro filtro.</li>`;
+  }
+
+  const total = personajesReales().length + 1;      // +1 por la colección
+  const cantidad = visibles.length + (conColeccion ? 1 : 0);
 
   const contador = document.querySelector("#contador");
   if (contador) {
-    contador.textContent = `${visibles.length} de ${PERSONAJES.length}`;
+    contador.textContent = `${cantidad} de ${total}`;
   }
 }
 
@@ -278,6 +359,21 @@ function iniciarFichaPersonaje() {
       <div class="vacio">
         <p>Ese personaje no existe todavía.</p>
         <p><a class="volver" href="personajes.html">Ver todos los personajes</a></p>
+      </div>`;
+    return;
+  }
+
+  /* Bloqueo: Sigrún (o cualquier futuro personaje oculto) no se
+     puede ver hasta cumplir su condición de desbloqueo. La misma
+     función estaBloqueado() se usa en valquirias.html. */
+  if (estaBloqueado(p.id)) {
+    document.title = `Ficha bloqueada — God of War`;
+    contenedor.innerHTML = `
+      ${migasDePan("Personajes", "personajes.html", "Ficha bloqueada")}
+      <div class="vacio">
+        <p class="rotulo">Ficha bloqueada</p>
+        <p>Esta valquiria aparece solo cuando se cierra el consejo. Recorré a las otras ocho en la página de las valquirias y volvé después.</p>
+        <p style="margin-top: var(--e-2)"><a class="volver" href="valquirias.html">→ Ir al consejo de las valquirias</a></p>
       </div>`;
     return;
   }

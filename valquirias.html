@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es" data-saga="nordica">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Las Valquirias — God of War</title>
+  <meta name="description" content="El consejo de nueve valquirias. Recorré las ocho corruptas para desbloquear a la reina Sigrún.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600&family=Eczar:wght@600;800&family=Spectral:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/juego.css">
+</head>
+<body>
+
+  <header class="cabecera">
+    <div class="contenedor cabecera__interior">
+      <a class="marca" href="index.html">God of <span>War</span></a>
+
+      <nav class="navegacion" aria-label="Principal">
+        <a href="index.html">Inicio</a>
+        <a href="personajes.html">Personajes</a>
+        <a href="lugares.html">Lugares</a>
+        <a href="cronologia.html">Cronología</a>
+      </nav>
+
+      <div class="interruptor" role="group" aria-label="Elegir saga">
+        <button type="button" data-cambiar-saga="griega" aria-pressed="false">Griega</button>
+        <button type="button" data-cambiar-saga="nordica" aria-pressed="true">Nórdica</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="contenedor" style="padding-block: var(--e-4)">
+
+    <nav class="migas" aria-label="Ubicación">
+      <a href="index.html">Inicio</a>
+      <span aria-hidden="true">›</span>
+      <a href="personajes.html">Personajes</a>
+      <span aria-hidden="true">›</span>
+      <span aria-current="page">Las Valquirias</span>
+    </nav>
+
+    <div class="seccion__encabezado">
+      <p class="rotulo">Colección</p>
+      <h2>El consejo de las valquirias</h2>
+      <p>Ocho valquirias corruptas por Odín y una reina que solo aparece cuando el resto está a la vista. Recorré las ocho para desbloquear a Sigrún.</p>
+    </div>
+
+    <div class="consejo">
+      <aside class="consejo__lista" aria-label="Lista de valquirias">
+        <div class="consejo__progreso">
+          <p class="rotulo" id="consejo-progreso" aria-live="polite">0 de 8 recorridas</p>
+        </div>
+        <ol id="consejo-tronos"></ol>
+        <div class="consejo__acciones">
+          <button type="button" class="filtro" id="btn-desbloquear">Desbloquear todo</button>
+          <button type="button" class="filtro" id="btn-reiniciar">Reiniciar progreso</button>
+        </div>
+      </aside>
+
+      <section class="consejo__ficha" id="consejo-ficha" aria-live="polite"></section>
+    </div>
+
+  </main>
+
+  <footer class="pie">
+    <div class="contenedor">
+      <p>Sitio de fans con fines educativos. God of War es propiedad de Sony Interactive Entertainment y Santa Monica Studio.</p>
+    </div>
+  </footer>
+
+  <script src="js/data-personajes.js"></script>
+  <script src="js/data-lugares.js"></script>
+  <script src="js/data-juegos.js"></script>
+  <script src="js/data-valquirias.js"></script>
+  <script src="js/render.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/juego.js"></script>
+</body>
+</html>

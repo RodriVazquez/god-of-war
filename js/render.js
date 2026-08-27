@@ -56,6 +56,24 @@ function tarjetaPersonaje(p) {
     </li>`;
 }
 
+/* Tarjeta especial de "colección": vive dentro del listado de
+   personajes pero se ve distinta (rótulo "Colección" en vez de saga)
+   y no lleva a personaje.html sino a la página que agrupa a las
+   integrantes. Hoy solo se usa para el consejo de las valquirias. */
+function tarjetaColeccion(destino, nombre, resumen) {
+  return `
+    <li>
+      <a class="tarjeta tarjeta--coleccion" href="${escapar(destino)}">
+        ${marcoImagen("", nombre)}
+        <div class="tarjeta__cuerpo">
+          <p class="rotulo">Colección</p>
+          <h3>${escapar(nombre)}</h3>
+          <p>${escapar(resumen)}</p>
+        </div>
+      </a>
+    </li>`;
+}
+
 function tarjetaLugar(l) {
   const rotulo = l.region === "griega" ? "Saga griega" : "Saga nórdica";
   return `

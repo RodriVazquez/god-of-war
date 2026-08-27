@@ -203,6 +203,29 @@
 
 .tarjeta:hover { border-color: var(--acento); translate: 0 -4px; }
 
+/* Tarjeta especial: la que agrupa varias fichas (por ejemplo,
+   las nueve valquirias). Se distingue por el borde acentuado y
+   un dejo de fondo, para que no la confundan con un personaje. */
+.tarjeta--coleccion {
+  border-color: var(--acento);
+  background: var(--superficie-alta);
+  position: relative;
+}
+
+.tarjeta--coleccion::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 1px solid var(--acento);
+  pointer-events: none;
+  translate: 4px 4px;
+  transition: translate var(--transicion);
+}
+
+.tarjeta--coleccion:hover::after { translate: 6px 6px; }
+
+.tarjeta--coleccion .rotulo { color: var(--acento-claro); }
+
 .tarjeta__cuerpo { padding: var(--e-2) var(--e-2) var(--e-3); }
 
 .tarjeta h3 { font-size: var(--t-lg); margin-block: var(--e-1) .35rem; }

@@ -315,5 +315,25 @@ const PERSONAJES = [
     },
     lugares: ["esparta"],
     texto: "[completar]"
+  },
+
+  /* --- Ficha oculta: no aparece en el listado ni en el contador.
+     La ficha se ve por personaje.html?id=sigrun, y arranca bloqueada
+     hasta que se recorren las ocho valquirias en valquirias.html. --- */
+  {
+    id: "sigrun",
+    nombre: "Sigrún",
+    epiteto: "Última del consejo",
+    saga: ["nordica"],
+    imagen: "",
+    resumen: "Reemplazó a Freya como líder de las valquirias cuando Odín corrompió el consejo. La pelea final del God of War (2018).",
+    datos: {
+      "Origen": "Asgard",
+      "Rol": "Líder del consejo de las valquirias",
+      "Primera aparición": "God of War (2018)"
+    },
+    lugares: ["asgard", "midgard"],
+    oculta: true,
+    texto: "[completar]"
   }
 ];

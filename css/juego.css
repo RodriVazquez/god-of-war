@@ -1,0 +1,191 @@
+/* ===========================================================
+   JUEGO — estilos exclusivos de la página del consejo de las
+   valquirias. Layout de dos columnas: lista a la izquierda,
+   ficha a la derecha. En mobile se apila.
+   =========================================================== */
+
+.consejo {
+  display: grid;
+  grid-template-columns: minmax(240px, 320px) 1fr;
+  gap: var(--e-4);
+  align-items: start;
+  margin-top: var(--e-3);
+}
+
+/* ---------- Lista lateral ---------- */
+
+.consejo__lista {
+  border: 1px solid var(--borde);
+  background: var(--superficie);
+  padding: var(--e-2);
+  position: sticky;
+  top: 84px;
+}
+
+.consejo__progreso {
+  padding: var(--e-1) var(--e-2) var(--e-2);
+  border-bottom: 1px solid var(--borde);
+  margin-bottom: var(--e-2);
+}
+
+.consejo__lista ol {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 2px;
+}
+
+.consejo__valquiria {
+  display: flex;
+  align-items: center;
+  gap: var(--e-2);
+  width: 100%;
+  padding: var(--e-1) var(--e-2);
+  background: none;
+  border: 1px solid transparent;
+  color: var(--texto);
+  font-family: var(--cuerpo);
+  font-size: var(--t-md);
+  text-align: left;
+  cursor: pointer;
+  transition: border-color var(--transicion), background-color var(--transicion), color var(--transicion);
+}
+
+.consejo__valquiria:hover {
+  border-color: var(--borde);
+  background: var(--superficie-alta);
+}
+
+.consejo__valquiria[aria-current="true"] {
+  border-color: var(--acento);
+  background: var(--superficie-alta);
+  color: var(--acento-claro);
+}
+
+/* Marcas de estado a la izquierda del nombre. Cambian según si
+   la ficha se visitó, si es la reina bloqueada, o si está por venir. */
+.consejo__marca {
+  font-family: var(--utilidad);
+  font-size: var(--t-sm);
+  letter-spacing: .1em;
+  color: var(--texto-suave);
+  min-width: 1.5rem;
+  text-align: center;
+}
+
+.consejo__valquiria--visitada .consejo__marca { color: var(--acento); }
+
+.consejo__valquiria--reina {
+  border-top: 1px dashed var(--borde);
+  padding-top: var(--e-2);
+  margin-top: var(--e-1);
+}
+
+.consejo__valquiria--bloqueada {
+  color: var(--texto-suave);
+  cursor: not-allowed;
+}
+
+.consejo__valquiria--bloqueada:hover {
+  border-color: transparent;
+  background: none;
+}
+
+.consejo__valquiria__nombre { flex: 1; }
+
+.consejo__valquiria__nota {
+  font-family: var(--utilidad);
+  font-size: var(--t-xs);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--texto-suave);
+}
+
+.consejo__acciones {
+  display: grid;
+  gap: var(--e-1);
+  padding: var(--e-2);
+  margin-top: var(--e-2);
+  border-top: 1px solid var(--borde);
+}
+
+/* ---------- Ficha activa ---------- */
+
+.consejo__ficha { min-height: 400px; }
+
+.consejo__ficha__vacio {
+  border: 1px dashed var(--borde);
+  padding: var(--e-4);
+  text-align: center;
+  color: var(--texto-suave);
+}
+
+.consejo__ficha__cuerpo {
+  display: grid;
+  grid-template-columns: minmax(200px, 260px) 1fr;
+  gap: var(--e-3);
+  align-items: start;
+}
+
+.consejo__ficha h1 {
+  font-size: var(--t-xl);
+  margin-block: var(--e-1) var(--e-1);
+}
+
+.consejo__ficha__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--e-2);
+  font-family: var(--utilidad);
+  font-size: var(--t-sm);
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  color: var(--texto-suave);
+  margin-bottom: var(--e-2);
+}
+
+.consejo__ficha__meta span + span {
+  padding-left: var(--e-2);
+  border-left: 1px solid var(--borde);
+}
+
+/* Barra de dificultad: rombos rellenos según nivel 1..5. */
+.dificultad {
+  display: inline-flex;
+  gap: 3px;
+}
+
+.dificultad__marca {
+  width: 8px;
+  height: 8px;
+  background: var(--borde);
+  rotate: 45deg;
+}
+
+.dificultad__marca--activa { background: var(--acento); }
+
+/* ---------- Aviso de logro al desbloquear ---------- */
+
+.consejo__logro {
+  border: 1px solid var(--acento);
+  background: var(--superficie-alta);
+  padding: var(--e-2) var(--e-3);
+  margin-bottom: var(--e-3);
+  animation: aparecer 400ms ease;
+}
+
+.consejo__logro .rotulo { color: var(--acento-claro); }
+
+@keyframes aparecer {
+  from { opacity: 0; translate: 0 -8px; }
+  to   { opacity: 1; translate: 0 0; }
+}
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 780px) {
+  .consejo { grid-template-columns: 1fr; }
+  .consejo__lista { position: static; }
+  .consejo__ficha__cuerpo { grid-template-columns: 1fr; }
+}
