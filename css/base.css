@@ -9,6 +9,10 @@
 html {
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
+  /* Reserva siempre el espacio de la scrollbar vertical, aunque
+     no haga falta. Evita el salto lateral al pasar entre una
+     página con scroll y otra sin él. */
+  scrollbar-gutter: stable;
 }
 
 body {
