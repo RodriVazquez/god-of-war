@@ -107,9 +107,87 @@ const LUGARES = [
     datos: {},
     personajes: [],
     texto: "[completar]"
-  }
+  },
 
-  /* --- Lugares griegos —
-     Esparta, Atenas, Monte Olimpo, Inframundo, Islas del Destino
-     y Rodas se agregan en la próxima tanda. --- */
+  /* --- Lugares griegos --- */
+  {
+    id: "esparta",
+    nombre: "Esparta",
+    region: "griega",
+    tipo: "Ciudad",
+    imagen: "",
+    resumen: "Ciudad-estado guerrera. Cuna de Kratos y de su hermano Deimos.",
+    datos: {
+      "Ubicación": "Península del Peloponeso",
+      "Régimen": "Militarista"
+    },
+    personajes: ["kratos"],
+    texto: "[completar]"
+  },
+  {
+    id: "atenas",
+    nombre: "Atenas",
+    region: "griega",
+    tipo: "Ciudad",
+    imagen: "",
+    resumen: "Ciudad de la diosa Atenea. Devastada por Ares al comienzo del primer God of War.",
+    datos: {
+      "Patrona": "Atenea",
+      "Enemigo mítico": "Ares"
+    },
+    personajes: ["ares"],
+    texto: "[completar]"
+  },
+  {
+    id: "olimpo",
+    nombre: "Monte Olimpo",
+    region: "griega",
+    tipo: "Monte",
+    imagen: "",
+    resumen: "Cumbre y trono del panteón olímpico. Escenario de la caída final en God of War III.",
+    datos: {
+      "Rol": "Sede de los dioses"
+    },
+    personajes: ["zeus", "ares"],
+    texto: "[completar]"
+  },
+  {
+    id: "inframundo",
+    nombre: "Inframundo",
+    region: "griega",
+    tipo: "Reino",
+    imagen: "",
+    resumen: "Dominio de Hades. Almas de los muertos, ríos de fuego y el juicio final de las Moiras.",
+    datos: {
+      "Regente": "Hades"
+    },
+    personajes: [],
+    texto: "[completar]"
+  },
+  {
+    id: "islas-del-destino",
+    nombre: "Islas del Destino",
+    region: "griega",
+    tipo: "Isla",
+    imagen: "",
+    resumen: "Templo flotante de las Moiras, hilanderas del destino. Escenario clave de God of War II.",
+    datos: {
+      "Habitantes": "Las Moiras (Cloto, Láquesis y Átropos)"
+    },
+    personajes: [],
+    texto: "[completar]"
+  },
+  {
+    id: "rodas",
+    nombre: "Rodas",
+    region: "griega",
+    tipo: "Isla",
+    imagen: "",
+    resumen: "Isla del coloso. Donde Kratos pierde sus poderes al inicio de God of War II.",
+    datos: {
+      "Monumento": "Coloso de Rodas"
+    },
+    personajes: [],
+    texto: "[completar]"
+  }
 ];

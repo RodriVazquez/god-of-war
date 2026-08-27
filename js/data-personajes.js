@@ -24,7 +24,7 @@ const PERSONAJES = [
       "Arma principal": "Hacha Leviatán / Espadas del Caos",
       "Primera aparición": "God of War (2005)"
     },
-    lugares: ["midgard"],
+    lugares: ["esparta", "olimpo", "midgard"],
     texto: "[completar]"
   },
   {
@@ -84,7 +84,7 @@ const PERSONAJES = [
       "Dominio": "El rayo",
       "Primera aparición": "God of War (2005)"
     },
-    lugares: [],
+    lugares: ["olimpo"],
     texto: "[completar]"
   },
   {
@@ -99,7 +99,7 @@ const PERSONAJES = [
       "Dominio": "La guerra",
       "Primera aparición": "God of War (2005)"
     },
-    lugares: [],
+    lugares: ["olimpo", "atenas"],
     texto: "[completar]"
   }
 ];

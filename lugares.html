@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Página no encontrada — God of War</title>
-  <meta name="description" content="Esa página se perdió entre los reinos. Volvé al inicio o buscá lo que necesitás.">
+  <title>Lugares — God of War</title>
+  <meta name="description" content="Los nueve reinos nórdicos y los seis lugares griegos por donde pasa Kratos.">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -23,7 +23,7 @@
       <nav class="navegacion" aria-label="Principal">
         <a href="index.html">Inicio</a>
         <a href="personajes.html">Personajes</a>
-        <a href="lugares.html">Lugares</a>
+        <a href="lugares.html" aria-current="page">Lugares</a>
         <a href="index.html#cronologia-seccion">Cronología</a>
       </nav>
 
@@ -34,20 +34,29 @@
     </div>
   </header>
 
-  <main class="contenedor error">
-    <p class="rotulo">Error 404</p>
-    <h1>Te perdiste entre los reinos.</h1>
-    <p class="error__bajada">
-      La página que buscás no existe, o el enlace quedó viejo.
-      No es Bifrost, es un 404. Elegí desde acá por dónde seguir.
-    </p>
+  <main class="contenedor" style="padding-block: var(--e-5)">
 
-    <ul class="error__accesos">
-      <li><a class="volver" href="index.html">→ Volver al inicio</a></li>
-      <li><a class="volver" href="personajes.html">→ Ver los personajes</a></li>
-      <li><a class="volver" href="lugares.html">→ Recorrer los lugares</a></li>
-      <li><a class="volver" href="index.html#cronologia-seccion">→ Ir a la cronología</a></li>
-    </ul>
+    <div class="seccion__encabezado">
+      <p class="rotulo">Geografía</p>
+      <h2>Lugares</h2>
+      <p>Nueve reinos colgando del Árbol del Mundo y seis rincones de la Grecia antigua.</p>
+    </div>
+
+    <div class="controles">
+      <div class="filtros" role="group" aria-label="Filtrar por saga">
+        <button class="filtro" type="button" data-filtro-lugares="todos" aria-pressed="true">Todos</button>
+        <button class="filtro" type="button" data-filtro-lugares="griega" aria-pressed="false">Griega</button>
+        <button class="filtro" type="button" data-filtro-lugares="nordica" aria-pressed="false">Nórdica</button>
+      </div>
+
+      <p class="rotulo" id="contador-lugares" aria-live="polite"></p>
+
+      <label class="solo-lectores" for="buscador-lugares">Buscar lugar</label>
+      <input class="buscador" type="search" id="buscador-lugares" placeholder="Buscar por nombre…">
+    </div>
+
+    <ul class="rejilla" id="listado-lugares"></ul>
+
   </main>
 
   <footer class="pie">
