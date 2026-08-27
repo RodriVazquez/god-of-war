@@ -124,6 +124,9 @@
   padding: 0 0 var(--e-4) var(--e-4);
 }
 
+/* Rombo. Toma el color del acento por defecto, pero cada hito
+   lleva su propia saga (data-saga) y así siempre pinta al color
+   correcto aunque el tema global sea el opuesto. */
 .hito::before {
   content: "";
   position: absolute;
@@ -133,6 +136,24 @@
   height: 9px;
   background: var(--acento);
   rotate: 45deg;
+  transition: background-color var(--transicion);
+}
+
+.hito[data-saga="griega"]::before { background: var(--acento-griego); }
+.hito[data-saga="nordica"]::before { background: var(--acento-nordico); }
+
+.hito__enlace {
+  display: block;
+  padding-block: .35rem;
+  border-left: 1px solid transparent;
+  padding-left: var(--e-2);
+  margin-left: calc(var(--e-2) * -1);
+  transition: border-color var(--transicion), background-color var(--transicion);
+}
+
+.hito__enlace:hover {
+  border-left-color: var(--acento);
+  background: var(--superficie);
 }
 
 .hito__anio {
@@ -142,9 +163,24 @@
   color: var(--acento);
 }
 
+.hito[data-saga="griega"] .hito__anio { color: var(--acento-griego); }
+.hito[data-saga="nordica"] .hito__anio { color: var(--acento-nordico); }
+
 .hito h3 { font-size: var(--t-lg); }
 
 .hito p { color: var(--texto-suave); font-size: var(--t-sm); }
+
+/* Estado activo: el hito del juego que se está viendo en la ficha. */
+.hito.hito--activo::before {
+  scale: 1.6;
+  box-shadow: 0 0 0 3px var(--fondo);
+}
+
+.hito.hito--activo .hito__enlace {
+  border-left-color: var(--acento);
+  background: var(--superficie);
+  pointer-events: none;
+}
 
 /* ---------- Rejilla de tarjetas ---------- */
 
@@ -348,6 +384,34 @@
 }
 
 .volver:hover { text-decoration: underline; }
+
+/* ---------- Navegación anterior/siguiente entre juegos ---------- */
+
+.nav-juegos {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--e-2);
+  margin-top: var(--e-4);
+  padding-top: var(--e-3);
+  border-top: 1px solid var(--borde);
+}
+
+.nav-juegos__enlace {
+  display: flex;
+  flex-direction: column;
+  gap: .2rem;
+  padding: var(--e-2);
+  border: 1px solid var(--borde);
+  background: var(--superficie);
+  transition: border-color var(--transicion), background-color var(--transicion);
+}
+
+.nav-juegos__enlace:hover {
+  border-color: var(--acento);
+  background: var(--superficie-alta);
+}
+
+.nav-juegos__enlace--der { text-align: right; align-items: flex-end; }
 
 /* ---------- Vínculos cruzados (personaje ↔ lugar) ---------- */
 

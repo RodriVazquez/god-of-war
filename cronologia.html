@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lugares — God of War</title>
-  <meta name="description" content="Los nueve reinos nórdicos y los seis lugares griegos por donde pasa Kratos.">
+  <title>Cronología — God of War</title>
+  <meta name="description" content="Los nueve juegos de la saga: por año de lanzamiento o por el orden en que ocurre la historia.">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -23,8 +23,8 @@
       <nav class="navegacion" aria-label="Principal">
         <a href="index.html">Inicio</a>
         <a href="personajes.html">Personajes</a>
-        <a href="lugares.html" aria-current="page">Lugares</a>
-        <a href="cronologia.html">Cronología</a>
+        <a href="lugares.html">Lugares</a>
+        <a href="cronologia.html" aria-current="page">Cronología</a>
       </nav>
 
       <div class="interruptor" role="group" aria-label="Elegir saga">
@@ -37,25 +37,21 @@
   <main class="contenedor" style="padding-block: var(--e-5)">
 
     <div class="seccion__encabezado">
-      <p class="rotulo">Geografía</p>
-      <h2>Lugares</h2>
-      <p>Nueve reinos colgando del Árbol del Mundo y seis rincones de la Grecia antigua.</p>
+      <p class="rotulo" id="cronologia-rotulo">Orden de salida</p>
+      <h2>Cronología</h2>
+      <p id="cronologia-bajada">De la PlayStation 2 a la PS5. El orden de salida no coincide con el orden en que ocurren los hechos.</p>
     </div>
 
     <div class="controles">
-      <div class="filtros" role="group" aria-label="Filtrar por saga">
-        <button class="filtro" type="button" data-filtro-lugares="todos" aria-pressed="true">Todos</button>
-        <button class="filtro" type="button" data-filtro-lugares="griega" aria-pressed="false">Griega</button>
-        <button class="filtro" type="button" data-filtro-lugares="nordica" aria-pressed="false">Nórdica</button>
+      <div class="filtros" role="group" aria-label="Elegir orden">
+        <button class="filtro" type="button" data-orden="salida" aria-pressed="true">Por año de salida</button>
+        <button class="filtro" type="button" data-orden="historia" aria-pressed="false">Por orden de la historia</button>
       </div>
 
-      <p class="rotulo" id="contador-lugares" aria-live="polite"></p>
-
-      <label class="solo-lectores" for="buscador-lugares">Buscar lugar</label>
-      <input class="buscador" type="search" id="buscador-lugares" placeholder="Buscar por nombre…">
+      <p class="rotulo" id="contador-juegos" aria-live="polite"></p>
     </div>
 
-    <ul class="rejilla" id="listado-lugares"></ul>
+    <ol class="cronologia" id="cronologia-completa"></ol>
 
   </main>
 

@@ -183,7 +183,52 @@ function iniciarLugares() {
   actualizarListadoLugares();
 }
 
-/* ---------- 6. Ficha de personaje ---------- */
+/* ---------- 6. Página de cronología: toggle de orden ---------- */
+
+let ordenCronologia = "salida";  // "salida" | "historia"
+
+function juegosOrdenados() {
+  const copia = JUEGOS.slice();
+  if (ordenCronologia === "historia") {
+    return copia.sort((a, b) => a.ordenHistoria - b.ordenHistoria);
+  }
+  return copia.sort((a, b) => a.anio - b.anio);
+}
+
+function actualizarCronologia() {
+  pintar("#cronologia-completa", juegosOrdenados(), hitoJuego, "Cargá juegos en js/data-juegos.js");
+
+  const contador = document.querySelector("#contador-juegos");
+  if (contador) contador.textContent = `${JUEGOS.length} juegos`;
+
+  const rotulo = document.querySelector("#cronologia-rotulo");
+  const bajada = document.querySelector("#cronologia-bajada");
+  if (ordenCronologia === "historia") {
+    if (rotulo) rotulo.textContent = "Orden de la historia";
+    if (bajada) bajada.textContent = "Los mismos nueve juegos, ordenados por cuándo ocurren en la vida de Kratos. Ascension abre; Valhalla cierra.";
+  } else {
+    if (rotulo) rotulo.textContent = "Orden de salida";
+    if (bajada) bajada.textContent = "De la PlayStation 2 a la PS5. El orden de salida no coincide con el orden en que ocurren los hechos.";
+  }
+}
+
+function iniciarCronologia() {
+  if (!document.querySelector("#cronologia-completa")) return;
+
+  document.querySelectorAll("[data-orden]").forEach((boton) => {
+    boton.addEventListener("click", () => {
+      ordenCronologia = boton.dataset.orden;
+      document.querySelectorAll("[data-orden]").forEach((b) => {
+        b.setAttribute("aria-pressed", String(b === boton));
+      });
+      actualizarCronologia();
+    });
+  });
+
+  actualizarCronologia();
+}
+
+/* ---------- 7. Ficha de personaje ---------- */
 
 /* Convierte los ids de lugares vinculados a chips clicables.
    Si el id no matchea (todavía no está en data-lugares), lo
@@ -297,6 +342,81 @@ function iniciarFichaLugar() {
     </div>`;
 }
 
+/* ---------- 9. Ficha de juego ---------- */
+
+/* Navegación anterior/siguiente en la ficha: usa el orden de salida
+   como referencia (es el más intuitivo y el default de la cronología). */
+function vecinosDeJuego(id) {
+  const orden = JUEGOS.slice().sort((a, b) => a.anio - b.anio);
+  const i = orden.findIndex((j) => j.id === id);
+  return {
+    anterior: i > 0 ? orden[i - 1] : null,
+    siguiente: i >= 0 && i < orden.length - 1 ? orden[i + 1] : null
+  };
+}
+
+function bloqueNavegacionJuegos(id) {
+  const { anterior, siguiente } = vecinosDeJuego(id);
+  const izq = anterior
+    ? `<a class="nav-juegos__enlace" href="juego.html?id=${escapar(anterior.id)}">
+         <span class="rotulo">← Anterior</span>
+         <span>${escapar(anterior.titulo)} (${anterior.anio})</span>
+       </a>`
+    : `<span></span>`;
+  const der = siguiente
+    ? `<a class="nav-juegos__enlace nav-juegos__enlace--der" href="juego.html?id=${escapar(siguiente.id)}">
+         <span class="rotulo">Siguiente →</span>
+         <span>${escapar(siguiente.titulo)} (${siguiente.anio})</span>
+       </a>`
+    : `<span></span>`;
+
+  return `<nav class="nav-juegos" aria-label="Anterior y siguiente juego">${izq}${der}</nav>`;
+}
+
+function iniciarFichaJuego() {
+  const contenedor = document.querySelector("#ficha-juego");
+  if (!contenedor) return;
+
+  const id = new URLSearchParams(location.search).get("id");
+  const j = JUEGOS.find((x) => x.id === id);
+
+  if (!j) {
+    contenedor.innerHTML = `
+      <div class="vacio">
+        <p>Ese juego no existe todavía.</p>
+        <p><a class="volver" href="cronologia.html">Ver la cronología completa</a></p>
+      </div>`;
+    return;
+  }
+
+  document.title = `${j.titulo} (${j.anio}) — God of War`;
+
+  const datos = {
+    "Año de salida": j.anio,
+    "Orden en la historia": `${j.ordenHistoria} de ${JUEGOS.length}`,
+    "Saga": j.saga === "griega" ? "Griega" : "Nórdica",
+    "Plataforma": j.plataforma
+  };
+  const filas = Object.entries(datos)
+    .map(([clave, valor]) => `<li><span class="clave">${escapar(clave)}</span><span>${escapar(valor)}</span></li>`)
+    .join("");
+
+  const region = j.saga === "griega" ? "Saga griega" : "Saga nórdica";
+
+  contenedor.innerHTML = `
+    ${migasDePan("Cronología", "cronologia.html", `${j.titulo} (${j.anio})`)}
+    <div class="ficha__cuerpo">
+      ${marcoImagen(j.imagen, j.titulo)}
+      <div>
+        <h1>${escapar(j.titulo)}</h1>
+        <p class="rotulo">${region} · ${j.anio}</p>
+        <p style="margin-top: var(--e-2)">${escapar(j.texto)}</p>
+        <ul class="ficha__datos">${filas}</ul>
+      </div>
+    </div>
+    ${bloqueNavegacionJuegos(j.id)}`;
+}
+
 /* ---------- Arranque ---------- */
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -305,6 +425,8 @@ document.addEventListener("DOMContentLoaded", () => {
   iniciarPortada();
   iniciarPersonajes();
   iniciarLugares();
+  iniciarCronologia();
   iniciarFichaPersonaje();
   iniciarFichaLugar();
+  iniciarFichaJuego();
 });

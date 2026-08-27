@@ -84,12 +84,16 @@ function resumenLugar(l) {
     </li>`;
 }
 
+/* Cada hito lleva data-saga para que el rombo tome el color de su
+   saga (aunque el resto de la página esté en el tema opuesto). */
 function hitoJuego(j) {
   return `
-    <li class="hito">
-      <p class="hito__anio">${j.anio}</p>
-      <h3>${escapar(j.titulo)}</h3>
-      <p>${escapar(j.resumen)}</p>
+    <li class="hito" data-saga="${escapar(j.saga)}">
+      <a class="hito__enlace" href="juego.html?id=${escapar(j.id)}">
+        <p class="hito__anio">${j.anio}</p>
+        <h3>${escapar(j.titulo)}</h3>
+        <p>${escapar(j.resumen)}</p>
+      </a>
     </li>`;
 }
 

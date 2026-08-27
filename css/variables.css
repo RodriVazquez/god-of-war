@@ -42,6 +42,12 @@
   --ancho-max: 1160px;
   --radio: 2px;          /* casi nulo: piedra tallada, no botón de app */
   --transicion: 280ms cubic-bezier(.2, .7, .3, 1);
+
+  /* Acentos fijos por saga: se usan cuando un elemento tiene que
+     mostrar su color propio aunque el tema global sea el opuesto
+     (por ejemplo, un hito griego en una cronología con tema nórdico). */
+  --acento-griego:  #c08a2e;
+  --acento-nordico: #b0813f;
 }
 
 /* --- Saga griega: ceniza, ocre, sangre --- */
