@@ -17,7 +17,7 @@ const LUGARES = [
     imagen: "",
     resumen: "El reino de los hombres, centro del Árbol del Mundo.",
     datos: { "Rama del Yggdrasil": "Central" },
-    personajes: ["kratos", "atreus", "freya"],
+    personajes: ["kratos", "atreus", "freya", "baldur", "thor", "tyr", "hermanos-huldra"],
     texto: "[completar]"
   },
   {
@@ -39,7 +39,7 @@ const LUGARES = [
     imagen: "",
     resumen: "Las forjas de los enanos, donde nacen las mejores armas.",
     datos: {},
-    personajes: [],
+    personajes: ["hermanos-huldra"],
     texto: "[completar]"
   },
   {
@@ -61,7 +61,7 @@ const LUGARES = [
     imagen: "",
     resumen: "El reino dorado de los æsir y de Odín.",
     datos: {},
-    personajes: ["mimir"],
+    personajes: ["odin", "thor", "baldur", "tyr", "heimdall", "mimir"],
     texto: "[completar]"
   },
   {
@@ -72,7 +72,7 @@ const LUGARES = [
     imagen: "",
     resumen: "Hogar de los gigantes, prácticamente extinguidos.",
     datos: {},
-    personajes: ["atreus"],
+    personajes: ["atreus", "angrboda"],
     texto: "[completar]"
   },
   {
@@ -121,7 +121,7 @@ const LUGARES = [
       "Ubicación": "Península del Peloponeso",
       "Régimen": "Militarista"
     },
-    personajes: ["kratos"],
+    personajes: ["kratos", "deimos", "caliope"],
     texto: "[completar]"
   },
   {
@@ -135,7 +135,7 @@ const LUGARES = [
       "Patrona": "Atenea",
       "Enemigo mítico": "Ares"
     },
-    personajes: ["ares"],
+    personajes: ["atenea", "ares"],
     texto: "[completar]"
   },
   {
@@ -148,7 +148,7 @@ const LUGARES = [
     datos: {
       "Rol": "Sede de los dioses"
     },
-    personajes: ["zeus", "ares"],
+    personajes: ["zeus", "atenea", "ares", "hades", "hercules", "pandora", "persefone"],
     texto: "[completar]"
   },
   {
@@ -161,7 +161,7 @@ const LUGARES = [
     datos: {
       "Regente": "Hades"
     },
-    personajes: [],
+    personajes: ["hades", "persefone"],
     texto: "[completar]"
   },
   {
