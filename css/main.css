@@ -257,14 +257,65 @@
   color: var(--texto-suave);
 }
 
+/* ---------- Página 404 ---------- */
+
+.error {
+  padding-block: var(--e-6);
+  max-width: 62ch;
+}
+
+.error h1 {
+  font-size: var(--t-2xl);
+  margin-block: var(--e-1) var(--e-2);
+}
+
+.error__bajada {
+  color: var(--texto-suave);
+  font-size: var(--t-lg);
+  margin-bottom: var(--e-4);
+}
+
+.error__accesos {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: var(--e-1);
+}
+
+/* ---------- Migas de pan ---------- */
+
+.migas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+  align-items: center;
+  font-family: var(--utilidad);
+  font-size: var(--t-sm);
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  color: var(--texto-suave);
+  padding-block: var(--e-3) var(--e-2);
+}
+
+.migas a {
+  color: var(--texto-suave);
+  transition: color var(--transicion);
+}
+
+.migas a:hover { color: var(--acento); }
+
+.migas [aria-current="page"] { color: var(--texto); }
+
 /* ---------- Ficha de detalle ---------- */
 
-.ficha {
+.ficha { padding-block: var(--e-3) var(--e-5); }
+
+.ficha__cuerpo {
   display: grid;
   grid-template-columns: minmax(220px, 320px) 1fr;
   gap: var(--e-4);
   align-items: start;
-  padding-block: var(--e-5);
+  margin-top: var(--e-2);
 }
 
 .ficha h1 { font-size: var(--t-2xl); margin-block: var(--e-1) var(--e-2); }
@@ -298,7 +349,33 @@
 
 .volver:hover { text-decoration: underline; }
 
+/* ---------- Vínculos cruzados (personaje ↔ lugar) ---------- */
+
+.ficha__vinculos { margin-top: var(--e-3); }
+
+.ficha__vinculos .rotulo { margin-bottom: var(--e-1); }
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+}
+
+.chip {
+  font-family: var(--utilidad);
+  font-size: var(--t-sm);
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  color: var(--texto);
+  background: var(--superficie);
+  border: 1px solid var(--borde);
+  padding: .35rem .75rem;
+  transition: border-color var(--transicion), color var(--transicion);
+}
+
+.chip:hover { border-color: var(--acento); color: var(--acento-claro); }
+
 @media (max-width: 700px) {
-  .ficha { grid-template-columns: 1fr; }
+  .ficha__cuerpo { grid-template-columns: 1fr; }
   .buscador { margin-left: 0; width: 100%; }
 }

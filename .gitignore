@@ -1,0 +1,12 @@
+# Configuración local del entorno (servidor de desarrollo, etc.)
+.claude/
+
+# Archivos del sistema operativo
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor
+.vscode/
+.idea/
+*.swp

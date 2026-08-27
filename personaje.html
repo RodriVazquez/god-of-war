@@ -3,8 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Personajes — God of War</title>
-  <meta name="description" content="Personajes de las sagas griega y nórdica de God of War, con filtros y búsqueda.">
+  <title>Ficha — God of War</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -22,7 +21,7 @@
 
       <nav class="navegacion" aria-label="Principal">
         <a href="index.html">Inicio</a>
-        <a href="personajes.html" aria-current="page">Personajes</a>
+        <a href="personajes.html">Personajes</a>
         <a href="index.html#reinos-seccion">Reinos</a>
         <a href="index.html#cronologia-seccion">Cronología</a>
       </nav>
@@ -34,29 +33,8 @@
     </div>
   </header>
 
-  <main class="contenedor" style="padding-block: var(--e-5)">
-
-    <div class="seccion__encabezado">
-      <p class="rotulo">Catálogo</p>
-      <h2>Personajes</h2>
-      <p>Filtrá por saga o escribí un nombre para encontrarlo.</p>
-    </div>
-
-    <div class="controles">
-      <div class="filtros" role="group" aria-label="Filtrar por saga">
-        <button class="filtro" type="button" data-filtro="todos" aria-pressed="true">Todos</button>
-        <button class="filtro" type="button" data-filtro="griega" aria-pressed="false">Griega</button>
-        <button class="filtro" type="button" data-filtro="nordica" aria-pressed="false">Nórdica</button>
-      </div>
-
-      <p class="rotulo" id="contador" aria-live="polite"></p>
-
-      <label class="solo-lectores" for="buscador">Buscar personaje</label>
-      <input class="buscador" type="search" id="buscador" placeholder="Buscar por nombre…">
-    </div>
-
-    <ul class="rejilla" id="listado"></ul>
-
+  <main class="contenedor">
+    <article class="ficha" id="ficha-personaje"></article>
   </main>
 
   <footer class="pie">

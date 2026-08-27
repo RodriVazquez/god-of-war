@@ -53,9 +53,9 @@ function iniciarRevelado() {
 function iniciarPortada() {
   if (!document.querySelector("#destacados")) return;
 
-  pintar("#destacados", PERSONAJES.slice(0, 4), tarjetaPersonaje, "Cargá personajes en js/data.js");
-  pintar("#reinos", REINOS.slice(0, 6), tarjetaReino, "Cargá reinos en js/data.js");
-  pintar("#cronologia", JUEGOS, hitoJuego, "Cargá juegos en js/data.js");
+  pintar("#destacados", PERSONAJES.slice(0, 4), tarjetaPersonaje, "Cargá personajes en js/data-personajes.js");
+  pintar("#reinos", LUGARES.filter((l) => l.region === "nordica"), resumenLugar, "Cargá lugares en js/data-lugares.js");
+  pintar("#cronologia", JUEGOS.slice().sort((a, b) => a.anio - b.anio), hitoJuego, "Cargá juegos en js/data-juegos.js");
 }
 
 /* ---------- 4. Página de personajes: filtros + buscador ---------- */
@@ -105,10 +105,29 @@ function iniciarPersonajes() {
   actualizarListado();
 }
 
-/* ---------- 5. Página de detalle: lee ?id= de la URL ---------- */
+/* ---------- 5. Ficha de personaje: lee ?id= de la URL ---------- */
 
-function iniciarDetalle() {
-  const contenedor = document.querySelector("#ficha");
+/* Convierte los ids de lugares vinculados a chips clicables.
+   Si el id no matchea (todavía no está en data-lugares), lo
+   omite en silencio: no queremos enlaces rotos. */
+function chipsLugares(ids) {
+  if (!ids || !ids.length) return "";
+  const chips = ids
+    .map((id) => LUGARES.find((l) => l.id === id))
+    .filter(Boolean)
+    .map((l) => `<a class="chip" href="lugar.html?id=${escapar(l.id)}">${escapar(l.nombre)}</a>`)
+    .join("");
+
+  if (!chips) return "";
+  return `
+    <div class="ficha__vinculos">
+      <p class="rotulo">Lugares vinculados</p>
+      <div class="chips">${chips}</div>
+    </div>`;
+}
+
+function iniciarFichaPersonaje() {
+  const contenedor = document.querySelector("#ficha-personaje");
   if (!contenedor) return;
 
   const id = new URLSearchParams(location.search).get("id");
@@ -130,13 +149,16 @@ function iniciarDetalle() {
     .join("");
 
   contenedor.innerHTML = `
-    ${marcoImagen(p.imagen, p.nombre)}
-    <div>
-      <a class="volver" href="personajes.html">← Personajes</a>
-      <h1>${escapar(p.nombre)}</h1>
-      <p class="rotulo">${escapar(p.epiteto)}</p>
-      <p style="margin-top: var(--e-2)">${escapar(p.texto)}</p>
-      <ul class="ficha__datos">${filas}</ul>
+    ${migasDePan("Personajes", "personajes.html", p.nombre)}
+    <div class="ficha__cuerpo">
+      ${marcoImagen(p.imagen, p.nombre)}
+      <div>
+        <h1>${escapar(p.nombre)}</h1>
+        <p class="rotulo">${escapar(p.epiteto)}</p>
+        <p style="margin-top: var(--e-2)">${escapar(p.texto)}</p>
+        <ul class="ficha__datos">${filas}</ul>
+        ${chipsLugares(p.lugares)}
+      </div>
     </div>`;
 }
 
@@ -147,5 +169,5 @@ document.addEventListener("DOMContentLoaded", () => {
   iniciarRevelado();
   iniciarPortada();
   iniciarPersonajes();
-  iniciarDetalle();
+  iniciarFichaPersonaje();
 });

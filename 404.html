@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ficha — God of War</title>
+  <title>Página no encontrada — God of War</title>
+  <meta name="description" content="Esa página se perdió entre los reinos. Volvé al inicio o buscá lo que necesitás.">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -33,8 +34,20 @@
     </div>
   </header>
 
-  <main class="contenedor">
-    <article class="ficha" id="ficha"></article>
+  <main class="contenedor error">
+    <p class="rotulo">Error 404</p>
+    <h1>Te perdiste entre los reinos.</h1>
+    <p class="error__bajada">
+      La página que buscás no existe, o el enlace quedó viejo.
+      No es Bifrost, es un 404. Elegí desde acá por dónde seguir.
+    </p>
+
+    <ul class="error__accesos">
+      <li><a class="volver" href="index.html">→ Volver al inicio</a></li>
+      <li><a class="volver" href="personajes.html">→ Ver los personajes</a></li>
+      <li><a class="volver" href="index.html#reinos-seccion">→ Recorrer los reinos</a></li>
+      <li><a class="volver" href="index.html#cronologia-seccion">→ Ir a la cronología</a></li>
+    </ul>
   </main>
 
   <footer class="pie">
@@ -43,7 +56,10 @@
     </div>
   </footer>
 
-  <script src="js/data.js"></script>
+  <script src="js/data-personajes.js"></script>
+  <script src="js/data-lugares.js"></script>
+  <script src="js/data-juegos.js"></script>
+  <script src="js/data-valquirias.js"></script>
   <script src="js/render.js"></script>
   <script src="js/main.js"></script>
 </body>
