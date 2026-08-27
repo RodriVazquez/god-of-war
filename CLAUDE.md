@@ -14,7 +14,10 @@ Este archivo es el contexto del proyecto. Leelo antes de tocar código.
 - **Sin módulos ES.** Usar `<script src>` clásico con variables globales. El
   sitio tiene que funcionar abriendo `index.html` directamente desde `file://`,
   sin servidor.
-- **Sin dependencias externas** salvo las tipografías de Google Fonts.
+- **Sin dependencias externas de código**, salvo las tipografías de Google
+  Fonts. Para las imágenes se admite un CDN externo (Cloudinary u otro):
+  si el sitio se abre sin internet, el marco rayado del placeholder cubre
+  el caso. El deploy final va a GitHub Pages.
 - **Sin `localStorage` para contenido**, solo para preferencias y progreso del
   juego.
 - Todo el código, los nombres de variables y los mensajes de commit van **en

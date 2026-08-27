@@ -104,6 +104,24 @@ function resumenLugar(l) {
 
 /* Cada hito lleva data-saga para que el rombo tome el color de su
    saga (aunque el resto de la página esté en el tema opuesto). */
+/* Item del mosaico de la galería. Botón porque es interactivo:
+   el click lo abre en el lightbox. No es <img> sola porque el
+   contenedor mantiene el aspect-ratio aunque no haya foto todavía. */
+function itemGaleria(g, indice) {
+  const rotulo = g.saga === "griega" ? "Griega" : "Nórdica";
+  const cuerpo = g.imagen
+    ? `<img src="${escapar(g.imagen)}" alt="${escapar(g.titulo)}" loading="lazy">`
+    : `<p class="galeria__item__falta">Falta imagen<br>${escapar(g.titulo)}</p>`;
+
+  return `
+    <li>
+      <button type="button" class="galeria__item" data-galeria-indice="${indice}" aria-label="${escapar(g.titulo)}">
+        ${cuerpo}
+        <span class="galeria__item__saga">${rotulo}</span>
+      </button>
+    </li>`;
+}
+
 function hitoJuego(j) {
   return `
     <li class="hito" data-saga="${escapar(j.saga)}">

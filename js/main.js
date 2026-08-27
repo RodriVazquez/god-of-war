@@ -438,6 +438,144 @@ function iniciarFichaLugar() {
     </div>`;
 }
 
+/* ---------- 8b. Galería con lightbox ---------- */
+
+let filtroGaleria = "todos";
+let galeriaVisiblesCache = [];
+let galeriaIndiceActivo = -1;
+let galeriaOrigenFoco = null;   // botón que abrió el lightbox, para devolver el foco al cerrar
+
+function galeriaVisibles() {
+  if (typeof GALERIA === "undefined") return [];
+  return GALERIA.filter((g) => filtroGaleria === "todos" || g.saga === filtroGaleria);
+}
+
+function actualizarListadoGaleria() {
+  galeriaVisiblesCache = galeriaVisibles();
+
+  const destino = document.querySelector("#galeria-listado");
+  if (!destino) return;
+
+  if (!galeriaVisiblesCache.length) {
+    destino.innerHTML = `<li class="vacio">No hay imágenes con ese filtro todavía.</li>`;
+  } else {
+    destino.innerHTML = galeriaVisiblesCache.map((g, i) => itemGaleria(g, i)).join("");
+  }
+
+  const contador = document.querySelector("#contador-galeria");
+  if (contador) contador.textContent = `${galeriaVisiblesCache.length} imágenes`;
+}
+
+function pintarLightbox() {
+  const g = galeriaVisiblesCache[galeriaIndiceActivo];
+  if (!g) return;
+
+  const marco = document.querySelector("#lightbox-marco");
+  marco.innerHTML = g.imagen
+    ? `<img src="${escapar(g.imagen)}" alt="${escapar(g.titulo)}">`
+    : `<p class="lightbox__marco__falta">Falta la imagen ${escapar(g.id)}</p>`;
+
+  document.querySelector("#lightbox-titulo").textContent = g.titulo;
+  document.querySelector("#lightbox-fuente").textContent = `Fuente: ${g.fuente}`;
+
+  // Deshabilita las flechas en los extremos.
+  document.querySelector("#lightbox-anterior").disabled = galeriaIndiceActivo === 0;
+  document.querySelector("#lightbox-siguiente").disabled = galeriaIndiceActivo === galeriaVisiblesCache.length - 1;
+}
+
+function abrirLightbox(indice, botonOrigen) {
+  galeriaIndiceActivo = indice;
+  galeriaOrigenFoco = botonOrigen;
+
+  const lightbox = document.querySelector("#lightbox");
+  lightbox.hidden = false;
+  document.body.style.overflow = "hidden";
+
+  pintarLightbox();
+
+  // Foco al botón cerrar para no tener foco perdido.
+  document.querySelector("#lightbox-cerrar").focus();
+}
+
+function cerrarLightbox() {
+  const lightbox = document.querySelector("#lightbox");
+  lightbox.hidden = true;
+  document.body.style.overflow = "";
+  galeriaIndiceActivo = -1;
+
+  // Devolvemos el foco al item que se había abierto.
+  if (galeriaOrigenFoco) galeriaOrigenFoco.focus();
+  galeriaOrigenFoco = null;
+}
+
+function moverLightbox(delta) {
+  const nuevo = galeriaIndiceActivo + delta;
+  if (nuevo < 0 || nuevo >= galeriaVisiblesCache.length) return;
+  galeriaIndiceActivo = nuevo;
+  pintarLightbox();
+}
+
+/* Atrapamos el foco dentro del modal mientras está abierto. */
+function atraparFoco(e) {
+  if (galeriaIndiceActivo < 0) return;
+  if (e.key !== "Tab") return;
+  const lightbox = document.querySelector("#lightbox");
+  const focusables = lightbox.querySelectorAll("button:not([disabled])");
+  if (!focusables.length) return;
+  const primero = focusables[0];
+  const ultimo = focusables[focusables.length - 1];
+  if (e.shiftKey && document.activeElement === primero) {
+    e.preventDefault();
+    ultimo.focus();
+  } else if (!e.shiftKey && document.activeElement === ultimo) {
+    e.preventDefault();
+    primero.focus();
+  }
+}
+
+function iniciarGaleria() {
+  if (!document.querySelector("#galeria-listado")) return;
+
+  // Filtros
+  document.querySelectorAll("[data-filtro-galeria]").forEach((boton) => {
+    boton.addEventListener("click", () => {
+      filtroGaleria = boton.dataset.filtroGaleria;
+      document.querySelectorAll("[data-filtro-galeria]").forEach((b) => {
+        b.setAttribute("aria-pressed", String(b === boton));
+      });
+      actualizarListadoGaleria();
+    });
+  });
+
+  // Click en un item abre el lightbox.
+  document.querySelector("#galeria-listado").addEventListener("click", (e) => {
+    const boton = e.target.closest("[data-galeria-indice]");
+    if (!boton) return;
+    abrirLightbox(Number(boton.dataset.galeriaIndice), boton);
+  });
+
+  // Controles del lightbox
+  document.querySelector("#lightbox-cerrar").addEventListener("click", cerrarLightbox);
+  document.querySelector("#lightbox-anterior").addEventListener("click", () => moverLightbox(-1));
+  document.querySelector("#lightbox-siguiente").addEventListener("click", () => moverLightbox(1));
+
+  // Click fuera del contenido cierra
+  document.querySelector("#lightbox").addEventListener("click", (e) => {
+    if (e.target.id === "lightbox") cerrarLightbox();
+  });
+
+  // Teclado global
+  document.addEventListener("keydown", (e) => {
+    if (galeriaIndiceActivo < 0) return;
+    if (e.key === "Escape") cerrarLightbox();
+    else if (e.key === "ArrowLeft") moverLightbox(-1);
+    else if (e.key === "ArrowRight") moverLightbox(1);
+    else atraparFoco(e);
+  });
+
+  actualizarListadoGaleria();
+}
+
 /* ---------- 9. Ficha de juego ---------- */
 
 /* Navegación anterior/siguiente en la ficha: usa el orden de salida
@@ -522,6 +660,7 @@ document.addEventListener("DOMContentLoaded", () => {
   iniciarPersonajes();
   iniciarLugares();
   iniciarCronologia();
+  iniciarGaleria();
   iniciarFichaPersonaje();
   iniciarFichaLugar();
   iniciarFichaJuego();

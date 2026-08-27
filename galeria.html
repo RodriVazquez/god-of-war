@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lugares — God of War</title>
-  <meta name="description" content="Los nueve reinos nórdicos y los seis lugares griegos por donde pasa Kratos.">
+  <title>Galería — God of War</title>
+  <meta name="description" content="Mosaico de imágenes de las sagas griega y nórdica de God of War.">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -23,9 +23,9 @@
       <nav class="navegacion" aria-label="Principal">
         <a href="index.html">Inicio</a>
         <a href="personajes.html">Personajes</a>
-        <a href="lugares.html" aria-current="page">Lugares</a>
+        <a href="lugares.html">Lugares</a>
         <a href="cronologia.html">Cronología</a>
-        <a href="galeria.html">Galería</a>
+        <a href="galeria.html" aria-current="page">Galería</a>
       </nav>
 
       <div class="interruptor" role="group" aria-label="Elegir saga">
@@ -38,27 +38,39 @@
   <main class="contenedor" style="padding-block: var(--e-5)">
 
     <div class="seccion__encabezado">
-      <p class="rotulo">Geografía</p>
-      <h2>Lugares</h2>
-      <p>Nueve reinos colgando del Árbol del Mundo y seis rincones de la Grecia antigua.</p>
+      <p class="rotulo">Imágenes</p>
+      <h2>Galería</h2>
+      <p>Un mosaico entre las dos sagas. Cliqueá cualquier imagen para verla en grande.</p>
     </div>
 
     <div class="controles">
       <div class="filtros" role="group" aria-label="Filtrar por saga">
-        <button class="filtro" type="button" data-filtro-lugares="todos" aria-pressed="true">Todos</button>
-        <button class="filtro" type="button" data-filtro-lugares="griega" aria-pressed="false">Griega</button>
-        <button class="filtro" type="button" data-filtro-lugares="nordica" aria-pressed="false">Nórdica</button>
+        <button class="filtro" type="button" data-filtro-galeria="todos" aria-pressed="true">Todas</button>
+        <button class="filtro" type="button" data-filtro-galeria="griega" aria-pressed="false">Griega</button>
+        <button class="filtro" type="button" data-filtro-galeria="nordica" aria-pressed="false">Nórdica</button>
       </div>
 
-      <p class="rotulo" id="contador-lugares" aria-live="polite"></p>
-
-      <label class="solo-lectores" for="buscador-lugares">Buscar lugar</label>
-      <input class="buscador" type="search" id="buscador-lugares" placeholder="Buscar por nombre…">
+      <p class="rotulo" id="contador-galeria" aria-live="polite"></p>
     </div>
 
-    <ul class="rejilla" id="listado-lugares"></ul>
+    <ul class="galeria" id="galeria-listado"></ul>
 
   </main>
+
+  <!-- Lightbox: se mantiene oculto hasta que iniciarGaleria() lo activa. -->
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-labelledby="lightbox-titulo" hidden>
+    <button type="button" class="lightbox__cerrar" id="lightbox-cerrar" aria-label="Cerrar galería">✕</button>
+    <button type="button" class="lightbox__flecha lightbox__flecha--anterior" id="lightbox-anterior" aria-label="Imagen anterior">‹</button>
+    <button type="button" class="lightbox__flecha lightbox__flecha--siguiente" id="lightbox-siguiente" aria-label="Imagen siguiente">›</button>
+
+    <figure class="lightbox__contenido">
+      <div class="lightbox__marco" id="lightbox-marco"></div>
+      <figcaption class="lightbox__pie">
+        <h3 id="lightbox-titulo"></h3>
+        <p class="rotulo" id="lightbox-fuente"></p>
+      </figcaption>
+    </figure>
+  </div>
 
   <footer class="pie">
     <div class="contenedor">
@@ -70,6 +82,7 @@
   <script src="js/data-lugares.js"></script>
   <script src="js/data-juegos.js"></script>
   <script src="js/data-valquirias.js"></script>
+  <script src="js/data-galeria.js"></script>
   <script src="js/render.js"></script>
   <script src="js/main.js"></script>
 </body>
