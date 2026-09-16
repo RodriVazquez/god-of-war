@@ -651,6 +651,180 @@ function iniciarFichaJuego() {
     ${bloqueNavegacionJuegos(j.id)}`;
 }
 
+/* ---------- 10. Página de contacto ----------
+   Valida en español, marca los campos con aria-invalid y manda el foco
+   al primero que falla. El envío está simulado: enviarMensaje() espera
+   un rato y da la entrega por buena. Cuando haya un destino real (un
+   correo, un servicio de formularios), se cambia solo esa función y el
+   resto de la página queda igual. */
+
+/* Cada campo declara su propia regla. Devolver "" significa que pasó.
+   Tenerlas juntas evita el if gigante dentro del submit. */
+const REGLAS_CONTACTO = [
+  {
+    id: "campo-nombre",
+    revisar: (v) => v.trim() ? "" : "Hace falta un nombre, aunque sea inventado."
+  },
+  {
+    id: "campo-correo",
+    revisar: (v) => {
+      if (!v.trim()) return "Sin correo el cuervo no sabe volver.";
+      // Alcanza con algo@algo.algo: no queremos rechazar direcciones raras
+      // pero válidas por culpa de una expresión demasiado estricta.
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim())
+        ? ""
+        : "Eso no parece un correo. Revisalo.";
+    }
+  },
+  {
+    id: "campo-motivo",
+    revisar: (v) => v ? "" : "Elegí un motivo de la lista."
+  },
+  {
+    id: "campo-mensaje",
+    revisar: (v) => {
+      if (!v.trim()) return "El mensaje está vacío.";
+      return v.trim().length >= 10 ? "" : "Contanos un poco más: al menos diez caracteres.";
+    }
+  },
+  {
+    id: "campo-juramento",
+    revisar: (_, campo) => campo.checked ? "" : "Hay que jurarlo: es la única forma de soltar el cuervo."
+  }
+];
+
+function mostrarErrorContacto(campo, mensaje) {
+  const destino = document.querySelector("#error-" + campo.id.replace("campo-", ""));
+  if (destino) destino.textContent = mensaje;
+  campo.setAttribute("aria-invalid", String(Boolean(mensaje)));
+}
+
+function limpiarErroresContacto() {
+  REGLAS_CONTACTO.forEach(({ id }) => {
+    const campo = document.querySelector("#" + id);
+    if (campo) mostrarErrorContacto(campo, "");
+  });
+}
+
+/* Devuelve el primer campo que falló, o null si está todo bien. */
+function validarContacto() {
+  let primerFallo = null;
+
+  REGLAS_CONTACTO.forEach(({ id, revisar }) => {
+    const campo = document.querySelector("#" + id);
+    if (!campo) return;
+    const error = revisar(campo.value, campo);
+    mostrarErrorContacto(campo, error);
+    if (error && !primerFallo) primerFallo = campo;
+  });
+
+  return primerFallo;
+}
+
+function bandoElegido() {
+  const marcado = document.querySelector("input[name='bando']:checked");
+  return marcado ? marcado.value : "nordica";
+}
+
+/* Junta lo que el usuario escribió. Hoy nadie lo recibe, pero es
+   exactamente lo que va a necesitar el destino real. */
+function componerMensaje() {
+  const valor = (id) => document.querySelector("#" + id).value.trim();
+
+  return {
+    nombre: valor("campo-nombre"),
+    correo: valor("campo-correo"),
+    motivo: valor("campo-motivo"),
+    bando: bandoElegido() === "griega" ? "Saga griega" : "Saga nórdica",
+    mensaje: valor("campo-mensaje")
+  };
+}
+
+/* Único punto de contacto con el mundo exterior. Por ahora finge una
+   demora y resuelve siempre bien. El día que haya destino, acá va el
+   fetch o el envío nativo y el resto de la página no se toca. */
+function enviarMensaje(datos) {
+  return new Promise((resolver) => setTimeout(() => resolver(datos), 900));
+}
+
+function mostrarAcuseContacto(datos) {
+  const formulario = document.querySelector("#formulario-contacto");
+  const acuse = document.querySelector("#acuse-contacto");
+
+  document.querySelector("#acuse-texto").textContent =
+    datos.nombre + ", tu mensaje sobre «" + datos.motivo + "» ya está en camino. " +
+    "Si hace falta contestarte, la respuesta llegará a " + datos.correo + ".";
+
+  formulario.hidden = true;
+  acuse.hidden = false;
+  acuse.focus();
+}
+
+function volverAlFormularioContacto() {
+  const formulario = document.querySelector("#formulario-contacto");
+  const acuse = document.querySelector("#acuse-contacto");
+
+  acuse.hidden = true;
+  formulario.hidden = false;
+  formulario.reset();
+  limpiarErroresContacto();
+  sincronizarBandoContacto();
+  document.querySelector("#campo-nombre").focus();
+}
+
+/* El bando y el interruptor de la cabecera miran el mismo dato.
+   Si se cambia arriba, el radio tiene que acompañar. */
+function sincronizarBandoContacto() {
+  const radio = document.querySelector("input[name='bando'][value='" + sagaActiva() + "']");
+  if (radio) radio.checked = true;
+}
+
+function iniciarContacto() {
+  const formulario = document.querySelector("#formulario-contacto");
+  if (!formulario) return;
+
+  sincronizarBandoContacto();
+  window.addEventListener("saga-cambiada", sincronizarBandoContacto);
+
+  document.querySelectorAll("input[name='bando']").forEach((radio) => {
+    radio.addEventListener("change", () => aplicarSaga(radio.value));
+  });
+
+  formulario.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const primerFallo = validarContacto();
+    if (primerFallo) {
+      primerFallo.focus();
+      return;
+    }
+
+    // Mientras el mensaje "viaja", el botón avisa y se bloquea. Sin eso
+    // parece que el clic no hizo nada y la gente lo aprieta de nuevo.
+    const boton = formulario.querySelector("button[type='submit']");
+    const textoOriginal = boton.textContent;
+    boton.disabled = true;
+    boton.textContent = "Soltando el cuervo…";
+
+    enviarMensaje(componerMensaje()).then((datos) => {
+      boton.disabled = false;
+      boton.textContent = textoOriginal;
+      mostrarAcuseContacto(datos);
+    });
+  });
+
+  // Reset borra los valores pero no los mensajes de error: los sacamos
+  // a mano, después de que el navegador haya limpiado los campos.
+  formulario.addEventListener("reset", () => {
+    setTimeout(() => {
+      limpiarErroresContacto();
+      sincronizarBandoContacto();
+    }, 0);
+  });
+
+  document.querySelector("#btn-otro-mensaje")
+    .addEventListener("click", volverAlFormularioContacto);
+}
+
 /* ---------- Arranque ---------- */
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -664,4 +838,5 @@ document.addEventListener("DOMContentLoaded", () => {
   iniciarFichaPersonaje();
   iniciarFichaLugar();
   iniciarFichaJuego();
+  iniciarContacto();
 });

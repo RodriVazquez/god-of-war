@@ -147,12 +147,73 @@ h1, h2, h3 {
 .pie {
   border-top: 1px solid var(--borde);
   margin-top: var(--e-6);
-  padding-block: var(--e-4);
   color: var(--texto-suave);
   font-size: var(--t-sm);
 }
 
-.pie p + p { margin-top: var(--e-1); }
+/* Cuatro columnas: marca, dos bloques de enlaces y el interruptor
+   de saga repetido. Quien llegó hasta el final scrolleando no
+   debería tener que volver arriba para cambiar de saga. */
+.pie__interior {
+  display: grid;
+  grid-template-columns: 1.6fr repeat(3, minmax(150px, 1fr));
+  gap: var(--e-4) var(--e-3);
+  padding-block: var(--e-5) var(--e-4);
+  align-items: start;
+}
+
+.pie__marca { max-width: 42ch; }
+
+.pie__marca .marca { display: inline-block; margin-bottom: var(--e-1); }
+
+.pie__marca p { line-height: 1.65; }
+
+.pie__columna .rotulo { margin-bottom: var(--e-2); }
+
+.pie__columna .interruptor { width: fit-content; }
+
+.pie__columna ul {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: .45rem;
+}
+
+.pie__columna a {
+  color: var(--texto-suave);
+  border-bottom: 1px solid transparent;
+  transition: color var(--transicion), border-color var(--transicion);
+}
+
+.pie__columna a:hover { color: var(--texto); border-bottom-color: var(--acento); }
+
+.pie__nota {
+  margin-top: var(--e-2);
+  font-size: var(--t-xs);
+  line-height: 1.6;
+}
+
+/* Franja legal: centrada y separada, para que no compita con las
+   columnas de enlaces. */
+.pie__legal {
+  border-top: 1px solid var(--borde);
+  padding-block: var(--e-2) var(--e-3);
+  text-align: center;
+  font-size: var(--t-xs);
+  line-height: 1.7;
+}
+
+.pie__legal p + p { margin-top: .35rem; }
+
+@media (max-width: 900px) {
+  .pie__interior { grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); }
+  .pie__marca { grid-column: 1 / -1; max-width: none; }
+}
+
+@media (max-width: 520px) {
+  .pie__interior { grid-template-columns: 1fr; justify-items: center; text-align: center; }
+  .pie__columna .interruptor { margin-inline: auto; }
+}
 
 /* ---------- Movimiento reducido ---------- */
 
@@ -165,8 +226,9 @@ h1, h2, h3 {
   }
 }
 
-@media (max-width: 720px) {
+@media (max-width: 900px) {
   .cabecera__interior { flex-wrap: wrap; padding-block: var(--e-2); }
   .navegacion { order: 3; width: 100%; margin-left: 0; overflow-x: auto; }
-  .interruptor { margin-left: auto; }
+  .navegacion a { white-space: nowrap; }
+  .cabecera__interior .interruptor { margin-left: auto; }
 }

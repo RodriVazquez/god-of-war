@@ -89,16 +89,19 @@ function tarjetaLugar(l) {
     </li>`;
 }
 
-/* Versión compacta para la portada, sin marco ni link: solo texto.
-   El home muestra los reinos como un vistazo, el listado completo
-   vive en lugares.html. */
+/* Versión compacta para la portada: sin marco, solo texto, pero
+   enlazada a la ficha igual que las tarjetas del listado. Antes era
+   un bloque muerto y la gente la cliqueaba lo mismo. */
 function resumenLugar(l) {
   return `
-    <li class="tarjeta">
-      <div class="tarjeta__cuerpo">
-        <h3>${escapar(l.nombre)}</h3>
-        <p>${escapar(l.resumen)}</p>
-      </div>
+    <li>
+      <a class="tarjeta tarjeta--texto" href="lugar.html?id=${escapar(l.id)}">
+        <div class="tarjeta__cuerpo">
+          <p class="rotulo">${escapar(l.tipo)}</p>
+          <h3>${escapar(l.nombre)}</h3>
+          <p>${escapar(l.resumen)}</p>
+        </div>
+      </a>
     </li>`;
 }
 

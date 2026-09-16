@@ -69,4 +69,3 @@ Recomendado: 600×800 px, JPG optimizado, menos de 200 KB cada una.
 - [ ] Conseguir y optimizar las imágenes
 - [ ] Página de armas y otra de bestiario (copiá el patrón de personajes.html)
 - [ ] Formulario de contacto con validación propia
-- [ ] Página 404

@@ -15,6 +15,7 @@
   --acento:         #b0813f;
   --acento-claro:   #d9ab63;
   --acento-frio:    #79c2d6;
+  --error:          #e88a7d;
   --sombra:         rgba(0, 0, 0, .55);
 
   /* --- Tipografías --- */
@@ -61,5 +62,6 @@
   --acento:         #c08a2e;
   --acento-claro:   #e2b45c;
   --acento-frio:    #a8362a;   /* acá el "frío" pasa a ser sangre */
+  --error:          #e0776a;
   --sombra:         rgba(0, 0, 0, .6);
 }

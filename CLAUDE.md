@@ -37,6 +37,7 @@ cronologia.html     Línea de tiempo de los nueve juegos
 juego.html          Ficha individual (recibe ?id=gow-2018)
 valquirias.html     Página especial con el juego del consejo
 galeria.html        Mosaico con lightbox
+contacto.html       Formulario de contacto (valida en el navegador, no envía)
 404.html
 
 css/variables.css   Tokens: paleta, tipografías, escalas. Incluye el swap de temas.
@@ -196,6 +197,18 @@ Requisitos:
 
 ### Galería
 Mosaico con lightbox, filtro por saga, pie de foto con la fuente de cada imagen.
+
+### Contacto
+Formulario con nombre, correo, motivo, bando y mensaje. Valida en español, marca
+los campos con `aria-invalid` y manda el foco al primero que falla. El selector
+de bando cambia el tema del sitio en el momento y queda sincronizado con el
+interruptor de la cabecera.
+
+El envío está **simulado**: `enviarMensaje()` en `main.js` espera un momento y
+resuelve siempre bien. Es el único punto que toca el mundo exterior, así que
+cuando haya un destino real (un correo o un servicio de formularios) se cambia
+esa función sola y el resto queda igual. Hasta entonces, el acuse habla como si
+el mensaje hubiera salido.
 
 ---
 
