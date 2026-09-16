@@ -6,6 +6,8 @@
   <title>God of War — De Esparta a los Nueve Reinos</title>
   <meta name="description" content="Recorrido por las dos sagas de God of War: personajes, reinos y cronología de los nueve juegos.">
 
+  <link rel="icon" href="assets/img/favicon.ico" sizes="any">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600&family=Eczar:wght@600;800&family=Spectral:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
@@ -18,7 +20,7 @@
 
   <header class="cabecera">
     <div class="contenedor cabecera__interior">
-      <a class="marca" href="index.html">God of <span>War</span></a>
+      <a class="marca" href="index.html"><img class="marca__img" src="assets/img/logo.png" alt="God of War" width="725" height="189"></a>
 
       <nav class="navegacion" id="menu-principal" aria-label="Principal">
         <a href="index.html" aria-current="page">Inicio</a>
@@ -70,11 +72,28 @@
         </p>
       </div>
 
-      <p class="portada__aviso">Bajá para empezar</p>
+      <a class="sello" href="#sagas-seccion">
+        <span class="sello__anillo">
+          <svg viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+            <g class="sello__giro">
+              <circle cx="32" cy="32" r="30" stroke-dasharray="2 6" opacity=".6"/>
+            </g>
+            <circle cx="32" cy="32" r="25" opacity=".3"/>
+
+            <!-- Omega: el símbolo de God of War desde 2005. Va en las dos
+                 sagas; lo que cambia con el tema es el color. -->
+            <g class="sello__glifo">
+              <path d="M26 43C26 38 21 36 21 30A11 11 0 1 1 43 30C43 36 38 38 38 43"/>
+              <path d="M20 43H28M36 43H44"/>
+            </g>
+          </svg>
+        </span>
+        <span class="sello__texto">Rompé el sello<span class="solo-lectores"> para empezar el recorrido</span></span>
+      </a>
     </section>
 
     <!-- ============ LAS DOS SAGAS ============ -->
-    <section class="seccion contenedor revelar">
+    <section class="seccion contenedor revelar" id="sagas-seccion">
       <div class="seccion__encabezado">
         <p class="rotulo">Dos mitologías</p>
         <h2>El Olimpo y el Árbol del Mundo</h2>
@@ -107,11 +126,11 @@
     </section>
 
     <!-- ============ PERSONAJES DESTACADOS ============ -->
-    <section class="seccion contenedor revelar">
+    <section class="seccion contenedor revelar" id="destacados-seccion">
       <div class="seccion__encabezado">
         <p class="rotulo">Quiénes son</p>
         <h2>Personajes</h2>
-        <p>Cuatro de los principales. El listado completo tiene filtros y buscador.</p>
+        <p id="destacados-bajada">Un padre, un hijo, una cabeza que habla y una bruja desterrada. Los cuatro que sostienen el viaje por los Nueve Reinos.</p>
       </div>
 
       <ul class="rejilla" id="destacados"></ul>
@@ -153,7 +172,7 @@
     <div class="contenedor pie__interior">
 
       <div class="pie__marca">
-        <a class="marca" href="index.html">God of <span>War</span></a>
+        <a class="marca" href="index.html"><img class="marca__img" src="assets/img/logo.png" alt="God of War" width="725" height="189"></a>
         <p>
           Dos mitologías, nueve juegos y un mismo hombre intentando dejar de ser
           lo que fue. Sitio de fans hecho como trabajo práctico de front-end.

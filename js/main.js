@@ -155,6 +155,35 @@ function sagaActiva() {
   return document.documentElement.dataset.saga || "nordica";
 }
 
+/* Los destacados de la portada son una selección a mano y no los
+   primeros del array: el orden dice algo y no coincide con el de
+   data-personajes.js. Para cambiar quiénes salen alcanza con tocar
+   esta lista. */
+const DESTACADOS = {
+  griega:  ["kratos", "atenea", "zeus", "ares"],
+  nordica: ["kratos", "atreus", "mimir", "freya"]
+};
+
+function pintarPersonajesDePortada() {
+  const saga = sagaActiva();
+  const ids = DESTACADOS[saga] || DESTACADOS.nordica;
+
+  // Si un id no existe todavía lo salteamos, igual que en los chips:
+  // preferimos mostrar tres tarjetas antes que romper la portada.
+  const elegidos = ids
+    .map((id) => PERSONAJES.find((p) => p.id === id))
+    .filter(Boolean);
+
+  pintar("#destacados", elegidos, tarjetaPersonaje, "Cargá personajes en js/data-personajes.js");
+
+  const bajada = document.querySelector("#destacados-bajada");
+  if (!bajada) return;
+
+  bajada.textContent = saga === "griega"
+    ? "El espartano y los tres olímpicos que le arruinaron la vida: la que lo usó, el que lo engendró y el que lo hizo lo que es."
+    : "Un padre, un hijo, una cabeza que habla y una bruja desterrada. Los cuatro que sostienen el viaje por los Nueve Reinos.";
+}
+
 function pintarLugaresDePortada() {
   const saga = sagaActiva();
   const lugares = LUGARES.filter((l) => l.region === saga);
@@ -179,11 +208,12 @@ function pintarLugaresDePortada() {
 function iniciarPortada() {
   if (!document.querySelector("#destacados")) return;
 
-  pintar("#destacados", PERSONAJES.slice(0, 4), tarjetaPersonaje, "Cargá personajes en js/data-personajes.js");
+  pintarPersonajesDePortada();
   pintarLugaresDePortada();
   pintar("#cronologia", JUEGOS.slice().sort((a, b) => a.anio - b.anio), hitoJuego, "Cargá juegos en js/data-juegos.js");
 
-  // Cuando se cambia la saga desde el interruptor, repintamos los lugares.
+  // Al cambiar de saga se repinta lo que depende de ella.
+  window.addEventListener("saga-cambiada", pintarPersonajesDePortada);
   window.addEventListener("saga-cambiada", pintarLugaresDePortada);
 }
 

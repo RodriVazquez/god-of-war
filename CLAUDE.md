@@ -15,7 +15,8 @@ Este archivo es el contexto del proyecto. Leelo antes de tocar código.
   sitio tiene que funcionar abriendo `index.html` directamente desde `file://`,
   sin servidor.
 - **Sin dependencias externas de código**, salvo las tipografías de Google
-  Fonts. Para las imágenes se admite un CDN externo (Cloudinary u otro):
+  Fonts. La única fuente alojada en el repo es la del titular, en
+  `assets/fonts/`, porque no existe en ningún servicio. Para las imágenes se admite un CDN externo (Cloudinary u otro):
   si el sitio se abre sin internet, el marco rayado del placeholder cubre
   el caso. El deploy final va a GitHub Pages.
 - **Sin `localStorage` para contenido**, solo para preferencias y progreso del
@@ -80,10 +81,51 @@ La preferencia se guarda en `localStorage` bajo la clave `gow-saga`.
 
 ### Tipografías
 
+- Titular: **GodOfWar** — **solo** el `h1` de la portada. Ver la advertencia
+  de abajo antes de usarla en ningún otro lado.
 - Display: **Eczar** (600, 800) — títulos
 - Cuerpo: **Spectral** (400, 600, italic) — texto largo
 - Utilidad: **Barlow Condensed** (400, 600) — rótulos, años, datos, botones.
   Siempre en mayúsculas con `letter-spacing` amplio.
+
+**La fuente del titular es una recreación de fans**, en `assets/fonts/`. Sony
+nunca distribuyó la oficial: no está en Google Fonts ni se compra en ningún
+lado. Esta trae A-Z, a-z y números, pero **ni un acento**, y le faltan `·`
+`—` `«` `»` `¿`.
+
+Por eso está acotada al titular de la portada, que dice "God of War" y no tiene
+ninguno de esos caracteres. Si se aplicara a un título como "Cronología" o
+"Jötunheim", el navegador completaría esa sola letra con otra fuente y el salto
+se ve. **No extenderla a otros títulos**: para eso está Eczar, que tiene el
+juego completo.
+
+### La marca
+
+La marca de la cabecera y del pie es `assets/img/logo.png`, el logotipo oficial
+con fondo transparente. No es texto: es un `<img>` dentro del enlace, con
+`alt="God of War"` para que el enlace tenga nombre accesible.
+
+El logo ocupa 693x146 dentro de un lienzo de 725x189 —sobra sobre todo abajo,
+donde está el ®—, así que la caja toma la proporción del dibujo y
+`object-fit: cover` descarta el margen. **Si se reemplaza el PNG por
+uno recortado, hay que volver a medirlo y ajustar el `aspect-ratio` y el
+`object-position` de `.marca__img`.**
+
+El ancho baja de 180px a 132px abajo de 900px y a 104px abajo de 380px, para que
+en la misma fila entren también el interruptor de saga y el botón del menú.
+
+### El favicon
+
+`assets/img/favicon.ico`: el Omega rojo sobre círculo negro. Cuatro tamaños
+—16, 32, 48 y 64— con PNG embebido, 9 KB en total. El navegador elige el que le
+sirve en vez de reescalar uno de 256.
+
+Está fuera de la raíz a propósito. La costumbre de poner el favicon en la raíz
+existe porque el navegador pide `/favicon.ico` por su cuenta, pero este sitio
+va a GitHub Pages como proyecto: ese pedido apunta a la raíz del dominio, no al
+subdirectorio del repo, así que nunca lo encontraría esté donde esté. Lo que lo
+hace funcionar es el `<link rel="icon">` de cada página, y ese anda desde
+cualquier ruta.
 
 ### Detalles
 
@@ -202,6 +244,15 @@ el marcado, no el dato.
 Portada con el anillo SVG animado (círculos concéntricos que giran, sin
 imágenes), interruptor de saga, bloque destacado de las valquirias, cronología
 resumida y accesos a las cuatro secciones.
+
+Al pie del hero va el **sello**: un enlace circular a la primera sección que
+repite el motivo del anillo y lleva la Omega, el símbolo de la saga desde 2005.
+Es la misma en las dos sagas; lo que cambia con el tema es el color, que sale de
+`--acento`. El glifo es un `<path>` dibujado a mano y no un carácter, así no
+depende de que la tipografía lo tenga.
+
+Las secciones llevan `scroll-margin-top` del alto de la cabecera. Sin eso,
+cualquier salto a un ancla deja el título tapado abajo de la barra fija.
 
 ### Personajes
 Rejilla de 21 tarjetas: 20 personajes más una tarjeta especial "Las Valquirias"

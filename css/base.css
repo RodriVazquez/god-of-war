@@ -42,6 +42,25 @@ h1, h2, h3 {
   outline-offset: 3px;
 }
 
+/* ---------- Tipografía del titular ----------
+   Es una recreación del logotipo hecha por fans, no la oficial: Sony
+   nunca distribuyó la suya. Trae A-Z, a-z y números, pero ni un
+   acento y le faltan · — « » ¿.
+
+   Por eso se usa únicamente en el titular de la portada, que dice
+   "God of War" y no tiene ninguno de esos caracteres. Aplicarla a un
+   título con acento haría que el navegador completara esa sola letra
+   con otra fuente, y el salto se ve. El resto de los títulos siguen
+   con Eczar, que sí tiene el juego completo. */
+
+@font-face {
+  font-family: "GodOfWar";
+  src: url("../assets/fonts/GODOFWAR.TTF") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* ---------- Utilidades ---------- */
 
 .contenedor {
@@ -85,13 +104,28 @@ h1, h2, h3 {
 }
 
 .marca {
-  font-family: var(--display);
-  font-size: var(--t-lg);
-  letter-spacing: .04em;
-  white-space: nowrap;
+  display: block;
+  width: 180px;
+  flex-shrink: 0;
 }
 
-.marca span { color: var(--acento); }
+/* El logo ocupa 693x146 dentro de un lienzo de 725x189: sobra sobre
+   todo abajo, donde está el ®. La caja toma la proporción del dibujo
+   y object-fit descarta ese margen, así el logo queda centrado en la
+   barra y no flotando arriba.
+
+   Los tres valores salen de medir el PNG. Si se reemplaza el archivo,
+   hay que volver a medirlo y ajustarlos. */
+.marca__img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 693 / 146;
+  object-fit: cover;
+  object-position: center 18%;
+}
+
+.pie__marca .marca { width: 200px; }
 
 .navegacion {
   display: flex;
@@ -268,7 +302,7 @@ h1, h2, h3 {
     min-height: 44px;
   }
 
-  .marca { display: inline-block; padding-block: .35rem; }
+  .marca { display: flex; align-items: center; min-height: 44px; }
 
   .interruptor button { min-height: 44px; }
 
@@ -294,6 +328,8 @@ h1, h2, h3 {
   /* Una sola fila: la barra mantiene su alto y su centrado pase lo
      que pase con el panel. */
   .cabecera__interior { flex-wrap: nowrap; column-gap: var(--e-2); }
+
+  .cabecera__interior .marca { width: 132px; }
 
   .menu { display: grid; }
 
@@ -356,4 +392,12 @@ h1, h2, h3 {
     border-bottom-color: transparent;
     border-left-color: var(--acento);
   }
+}
+
+/* Pantallas muy angostas: el logo cede ancho para que entren el
+   interruptor y el boton del menu en la misma fila. Va despues del
+   bloque de 900px a proposito: misma especificidad, gana el ultimo. */
+@media (max-width: 380px) {
+  .cabecera__interior .marca { width: 104px; }
+  .cabecera__interior .interruptor button { padding: .4rem .4rem; letter-spacing: .04em; }
 }

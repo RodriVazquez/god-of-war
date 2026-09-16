@@ -17,6 +17,7 @@
 .portada__texto { position: relative; z-index: 2; }
 
 .portada h1 {
+  font-family: var(--titular);
   font-size: var(--t-3xl);
   letter-spacing: .02em;
   text-transform: uppercase;
@@ -52,22 +53,68 @@
 
 @keyframes girar { to { rotate: 360deg; } }
 
-.portada__aviso {
+/* Sello de la portada: el acceso a la primera sección. Repite el
+   motivo del anillo del hero y cambia de glifo con la saga, así que
+   también funciona como pista de que el interruptor de arriba hace
+   algo. Es un enlace de verdad, no un adorno. */
+.sello {
   position: absolute;
   bottom: var(--e-3);
   left: 50%;
   translate: -50% 0;
   z-index: 2;
+  display: grid;
+  justify-items: center;
+  gap: var(--e-1);
+  color: var(--texto-suave);
+  transition: color var(--transicion), translate var(--transicion);
+}
+
+.sello:hover { color: var(--texto); translate: -50% 4px; }
+
+.sello__anillo { display: block; width: 56px; height: 56px; }
+
+.sello__anillo svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.2;
+}
+
+/* El anillo exterior gira como los del hero, pero más lento. */
+.sello__giro {
+  animation: girar 28s linear infinite;
+  transform-origin: center;
+}
+
+.sello__glifo {
+  stroke: var(--acento);
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: stroke var(--transicion);
+}
+
+.sello:hover .sello__glifo { stroke: var(--acento-claro); }
+
+.sello__texto {
   font-family: var(--utilidad);
   font-size: var(--t-xs);
   text-transform: uppercase;
   letter-spacing: .24em;
-  color: var(--texto-suave);
+}
+
+@media (max-width: 560px) {
+  .sello__anillo { width: 46px; height: 46px; }
 }
 
 /* ---------- Secciones genéricas ---------- */
 
-.seccion { padding-block: var(--e-6); }
+/* La cabecera es fija: sin este margen, al saltar a un ancla el
+   título de la sección queda tapado abajo de ella. */
+.seccion { padding-block: var(--e-6); scroll-margin-top: calc(var(--alto-cabecera) + var(--e-2)); }
 
 /* Sin tope de ancho: el encabezado usa todo el contenedor. Con un
    max-width en ch los títulos y las bajadas cortaban muy lejos del
