@@ -507,7 +507,7 @@
 
 .acuse > p { color: var(--texto-suave); margin-bottom: var(--e-3); }
 
-.contacto__aparte-columna { position: sticky; top: 84px; }
+.contacto__aparte-columna { position: sticky; top: calc(var(--alto-cabecera) + var(--e-2)); }
 
 .contacto__aparte {
   border: 1px solid var(--borde);
@@ -601,7 +601,21 @@
   margin-top: var(--e-2);
 }
 
+/* Con biografías de cuatro párrafos, la columna de texto es mucho
+   más alta que la imagen y dejaba medio metro de hueco al costado.
+   Pegada, la foto acompaña la lectura. Solo en dos columnas: apilada
+   taparía el texto en vez de acompañarlo. */
+.ficha__cuerpo > .marco {
+  position: sticky;
+  top: calc(var(--alto-cabecera) + var(--e-2));
+}
+
 .ficha h1 { font-size: var(--t-2xl); margin-block: var(--e-1) var(--e-2); }
+
+/* Cuerpo de la biografía: varios párrafos con aire entre ellos. */
+.ficha__texto { margin-top: var(--e-2); }
+
+.ficha__texto p + p { margin-top: var(--e-2); }
 
 .ficha__datos { list-style: none; padding: 0; margin-top: var(--e-3); }
 
@@ -645,6 +659,8 @@
 .galeria__item {
   position: relative;
   aspect-ratio: 3 / 4;
+  width: 100%;
+  padding: 0;
   border: 1px solid var(--borde);
   overflow: hidden;
   background:
@@ -776,9 +792,17 @@
   padding-top: var(--e-1);
 }
 
-.lightbox__pie h3 { font-size: var(--t-lg); margin-bottom: .3rem; }
+.lightbox__pie h3 { font-size: var(--t-lg); margin-block: .2rem .35rem; }
 
-.lightbox__pie .rotulo { color: var(--texto-suave); }
+.lightbox__pie .rotulo { color: var(--acento); }
+
+.lightbox__pie p:not(.rotulo) {
+  color: var(--texto-suave);
+  font-size: var(--t-sm);
+  line-height: 1.6;
+  max-width: 62ch;
+  margin-inline: auto;
+}
 
 @media (max-width: 700px) {
   .lightbox__flecha { top: auto; bottom: var(--e-2); translate: 0 0; }
@@ -842,5 +866,52 @@
 
 @media (max-width: 700px) {
   .ficha__cuerpo { grid-template-columns: 1fr; }
+  .ficha__cuerpo > .marco { position: static; }
   .buscador { margin-left: 0; width: 100%; }
+}
+
+/* ---------- Ajustes de pantalla chica ---------- */
+
+@media (max-width: 560px) {
+  /* Anterior y siguiente lado a lado dejaban 160px por título:
+     los nombres largos quedaban en cuatro renglones. */
+  .nav-juegos { grid-template-columns: 1fr; }
+
+  .nav-juegos__enlace--der { text-align: left; align-items: flex-start; }
+
+  /* La fila clave/valor se comprimía hasta dejar el valor en 28px.
+     Apilada, cada parte se lee entera. */
+  .ficha__datos li {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: .15rem;
+  }
+
+  /* Una sola columna convertía el mosaico en una tira. Dos entran
+     bien incluso a 320px. */
+  .galeria { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* ---------- Objetivos táctiles ----------
+   Nada que se toque con el dedo por debajo de 44px de alto, que es
+   el mínimo recomendado. En escritorio con mouse no hace falta y la
+   densidad se mantiene como estaba. */
+
+@media (pointer: coarse), (max-width: 900px) {
+  .filtro,
+  .buscador,
+  .boton { min-height: 44px; }
+
+  .chip,
+  .volver,
+  .migas a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
+
+  /* Las casillas de 13px eran difíciles de ver, aunque la etiqueta
+     entera sea el área clicable. */
+  .juramento input,
+  .bando input { width: 1.15rem; height: 1.15rem; }
 }

@@ -41,6 +41,7 @@
   --e-6: 6rem;
 
   --ancho-max: 1160px;
+  --alto-cabecera: 68px;   /* lo usan los paneles pegajosos como tope */
   --radio: 2px;          /* casi nulo: piedra tallada, no botón de app */
   --transicion: 280ms cubic-bezier(.2, .7, .3, 1);
 

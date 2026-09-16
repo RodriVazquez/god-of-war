@@ -91,6 +91,34 @@ La preferencia se guarda en `localStorage` bajo la clave `gow-saga`.
 - Escala tipográfica fluida con `clamp()`.
 - Rejillas con `auto-fill` / `auto-fit`, sin media queries salvo donde haga falta.
 
+### Responsive
+
+- **900px** es el corte de la cabecera: abajo de ahí la navegación se guarda
+  detrás del botón `#btn-menu` y la fila queda en `--alto-cabecera` (68px).
+  Con seis secciones ya no entra en una fila de celular.
+- El panel cuelga **fuera del flujo** (`position: absolute` debajo de la
+  cabecera) y se despliega sobre el contenido. Como segundo renglón del flex se
+  repartía el alto con la barra, la descentraba, y al abrirse la empujaba hacia
+  arriba. La barra tiene que quedar quieta: solo se despliega el panel.
+- Se pliega con `max-height` + `opacity` + `visibility` en 300ms, no con
+  `display`, que no se puede animar. `visibility: hidden` saca los enlaces del
+  recorrido del tabulador igual que `display: none`, y sí admite transición.
+- **820px** parte el contacto en una columna, **780px** el consejo de las
+  valquirias, **700px** las fichas y el buscador, **560px** apila
+  anterior/siguiente y las filas clave/valor y pasa la galería a dos columnas.
+- **520px** apila y centra el pie.
+- Los paneles pegajosos se cuelgan de `calc(var(--alto-cabecera) + var(--e-2))`,
+  nunca de un número suelto: si cambia la cabecera, se corrigen solos.
+- Nada interactivo por debajo de **44px** de alto en táctil. La regla vive en un
+  bloque `@media (pointer: coarse), (max-width: 900px)` para no engordar la
+  interfaz de escritorio con mouse.
+- La imagen de las fichas es `sticky` mientras haya dos columnas: con
+  biografías de cuatro párrafos, la columna de texto es mucho más alta que la
+  foto y quedaba un hueco largo al costado. Apilada vuelve a `static`, porque
+  ahí taparía el texto en vez de acompañarlo.
+- La rejilla de personajes queda en **una columna** en celular a propósito: con
+  dos, el resumen cae a renglones de dieciocho caracteres.
+
 ---
 
 ## Modelo de datos
@@ -153,6 +181,19 @@ Agregar una entidad nunca debe requerir tocar HTML.
 Si `imagen` está vacío, el marco muestra un patrón rayado con el nombre del
 archivo que falta. Es a propósito: sirve de lista de pendientes.
 
+El campo `texto` es una plantilla literal con renglones en blanco entre párrafo
+y párrafo. `parrafos()` en `render.js` corta por ahí y devuelve un `<p>` por
+cada uno; escribirlo todo seguido lo deja como un ladrillo.
+
+En `data-galeria.js` cada pieza lleva `juego` (de qué entrega es la escena, va
+como rótulo del pie del lightbox) y `descripcion` (una o dos líneas de
+contexto). Reemplazaron al viejo campo `fuente`, que pedía una atribución que
+este sitio no tiene forma de dar.
+
+En `data-valquirias.js`, `texto` es la biografía y `resumen` es consejo de
+combate: se pinta al final de la ficha con el rótulo "Tip". La palabra la pone
+el marcado, no el dato.
+
 ---
 
 ## Las páginas
@@ -196,7 +237,8 @@ Requisitos:
   Una sola función `estaBloqueado(id)` usada en los dos lugares.
 
 ### Galería
-Mosaico con lightbox, filtro por saga, pie de foto con la fuente de cada imagen.
+Mosaico con lightbox y filtro por saga. El pie de cada foto dice de qué juego es
+la escena y la ubica en una o dos líneas.
 
 ### Contacto
 Formulario con nombre, correo, motivo, bando y mensaje. Valida en español, marca

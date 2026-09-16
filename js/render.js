@@ -19,7 +19,20 @@ function marcoImagen(ruta, nombre) {
     return `<div class="marco"><img src="${escapar(ruta)}" alt="${escapar(nombre)}" loading="lazy"></div>`;
   }
   const archivo = nombre.toLowerCase().replace(/\s+/g, "-");
-  return `<div class="marco"><p class="marco__nota">Falta assets/${escapar(archivo)}.jpg</p></div>`;
+  return `<div class="marco"><p class="marco__nota">Falta assets/img/${escapar(archivo)}.jpg</p></div>`;
+}
+
+/* Convierte un texto largo en párrafos. Las biografías se guardan
+   como una sola cadena con renglones en blanco entre párrafo y
+   párrafo; acá se parte por esos renglones y se escapa cada uno.
+   Antes todo caía dentro de un solo <p> y se leía como un ladrillo. */
+function parrafos(texto) {
+  return String(texto)
+    .split(/\n\s*\n/)
+    .map((p) => p.trim())
+    .filter(Boolean)
+    .map((p) => `<p>${escapar(p)}</p>`)
+    .join("");
 }
 
 /* Migas de pan: Inicio › Sección › Nombre.

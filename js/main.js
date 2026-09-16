@@ -74,6 +74,57 @@ function reiniciarConsejo() {
   localStorage.removeItem(CLAVE_VALQUIRIAS);
 }
 
+/* ---------- 1c. Menú plegable de la cabecera ----------
+   Abajo de 900px la navegación no entra en la fila, así que se
+   guarda detrás de un botón. El CSS la esconde con display:none,
+   que además la saca del recorrido del tabulador mientras está
+   cerrada: no queremos foco en enlaces invisibles. */
+
+function iniciarMenu() {
+  const boton = document.querySelector("#btn-menu");
+  const cabecera = document.querySelector(".cabecera");
+  if (!boton || !cabecera) return;
+
+  const estaAbierto = () => boton.getAttribute("aria-expanded") === "true";
+
+  function cerrarMenu() {
+    cabecera.dataset.menu = "cerrado";
+    boton.setAttribute("aria-expanded", "false");
+    boton.setAttribute("aria-label", "Abrir el menú");
+  }
+
+  function abrirMenu() {
+    cabecera.dataset.menu = "abierto";
+    boton.setAttribute("aria-expanded", "true");
+    boton.setAttribute("aria-label", "Cerrar el menú");
+  }
+
+  boton.addEventListener("click", () => (estaAbierto() ? cerrarMenu() : abrirMenu()));
+
+  // Escape cierra y devuelve el foco al botón, que si no queda perdido.
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && estaAbierto()) {
+      cerrarMenu();
+      boton.focus();
+    }
+  });
+
+  // Elegido el destino, el panel ya no tiene razón de seguir abierto.
+  const navegacion = cabecera.querySelector(".navegacion");
+  if (navegacion) {
+    navegacion.addEventListener("click", (e) => {
+      if (e.target.closest("a")) cerrarMenu();
+    });
+  }
+
+  // Si la pantalla crece, el panel desaparece por CSS. Sin esto el
+  // botón volvería marcado como abierto al achicar de nuevo.
+  const anchoGrande = window.matchMedia("(min-width: 901px)");
+  anchoGrande.addEventListener("change", (e) => { if (e.matches) cerrarMenu(); });
+
+  cerrarMenu();
+}
+
 /* ---------- 2. Revelado al hacer scroll ---------- */
 
 function iniciarRevelado() {
@@ -391,7 +442,7 @@ function iniciarFichaPersonaje() {
       <div>
         <h1>${escapar(p.nombre)}</h1>
         <p class="rotulo">${escapar(p.epiteto)}</p>
-        <p style="margin-top: var(--e-2)">${escapar(p.texto)}</p>
+        <div class="ficha__texto">${parrafos(p.texto)}</div>
         <ul class="ficha__datos">${filas}</ul>
         ${chipsLugares(p.lugares)}
       </div>
@@ -431,7 +482,7 @@ function iniciarFichaLugar() {
       <div>
         <h1>${escapar(l.nombre)}</h1>
         <p class="rotulo">${region} · ${escapar(l.tipo)}</p>
-        <p style="margin-top: var(--e-2)">${escapar(l.texto)}</p>
+        <div class="ficha__texto">${parrafos(l.texto)}</div>
         <ul class="ficha__datos">${filas}</ul>
         ${chipsPersonajes(l.personajes)}
       </div>
@@ -476,7 +527,8 @@ function pintarLightbox() {
     : `<p class="lightbox__marco__falta">Falta la imagen ${escapar(g.id)}</p>`;
 
   document.querySelector("#lightbox-titulo").textContent = g.titulo;
-  document.querySelector("#lightbox-fuente").textContent = `Fuente: ${g.fuente}`;
+  document.querySelector("#lightbox-juego").textContent = g.juego;
+  document.querySelector("#lightbox-descripcion").textContent = g.descripcion;
 
   // Deshabilita las flechas en los extremos.
   document.querySelector("#lightbox-anterior").disabled = galeriaIndiceActivo === 0;
@@ -644,7 +696,7 @@ function iniciarFichaJuego() {
       <div>
         <h1>${escapar(j.titulo)}</h1>
         <p class="rotulo">${region} · ${j.anio}</p>
-        <p style="margin-top: var(--e-2)">${escapar(j.texto)}</p>
+        <div class="ficha__texto">${parrafos(j.texto)}</div>
         <ul class="ficha__datos">${filas}</ul>
       </div>
     </div>
@@ -829,6 +881,7 @@ function iniciarContacto() {
 
 document.addEventListener("DOMContentLoaded", () => {
   iniciarInterruptor();
+  iniciarMenu();
   iniciarRevelado();
   iniciarPortada();
   iniciarPersonajes();

@@ -98,8 +98,8 @@
             <span>Trono ${v.trono}</span>
             <span>Dificultad ${barraDificultad(v.dificultad)}</span>
           </div>
-          <p>${escapar(v.texto)}</p>
-          <p style="margin-top: var(--e-2); color: var(--texto-suave); font-size: var(--t-sm)">${escapar(v.resumen)}</p>
+          <div class="ficha__texto">${parrafos(v.texto)}</div>
+          <p class="consejo__tip"><strong>Tip:</strong> ${escapar(v.resumen)}</p>
         </div>
       </article>`;
   }

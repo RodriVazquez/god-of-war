@@ -116,6 +116,50 @@ h1, h2, h3 {
   border-bottom-color: var(--acento);
 }
 
+/* ---------- Botón del menú (solo en pantallas chicas) ----------
+   Con seis secciones la navegación ya no entra en una fila de
+   celular: antes se desbordaba con un scroll horizontal que nadie
+   descubría, y la cabecera ocupaba 150px de alto. */
+
+.menu {
+  display: none;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  place-items: center;
+  background: none;
+  border: 1px solid var(--borde);
+  color: var(--texto);
+  cursor: pointer;
+  transition: border-color var(--transicion);
+}
+
+.menu:hover { border-color: var(--acento); }
+
+/* Tres barras: el span es la del medio, los pseudoelementos las otras. */
+.menu__barras { position: relative; }
+
+.menu__barras,
+.menu__barras::before,
+.menu__barras::after {
+  display: block;
+  width: 18px;
+  height: 2px;
+  background: currentColor;
+  transition: translate var(--transicion), rotate var(--transicion), background-color var(--transicion);
+}
+
+.menu__barras::before,
+.menu__barras::after { content: ""; position: absolute; left: 0; }
+
+.menu__barras::before { translate: 0 -6px; }
+.menu__barras::after  { translate: 0 6px; }
+
+/* Abierto: la del medio desaparece y las otras dos se cruzan. */
+.cabecera[data-menu="abierto"] .menu__barras { background: transparent; }
+.cabecera[data-menu="abierto"] .menu__barras::before { translate: 0 0; rotate: 45deg; }
+.cabecera[data-menu="abierto"] .menu__barras::after  { translate: 0 0; rotate: -45deg; }
+
 /* ---------- Interruptor de saga (elemento firma) ---------- */
 
 .interruptor {
@@ -215,6 +259,26 @@ h1, h2, h3 {
   .pie__columna .interruptor { margin-inline: auto; }
 }
 
+/* ---------- Objetivos táctiles de cabecera y pie ---------- */
+
+@media (pointer: coarse), (max-width: 900px) {
+  .navegacion a {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+  }
+
+  .marca { display: inline-block; padding-block: .35rem; }
+
+  .interruptor button { min-height: 44px; }
+
+  .pie__columna a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
+}
+
 /* ---------- Movimiento reducido ---------- */
 
 @media (prefers-reduced-motion: reduce) {
@@ -227,8 +291,69 @@ h1, h2, h3 {
 }
 
 @media (max-width: 900px) {
-  .cabecera__interior { flex-wrap: wrap; padding-block: var(--e-2); }
-  .navegacion { order: 3; width: 100%; margin-left: 0; overflow-x: auto; }
-  .navegacion a { white-space: nowrap; }
+  /* Una sola fila: la barra mantiene su alto y su centrado pase lo
+     que pase con el panel. */
+  .cabecera__interior { flex-wrap: nowrap; column-gap: var(--e-2); }
+
+  .menu { display: grid; }
+
+  /* El interruptor se comprime para que marca, sagas y botón entren
+     en una sola fila hasta en pantallas de 320px. */
   .cabecera__interior .interruptor { margin-left: auto; }
+  .cabecera__interior .interruptor button { padding: .4rem .55rem; letter-spacing: .08em; }
+
+  /* El panel cuelga por fuera del flujo, debajo de la cabecera.
+     Siendo un segundo renglón del flex se repartía el alto con la
+     barra y la descentraba, y al abrirse la empujaba hacia arriba.
+
+     Plegado va con visibility en vez de display porque display no se
+     puede animar, y visibility saca los enlaces del tabulador igual. */
+  .navegacion {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    width: auto;
+    margin-left: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    padding-inline: var(--e-3);
+    background: var(--fondo);
+    border-top: 1px solid var(--borde);
+    border-bottom: 1px solid var(--borde);
+    box-shadow: 0 14px 28px var(--sombra);
+    max-height: 0;
+    opacity: 0;
+    visibility: hidden;
+    overflow: hidden;
+    padding-block: 0;
+    transition:
+      max-height 300ms cubic-bezier(.2, .7, .3, 1),
+      padding-block 300ms cubic-bezier(.2, .7, .3, 1),
+      opacity 300ms ease,
+      visibility 300ms;
+  }
+
+  /* El tope alcanza para las seis secciones. Es un máximo, no un
+     alto: el panel mide lo que miden sus enlaces. */
+  .cabecera[data-menu="abierto"] .navegacion {
+    max-height: 24rem;
+    opacity: 1;
+    visibility: visible;
+    padding-block: var(--e-2);
+  }
+
+  /* En vertical la marca de página va al costado, no abajo. */
+  .navegacion a {
+    border-bottom: none;
+    border-left: 2px solid transparent;
+    padding-inline: var(--e-2);
+  }
+
+  .navegacion a:hover,
+  .navegacion a[aria-current="page"] {
+    border-bottom-color: transparent;
+    border-left-color: var(--acento);
+  }
 }
