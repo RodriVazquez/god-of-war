@@ -267,8 +267,19 @@ a los personajes ligados y viceversa.
 
 ### Cronología
 Los nueve juegos en línea de tiempo vertical. Botón para alternar entre orden de
-lanzamiento y orden cronológico de la historia (no coinciden: *Chains of
-Olympus* salió tercero pero ocurre primero). Color según la saga.
+lanzamiento y orden cronológico de la historia (no coinciden: *Ascension* salió
+última de las griegas y sin embargo abre la historia).
+
+Cada hito conserva el color de **su** saga aunque el tema global sea el
+contrario: un juego nórdico se ve frío incluso con el sitio en griego. Lo
+resuelve una variable local, `--color-hito`, que el hito define según su
+`data-saga` y de la que salen el rombo, el año, el hover y el estado activo.
+
+Nada de eso puede usar `--acento` ni `--superficie`: los dos cambian con el
+tema. El fondo del hover en particular es un `color-mix` del propio
+`--color-hito`; con `--superficie` el tema griego pintaba una banda marrón
+cálida sobre cualquier juego y se comía el borde de 1px. Vale igual para la
+cronología resumida de la portada, que usa el mismo marcado.
 
 ### Valquirias
 La página interactiva. Nueve tronos vacíos y los cascos abajo; se arrastra cada

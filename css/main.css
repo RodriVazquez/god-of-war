@@ -173,9 +173,15 @@
   padding: 0 0 var(--e-4) var(--e-4);
 }
 
-/* Rombo. Toma el color del acento por defecto, pero cada hito
-   lleva su propia saga (data-saga) y así siempre pinta al color
-   correcto aunque el tema global sea el opuesto. */
+/* Cada hito declara el color de SU saga en una variable propia, y
+   todo lo de adentro —rombo, año, hover y estado activo— sale de ahí.
+   Antes el hover y el activo usaban var(--acento), que cambia con el
+   tema: al pasar el mouse, un juego nórdico se pintaba de griego. */
+.hito { --color-hito: var(--acento); }
+
+.hito[data-saga="griega"]  { --color-hito: var(--acento-griego); }
+.hito[data-saga="nordica"] { --color-hito: var(--acento-nordico); }
+
 .hito::before {
   content: "";
   position: absolute;
@@ -183,13 +189,10 @@
   top: .55rem;
   width: 9px;
   height: 9px;
-  background: var(--acento);
+  background: var(--color-hito);
   rotate: 45deg;
   transition: background-color var(--transicion);
 }
-
-.hito[data-saga="griega"]::before { background: var(--acento-griego); }
-.hito[data-saga="nordica"]::before { background: var(--acento-nordico); }
 
 .hito__enlace {
   display: block;
@@ -200,24 +203,26 @@
   transition: border-color var(--transicion), background-color var(--transicion);
 }
 
+/* El fondo también sale del color del hito, no de --superficie.
+   Con --superficie, en tema griego el hover pintaba una banda marrón
+   cálida (#1c1611, más clara que la página) sobre CUALQUIER juego, y
+   esa banda se comía el borde de 1px: un juego nórdico parecía tener
+   hover naranja aunque el borde fuera celeste. */
 .hito__enlace:hover {
-  border-left-color: var(--acento);
-  background: var(--superficie);
+  border-left-color: var(--color-hito);
+  background: color-mix(in srgb, var(--color-hito) 12%, transparent);
 }
 
 .hito__anio {
   font-family: var(--utilidad);
   font-size: var(--t-lg);
   letter-spacing: .1em;
-  color: var(--acento);
+  color: var(--color-hito);
 }
-
-.hito[data-saga="griega"] .hito__anio { color: var(--acento-griego); }
-.hito[data-saga="nordica"] .hito__anio { color: var(--acento-nordico); }
 
 .hito h3 { font-size: var(--t-lg); }
 
-.hito p { color: var(--texto-suave); font-size: var(--t-sm); }
+.hito p:not(.hito__anio) { color: var(--texto-suave); font-size: var(--t-sm); }
 
 /* Estado activo: el hito del juego que se está viendo en la ficha. */
 .hito.hito--activo::before {
@@ -226,8 +231,8 @@
 }
 
 .hito.hito--activo .hito__enlace {
-  border-left-color: var(--acento);
-  background: var(--superficie);
+  border-left-color: var(--color-hito);
+  background: color-mix(in srgb, var(--color-hito) 12%, transparent);
   pointer-events: none;
 }
 

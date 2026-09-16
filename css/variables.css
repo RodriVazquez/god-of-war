@@ -49,9 +49,17 @@
 
   /* Acentos fijos por saga: se usan cuando un elemento tiene que
      mostrar su color propio aunque el tema global sea el opuesto
-     (por ejemplo, un hito griego en una cronología con tema nórdico). */
+     (por ejemplo, un hito griego en una cronología con tema nórdico).
+
+     No se redefinen en [data-saga]: ese es justamente el punto.
+
+     Tienen que verse DISTINTOS entre sí o la distinción no sirve de
+     nada. Antes eran #c08a2e y #b0813f, a un 6% de distancia: el
+     mecanismo funcionaba pero nadie podía notarlo. Ahora van el ocre
+     cálido de Grecia contra la escarcha del norte, que es el contraste
+     que el sitio usa para separar las dos sagas. */
   --acento-griego:  #c08a2e;
-  --acento-nordico: #b0813f;
+  --acento-nordico: #79c2d6;
 }
 
 /* --- Saga griega: ceniza, ocre, sangre --- */
