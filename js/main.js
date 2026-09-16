@@ -337,10 +337,10 @@ function actualizarCronologia() {
   const bajada = document.querySelector("#cronologia-bajada");
   if (ordenCronologia === "historia") {
     if (rotulo) rotulo.textContent = "Orden de la historia";
-    if (bajada) bajada.textContent = "Los mismos nueve juegos, ordenados por cuándo ocurren en la vida de Kratos. Ascension abre; Valhalla cierra.";
+    if (bajada) bajada.textContent = "La misma vida, puesta en orden. Así se ve de dónde venía Kratos cuando le juró su vida a Ares, y cuánto le costó llegar a poder contarle la verdad a su hijo.";
   } else {
     if (rotulo) rotulo.textContent = "Orden de salida";
-    if (bajada) bajada.textContent = "De la PlayStation 2 a la PS5. El orden de salida no coincide con el orden en que ocurren los hechos.";
+    if (bajada) bajada.textContent = "Dieciocho años de una sola historia contada en desorden. La saga saltó de consola en consola, se fue para atrás cuando quiso y cambió de mitología a mitad de camino, pero nunca cambió de protagonista.";
   }
 }
 
