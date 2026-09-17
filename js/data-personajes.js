@@ -6,9 +6,9 @@
 
    Campos:
      saga     — array: ["griega"], ["nordica"] o ambas.
-     imagen   — ruta a assets/… o "" mientras no la tengas.
+     imagen   — ruta a assets/img/… ; con "" se pinta el marco rayado.
      lugares  — ids de data-lugares.js con los que se cruza.
-     texto    — biografía larga, uno o dos párrafos.
+     texto    — biografía larga, con un renglón en blanco entre párrafos.
    =========================================================== */
 
 const PERSONAJES = [

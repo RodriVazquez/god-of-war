@@ -346,16 +346,16 @@ h1, h2, h3 {
   background: var(--superficie-alta);
 }
 
-/* El resaltado sale de data-saga y NO del aria-pressed del botón.
-   Los dos dicen lo mismo, pero no al mismo tiempo: data-saga ya está
-   bien en el primer pintado porque lo deja tema.js desde el <head>,
-   mientras que el aria-pressed viene escrito a mano en el marcado
-   —siempre con Nórdica en true— y lo corrige main.js recién al final
-   del body. Colgado del aria-pressed, el botón de Nórdica se encendía
-   un instante en cada carga aunque la página ya estuviera en griega.
+/* El resaltado sale de data-saga y NO del aria-pressed del botón. Los
+   dos dicen lo mismo pero no al mismo tiempo: data-saga ya está bien en
+   el primer pintado porque lo deja tema.js desde el <head>, mientras que
+   el aria-pressed viene escrito a mano en el marcado —siempre con
+   Nórdica en true— y lo corrige main.js al final del body. Colgado del
+   aria-pressed, el botón de Nórdica se encendía un instante en cada
+   carga aunque la página ya estuviera en griega.
 
-   El aria-pressed sigue ahí y main.js lo sigue actualizando: es lo que
-   lee un lector de pantalla. Lo que ya no hace es decidir el color. */
+   El aria-pressed sigue ahí para el lector de pantalla; lo que ya no
+   hace es decidir el color. */
 [data-saga="griega"]  .interruptor button[data-cambiar-saga="griega"],
 [data-saga="nordica"] .interruptor button[data-cambiar-saga="nordica"] {
   color: var(--fondo);

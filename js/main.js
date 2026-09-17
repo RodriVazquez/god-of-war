@@ -194,7 +194,6 @@ function pintarLugaresDePortada() {
   const lugares = LUGARES.filter((l) => l.region === saga);
   pintar("#reinos", lugares, resumenLugar, "Cargá lugares en js/data-lugares.js");
 
-  // Título y bajada acompañan al cambio de tema.
   const encabezado = document.querySelector("#reinos-seccion .seccion__encabezado");
   if (!encabezado) return;
 
@@ -217,7 +216,6 @@ function iniciarPortada() {
   pintarLugaresDePortada();
   pintar("#cronologia", JUEGOS.slice().sort((a, b) => a.anio - b.anio), hitoJuego, "Cargá juegos en js/data-juegos.js");
 
-  // Al cambiar de saga se repinta lo que depende de ella.
   window.addEventListener("saga-cambiada", pintarPersonajesDePortada);
   window.addEventListener("saga-cambiada", pintarLugaresDePortada);
 }
@@ -581,7 +579,6 @@ function pintarLightbox() {
   document.querySelector("#lightbox-juego").textContent = g.juego;
   document.querySelector("#lightbox-descripcion").textContent = g.descripcion;
 
-  // Deshabilita las flechas en los extremos.
   document.querySelector("#lightbox-anterior").disabled = galeriaIndiceActivo === 0;
   document.querySelector("#lightbox-siguiente").disabled = galeriaIndiceActivo === galeriaVisiblesCache.length - 1;
 }
@@ -606,7 +603,6 @@ function cerrarLightbox() {
   document.body.style.overflow = "";
   galeriaIndiceActivo = -1;
 
-  // Devolvemos el foco al item que se había abierto.
   if (galeriaOrigenFoco) galeriaOrigenFoco.focus();
   galeriaOrigenFoco = null;
 }
@@ -639,7 +635,6 @@ function atraparFoco(e) {
 function iniciarGaleria() {
   if (!document.querySelector("#galeria-listado")) return;
 
-  // Filtros
   document.querySelectorAll("[data-filtro-galeria]").forEach((boton) => {
     boton.addEventListener("click", () => {
       filtroGaleria = boton.dataset.filtroGaleria;
@@ -650,24 +645,20 @@ function iniciarGaleria() {
     });
   });
 
-  // Click en un item abre el lightbox.
   document.querySelector("#galeria-listado").addEventListener("click", (e) => {
     const boton = e.target.closest("[data-galeria-indice]");
     if (!boton) return;
     abrirLightbox(Number(boton.dataset.galeriaIndice), boton);
   });
 
-  // Controles del lightbox
   document.querySelector("#lightbox-cerrar").addEventListener("click", cerrarLightbox);
   document.querySelector("#lightbox-anterior").addEventListener("click", () => moverLightbox(-1));
   document.querySelector("#lightbox-siguiente").addEventListener("click", () => moverLightbox(1));
 
-  // Click fuera del contenido cierra
   document.querySelector("#lightbox").addEventListener("click", (e) => {
     if (e.target.id === "lightbox") cerrarLightbox();
   });
 
-  // Teclado global
   document.addEventListener("keydown", (e) => {
     if (galeriaIndiceActivo < 0) return;
     if (e.key === "Escape") cerrarLightbox();
@@ -829,8 +820,6 @@ function bandoElegido() {
   return marcado ? marcado.value : "nordica";
 }
 
-/* Junta lo que el usuario escribió. Hoy nadie lo recibe, pero es
-   exactamente lo que va a necesitar el destino real. */
 function componerMensaje() {
   const valor = (id) => document.querySelector("#" + id).value.trim();
 
@@ -843,9 +832,9 @@ function componerMensaje() {
   };
 }
 
-/* Único punto de contacto con el mundo exterior. Por ahora finge una
-   demora y resuelve siempre bien. El día que haya destino, acá va el
-   fetch o el envío nativo y el resto de la página no se toca. */
+/* El envío está simulado: espera un momento y resuelve siempre bien.
+   Es el único punto del sitio que tocaría el mundo exterior, así que
+   para conectar un destino real alcanza con cambiar esta función. */
 function enviarMensaje(datos) {
   return new Promise((resolver) => setTimeout(() => resolver(datos), 900));
 }

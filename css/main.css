@@ -19,8 +19,7 @@
    arrastrar al contenido.
 
    El degradado de encima apaga los bordes: sin él, la foto choca contra
-   la cabecera arriba y contra la primera sección abajo. Si el archivo
-   todavía no existe, no se ve nada raro: queda el fondo liso de siempre. */
+   la cabecera arriba y contra la primera sección abajo. */
 .portada::before {
   content: "";
   position: absolute;
@@ -260,18 +259,6 @@
 
 .hito p:not(.hito__anio) { color: var(--texto-suave); font-size: var(--t-sm); }
 
-/* Estado activo: el hito del juego que se está viendo en la ficha. */
-.hito.hito--activo::before {
-  scale: 1.6;
-  box-shadow: 0 0 0 3px var(--fondo);
-}
-
-.hito.hito--activo .hito__enlace {
-  border-left-color: var(--color-hito);
-  background: color-mix(in srgb, var(--color-hito) 12%, transparent);
-  pointer-events: none;
-}
-
 /* ---------- Rejilla de tarjetas ---------- */
 
 .rejilla {
@@ -343,7 +330,8 @@
 
 .tarjeta p { color: var(--texto-suave); font-size: var(--t-sm); line-height: 1.6; }
 
-/* Marco de imagen: mientras no tengas la foto, muestra qué archivo va acá */
+/* Marco de imagen. Sin ruta muestra el nombre del archivo que falta,
+   así una ficha nueva sin foto se nota sola en vez de quedar en blanco. */
 .marco {
   position: relative;
   aspect-ratio: 3 / 4;
@@ -580,9 +568,7 @@
 
 .boton--fantasma:hover { color: var(--texto); background: none; border-color: var(--acento); }
 
-/* Acuse de recibo. Reemplaza al formulario una vez enviado, con el
-   texto compuesto a la vista: como no hay servidor, lo único útil
-   que podemos hacer es devolvérselo para que lo copie. */
+/* Acuse de recibo: reemplaza al formulario una vez enviado. */
 .acuse {
   border: 1px solid var(--acento);
   background: var(--superficie-alta);
@@ -663,18 +649,14 @@
   column-gap: var(--e-4);
 }
 
-/* Nombre y nota fluyen como texto corrido. Con inline-flex y wrap la
-   nota se caía sola al renglón de abajo en cuanto el nombre era
-   largo, y quedaba un escalón raro en medio de la columna. */
 .mapa__lista li {
   break-inside: avoid;
   padding-block: .4rem;
   line-height: 1.5;
 }
 
-/* El enlace envuelve nombre y nota: el área clicable es la línea
-   entera, que es bastante más fácil de acertar que una sola palabra.
-   Van como inline normal, no como flex: con flex y wrap la nota se
+/* El enlace envuelve nombre y nota, así el área clicable es la línea
+   entera. Los dos van como inline normal: con flex y wrap la nota se
    caía sola al renglón de abajo en cuanto el nombre era largo. */
 .mapa__lista a {
   color: var(--texto);
@@ -690,8 +672,8 @@
    nota alcanza para que la vista caiga ahí primero. */
 .mapa__nombre { font-size: var(--t-lg); }
 
-/* La nota acompaña, no compite. Antes iba en la tipografía de rótulos,
-   en mayúsculas y con letter-spacing: se leía antes que el nombre. */
+/* La nota acompaña, no compite: en la tipografía de rótulos, con
+   mayúsculas y letter-spacing, se leía antes que el nombre. */
 .mapa__nota {
   font-size: var(--t-sm);
   font-style: italic;
@@ -1094,7 +1076,8 @@
 
 @media (max-width: 560px) {
   /* Dos columnas fijas: con auto-fill de 200px entraría una sola y el
-     mosaico se volvería una tira. Las anchas siguen ocupando las dos. */
+     mosaico se volvería una tira. Entran bien hasta en 320px, y las
+     anchas siguen ocupando las dos. */
   .galeria { grid-template-columns: repeat(2, 1fr); }
 
   /* Anterior y siguiente lado a lado dejaban 160px por título:
@@ -1110,10 +1093,6 @@
     align-items: flex-start;
     gap: .15rem;
   }
-
-  /* Una sola columna convertía el mosaico en una tira. Dos entran
-     bien incluso a 320px. */
-  .galeria { grid-template-columns: repeat(2, 1fr); }
 }
 
 /* ---------- Objetivos táctiles ----------

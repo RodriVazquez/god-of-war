@@ -11,9 +11,8 @@ function escapar(texto) {
   })[c]);
 }
 
-/* Marco de imagen: la foto real, o el aviso de qué archivo falta.
-   Cuando no hay ruta, muestra el nombre del jpg pendiente. Sirve
-   de lista de pendientes visible mientras se arma el sitio. */
+/* La foto real, o el nombre del archivo que falta. Una ficha nueva
+   sin imagen se nota sola en vez de quedar con un hueco en blanco. */
 function marcoImagen(ruta, nombre) {
   if (ruta) {
     return `<div class="marco"><img src="${escapar(ruta)}" alt="${escapar(nombre)}" loading="lazy"></div>`;
@@ -22,10 +21,8 @@ function marcoImagen(ruta, nombre) {
   return `<div class="marco"><p class="marco__nota">Falta assets/img/${escapar(archivo)}.jpg</p></div>`;
 }
 
-/* Convierte un texto largo en párrafos. Las biografías se guardan
-   como una sola cadena con renglones en blanco entre párrafo y
-   párrafo; acá se parte por esos renglones y se escapa cada uno.
-   Antes todo caía dentro de un solo <p> y se leía como un ladrillo. */
+/* Las biografías se guardan como una sola cadena con renglones en
+   blanco entre párrafo y párrafo: acá se corta por ahí. */
 function parrafos(texto) {
   return String(texto)
     .split(/\n\s*\n/)
@@ -103,8 +100,7 @@ function tarjetaLugar(l) {
 }
 
 /* Versión compacta para la portada: sin marco, solo texto, pero
-   enlazada a la ficha igual que las tarjetas del listado. Antes era
-   un bloque muerto y la gente la cliqueaba lo mismo. */
+   enlazada a la ficha igual que las tarjetas del listado. */
 function resumenLugar(l) {
   return `
     <li>
@@ -118,8 +114,6 @@ function resumenLugar(l) {
     </li>`;
 }
 
-/* Cada hito lleva data-saga para que el rombo tome el color de su
-   saga (aunque el resto de la página esté en el tema opuesto). */
 /* Item del mosaico de la galería. Botón porque es interactivo:
    el click lo abre en el lightbox. No es <img> sola porque el
    contenedor mantiene el aspect-ratio aunque no haya foto todavía. */
@@ -142,6 +136,8 @@ function itemGaleria(g, indice) {
     </li>`;
 }
 
+/* El data-saga de cada hito es lo que le permite conservar el color de
+   SU saga aunque el tema global sea el contrario. */
 function hitoJuego(j) {
   return `
     <li class="hito" data-saga="${escapar(j.saga)}">
@@ -169,13 +165,9 @@ function entradaMapa(destino, nombre, nota) {
 
 /* ---------- Panel desplegable de la navegación ---------- */
 
-/* El panel de la cabecera muestra la misma lista que el mapa del
-   sitio, así que reusa sus clases en vez de tener un estilo propio:
-   es el mismo contenido en otro lugar, y duplicar el estilo sería
-   tener dos verdades sobre cómo se ve una lista de fichas.
-
-   Recibe las entradas ya armadas con entradaMapa(), que es lo que
-   mantiene las dos listas consistentes sin que ninguna lo sepa. */
+/* El panel de la cabecera muestra la misma lista que el mapa del sitio:
+   reusa sus clases y recibe las entradas ya armadas con entradaMapa().
+   Es lo que mantiene las dos listas consistentes sin que ninguna lo sepa. */
 function panelMenu(id, entradas, destino, verTodo) {
   return `
     <div class="megamenu" id="${escapar(id)}">
@@ -188,9 +180,8 @@ function panelMenu(id, entradas, destino, verTodo) {
 
 /* ---------- Utilidad de pintado ---------- */
 
-/* Pinta una lista de elementos dentro de un contenedor.
-   Si no hay nada, muestra un estado vacío con instrucciones
-   útiles: nunca un mensaje seco. */
+/* Si no hay elementos pinta el mensaje vacío en vez de dejar la lista
+   en blanco, que se lee como un error de carga. */
 function pintar(selector, elementos, plantilla, mensajeVacio) {
   const destino = document.querySelector(selector);
   if (!destino) return;

@@ -10,3 +10,6 @@ desktop.ini
 .vscode/
 .idea/
 *.swp
+
+# Contexto del proyecto para Claude Code, no es parte de la entrega
+CLAUDE.md
