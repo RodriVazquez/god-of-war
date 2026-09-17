@@ -264,7 +264,8 @@ function actualizarListadoPersonajes() {
     partes.push(tarjetaColeccion(
       "valquirias.html",
       "Las Valquirias",
-      "Las nueve integrantes del consejo. Recorrelas de a una para desbloquear a Sigrún."
+      "Las nueve integrantes del consejo. Recorrelas de a una para desbloquear a Sigrún.",
+      "assets/img/valquirias.jpg"
     ));
   }
 

@@ -73,11 +73,11 @@ function tarjetaPersonaje(p) {
    personajes pero se ve distinta (rótulo "Colección" en vez de saga)
    y no lleva a personaje.html sino a la página que agrupa a las
    integrantes. Hoy solo se usa para el consejo de las valquirias. */
-function tarjetaColeccion(destino, nombre, resumen) {
+function tarjetaColeccion(destino, nombre, resumen, imagen) {
   return `
     <li>
       <a class="tarjeta tarjeta--coleccion" href="${escapar(destino)}">
-        ${marcoImagen("", nombre)}
+        ${marcoImagen(imagen || "", nombre)}
         <div class="tarjeta__cuerpo">
           <p class="rotulo">Colección</p>
           <h3>${escapar(nombre)}</h3>

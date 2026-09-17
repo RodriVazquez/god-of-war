@@ -65,7 +65,7 @@ Es también el reino de Sindri y Brok, y el lugar donde el viaje pasa de ser una
     nombre: "Vanaheim",
     region: "nordica",
     tipo: "Reino",
-    imagen: "",
+    imagen: "assets/img/vanaheim.jpg",
     resumen: "Selva de los vanir, sellada por Odín durante siglos.",
     datos: {},
     personajes: ["freya"],

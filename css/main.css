@@ -880,6 +880,11 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  /* Varios retratos vienen más altos que el 4:5 del mosaico y hay que
+     recortarlos. Corriendo el encuadre hacia arriba se conserva la
+     cara en vez de los pies. En las apaisadas no cambia nada: entran
+     justas y no se recorta a lo alto. */
+  object-position: center 35%;
   display: block;
 }
 

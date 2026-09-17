@@ -12,8 +12,9 @@
      juego       — de qué entrega es la escena. Va como rótulo del pie.
      descripcion — una o dos líneas de contexto, abajo del título.
 
-   El archivo tiene que venir en la proporción de su formato o va a
-   salir recortado. Las medidas están en assets/img/LEEME-galeria.txt.
+   Los títulos y las descripciones describen LO QUE SE VE en cada foto,
+   no el tema en abstracto. Si se reemplaza una imagen, hay que releer
+   el texto: varios mencionan quién aparece en el encuadre.
    =========================================================== */
 
 const GALERIA = [
@@ -40,7 +41,7 @@ const GALERIA = [
     titulo: "El Lago de los Nueve",
     saga: "nordica",
     formato: "ancha",
-    imagen: "",
+    imagen: "assets/img/lago-de-los-nueve.jpg",
     juego: "God of War (2018)",
     descripcion: "La masa de agua con nueve puntas que ordena todo Midgard. En el centro está el templo de Týr, la sala de viaje entre los reinos."
   },
@@ -49,7 +50,7 @@ const GALERIA = [
     titulo: "La Caja de Pandora",
     saga: "griega",
     formato: "cuadrada",
-    imagen: "",
+    imagen: "assets/img/la-caja-de-pandora.jpg",
     juego: "God of War (2005)",
     descripcion: "Donde los dioses encerraron los males del mundo. Lo que no contaron es que también guardaron adentro la Esperanza."
   },
@@ -58,7 +59,7 @@ const GALERIA = [
     titulo: "Atreus con el arco Talón de Alba",
     saga: "nordica",
     formato: "alta",
-    imagen: "assets/img/atreus.jpg",
+    imagen: "assets/img/atreus-arco.jpg",
     juego: "God of War (2018)",
     descripcion: "El arco es lo primero que Faye le dejó a Atreus, y durante buena parte del viaje su única forma de pelear."
   },
@@ -67,7 +68,7 @@ const GALERIA = [
     titulo: "Las Hermanas del Destino",
     saga: "griega",
     formato: "ancha",
-    imagen: "",
+    imagen: "assets/img/las-hermanas-del-destino.jpg",
     juego: "God of War II (2007)",
     descripcion: "Láquesis, Átropos y Cloto tejen el hilo de todo lo que existe. Ni Zeus puede contradecirlas, y por eso Kratos va a buscarlas."
   },
@@ -76,7 +77,7 @@ const GALERIA = [
     titulo: "El Árbol del Mundo",
     saga: "nordica",
     formato: "alta",
-    imagen: "",
+    imagen: "assets/img/yggdrasil.jpg",
     juego: "God of War (2018)",
     descripcion: "El fresno que sostiene los Nueve Reinos. Desde el templo de Týr, en el centro del Lago de los Nueve, se viaja por sus ramas."
   },
@@ -94,7 +95,7 @@ const GALERIA = [
     titulo: "La forja de Sindri y Brok",
     saga: "nordica",
     formato: "cuadrada",
-    imagen: "",
+    imagen: "assets/img/sindri-y-brok-forja.jpg",
     juego: "God of War (2018)",
     descripcion: "De ahí salieron el hacha Leviatán y el martillo Mjölnir. Los dos hermanos cargan con haber forjado las dos cosas."
   },
@@ -112,7 +113,7 @@ const GALERIA = [
     titulo: "Los murales de Jötunheim",
     saga: "nordica",
     formato: "ancha",
-    imagen: "",
+    imagen: "assets/img/los-murales.jpg",
     juego: "God of War (2018)",
     descripcion: "Los gigantes no dejaron ejércitos: dejaron paredes pintadas con todo lo que iba a pasar, incluido el viaje de Kratos y Atreus."
   },
@@ -127,39 +128,39 @@ const GALERIA = [
   },
   {
     id: "freya-vanaheim",
-    titulo: "Freya en el bosque de Vanaheim",
+    titulo: "Freya en el bosque",
     saga: "nordica",
     formato: "alta",
-    imagen: "assets/img/freya.jpg",
-    juego: "God of War Ragnarök (2022)",
-    descripcion: "Reina de los vanir, desterrada a Midgard por Odín. Vanaheim es el reino del que salió y al que termina volviendo."
+    imagen: "assets/img/freya-bosque.jpg",
+    juego: "God of War (2018)",
+    descripcion: "Antes de que se sepa quién es, Freya es la bruja del bosque que cura a Atreus. Reina de los vanir, desterrada a Midgard por Odín y sin poder levantar un arma."
   },
   {
     id: "kratos-blades",
     titulo: "Kratos y las Espadas del Caos",
     saga: "griega",
     formato: "ancha",
-    imagen: "",
+    imagen: "assets/img/kratos-espadas.jpg",
     juego: "God of War (2005)",
-    descripcion: "Las armas que le dio Ares, encadenadas a los antebrazos. Kratos las escondió en el fondo de su casa en Midgard y tuvo que volver a buscarlas."
+    descripcion: "Las armas que le dio Ares, encadenadas a los antebrazos para siempre. Kratos las enterró en el fondo de su casa en Midgard y tuvo que volver a desenterrarlas."
   },
   {
-    id: "odin-cuervos",
-    titulo: "Odín y sus cuervos",
+    id: "odin-gungnir",
+    titulo: "Odín y Gungnir",
     saga: "nordica",
     formato: "alta",
-    imagen: "",
+    imagen: "assets/img/odin-lanza.jpg",
     juego: "God of War Ragnarök (2022)",
-    descripcion: "El Padre de Todos gobierna con información antes que a los gritos. Huginn y Muninn son cómo se la consigue."
+    descripcion: "El Padre de Todos con la lanza que no falla un tiro. El parche tapa el ojo que se sacó él mismo: todo lo que hizo, incluso eso, fue para averiguar qué hay del otro lado de la muerte."
   },
   {
     id: "esparta-ejercito",
     titulo: "El ejército espartano",
     saga: "griega",
     formato: "ancha",
-    imagen: "",
+    imagen: "assets/img/ejercito-espartano.jpg",
     juego: "God of War: Ascension (2013)",
-    descripcion: "La ciudad que crió a Kratos y lo hizo general. En Esparta los chicos entraban al entrenamiento a los siete años."
+    descripcion: "La ciudad que crió a Kratos y lo hizo general. En Esparta los chicos entraban al entrenamiento a los siete años y a los que no servían se los descartaba."
   },
   {
     id: "thor-mjolnir",
@@ -171,30 +172,21 @@ const GALERIA = [
     descripcion: "El hijo mayor de Odín con el martillo que forjaron Sindri y Brok: el arma con la que Asgard vació Jötunheim."
   },
   {
-    id: "elysium-caliope",
-    titulo: "Elysium",
-    saga: "griega",
-    formato: "cuadrada",
-    imagen: "",
-    juego: "Chains of Olympus (2008)",
-    descripcion: "El campo de los muertos que merecieron descanso. Ahí está Calíope, y ahí Kratos tiene que elegir entre su hija y el mundo."
-  },
-  {
     id: "surtr-muspelheim",
-    titulo: "Surtr en Muspelheim",
+    titulo: "Kratos y Surtr en Muspelheim",
     saga: "nordica",
     formato: "ancha",
-    imagen: "",
+    imagen: "assets/img/surtr.jpg",
     juego: "God of War Ragnarök (2022)",
-    descripcion: "El gigante de fuego del reino de la lava. La profecía dice que va a arder y que su fuego va a terminar con Asgard."
+    descripcion: "Kratos fue hasta el reino del fuego a pedirle al gigante que se convirtiera en Ragnarök. Surtr llevaba siglos forjando la hoja encendida que hace falta para eso: lo que había que convencerlo de hacer no era pelear, era arder."
   },
   {
-    id: "zeus-rayo",
-    titulo: "Zeus y el rayo",
+    id: "zeus-kratos",
+    titulo: "Zeus, el Padre de los dioses",
     saga: "griega",
     formato: "alta",
-    imagen: "",
+    imagen: "assets/img/zeusG.jpg",
     juego: "God of War III (2010)",
-    descripcion: "Rey del Olimpo y padre de Kratos. Llegó al trono matando a Cronos y pasó el reinado con miedo a que le hicieran lo mismo."
+    descripcion: "El rey del Olimpo ensangrentado y todavía de pie, con los brazos abiertos en la última pelea de la saga griega. Subió al trono matando a su propio padre y pasó el reinado entero temiendo que le hicieran lo mismo: ese miedo fue lo que terminó fabricándole el hijo que lo derribó. Abajo del todo, de espaldas y a sus pies, está ese hijo."
   }
 ];

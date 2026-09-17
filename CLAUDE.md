@@ -270,8 +270,17 @@ Las secciones llevan `scroll-margin-top` del alto de la cabecera. Sin eso,
 cualquier salto a un ancla deja el título tapado abajo de la barra fija.
 
 La portada lleva una **imagen de fondo contextual** al tema, en el token
-`--fondo-portada`: el Árbol del Mundo para la nórdica, las Espadas del Caos
-para la griega. Va como `::before` y no como fondo de `.portada` para poder
+`--fondo-portada`: el Árbol del Mundo para la nórdica y Kratos con las Espadas
+del Caos para la griega. Las dos son 16:9, que es lo que pide el `cover` de la
+portada.
+
+La griega es el mismo archivo que la pieza `kratos-blades` de la galería. Se
+repite a propósito: es la única apaisada de la saga griega y al 22% de opacidad
+no se lee como una foto sino como una silueta, así que no compite.
+
+Ojo con los dos Yggdrasil: `yggdrasil-home.jpg` es apaisado y va acá;
+`yggdrasil.jpg` es vertical y es la pieza de la galería. No son
+intercambiables. Va como `::before` y no como fondo de `.portada` para poder
 darle opacidad propia sin arrastrar al contenido, con un degradado encima que
 apaga los bordes contra la cabecera y la sección siguiente.
 
@@ -323,7 +332,7 @@ Requisitos:
   Una sola función `estaBloqueado(id)` usada en los dos lugares.
 
 ### Galería
-Mosaico **asimétrico** de 20 piezas, con lightbox y filtro por saga. El pie de
+Mosaico **asimétrico** de 19 piezas, con lightbox y filtro por saga. El pie de
 cada foto dice de qué juego es la escena y la ubica en una o dos líneas.
 
 Lo asimétrico sale del campo `formato` de cada pieza: `ancha` (16:9, ocupa dos
@@ -336,6 +345,15 @@ están en `assets/img/LEEME-galeria.txt`.
 
 El lightbox toma la proporción de la pieza desde el JS. Con un marco 3/4 fijo,
 una foto apaisada quedaba con dos franjas negras a los costados.
+
+**Los títulos y las descripciones cuentan lo que se ve en cada foto**, no el
+tema en abstracto: varios nombran quién aparece en el encuadre. Si se reemplaza
+una imagen hay que releer su texto. `assets/img/LEEME-galeria.txt` lista cuáles
+están atadas a su archivo.
+
+Las fotos de la galería llevan `object-position: center 35%`. Varios retratos
+vienen más altos que el 4:5 del mosaico y hay que recortarlos: corriendo el
+encuadre hacia arriba se conserva la cara en vez de los pies.
 
 ### Mapa del sitio
 
@@ -437,15 +455,17 @@ Un commit por unidad de trabajo terminada, no uno por sesión.
 El sitio está **terminado y probado**. Las doce páginas funcionan, las 54 fichas
 tienen texto, y no queda ningún `[completar]` en los datos.
 
-Lo único pendiente son imágenes:
+**Todas las imágenes están cargadas.** Las 73 rutas de los `data-*.js` apuntan
+a un archivo que existe: ningún campo `imagen` quedó vacío y ninguna ruta está
+rota.
 
-- [ ] Las 12 de la galería que faltan. La lista, con formato y medidas, está en
-      `assets/img/LEEME-galeria.txt`.
-- [ ] `vanaheim.jpg`, el único de los 15 lugares sin foto.
-- [ ] `yggdrasil.jpg` y `fondo-espadas.jpg`, los fondos de portada. Hasta que
-      estén, la portada se ve lisa y la consola tira dos 404.
+No queda nada pendiente: los dos fondos de portada también están puestos.
 
-Mientras el campo `imagen` esté vacío, el marco rayado muestra qué archivo
+Un detalle anotado por si algún día molesta: `ejercito-espartano.jpg` es por
+dentro un WebP con extensión `.jpg`. Funciona porque los navegadores detectan
+el formato por el contenido, no por el nombre.
+
+Mientras un campo `imagen` esté vacío, el marco rayado muestra qué archivo
 falta. Es a propósito: sirve de lista de pendientes visible.
 
 ### Cómo se probó
