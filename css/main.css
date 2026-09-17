@@ -592,6 +592,105 @@
   .contacto__aparte-columna { position: static; }
 }
 
+/* ---------- Mapa del sitio ---------- */
+
+.mapa { display: grid; gap: var(--e-5); }
+
+.mapa__grupo {
+  border-top: 1px solid var(--borde);
+  padding-top: var(--e-2);
+}
+
+.mapa__grupo h3 {
+  font-size: var(--t-xl);
+  margin-bottom: var(--e-2);
+}
+
+/* El contador va al lado del título, en la tipografía de utilidad,
+   igual que los contadores de los listados. */
+.mapa__cuenta {
+  font-family: var(--utilidad);
+  font-size: var(--t-sm);
+  letter-spacing: .16em;
+  color: var(--acento);
+  vertical-align: .35em;
+  margin-left: .4rem;
+}
+
+/* Columnas en vez de rejilla: con veinte nombres de largo desparejo el
+   texto fluye mejor si las columnas se llenan solas. El ancho mínimo
+   evita tener que escribir media queries. */
+.mapa__lista {
+  list-style: none;
+  padding: 0;
+  columns: 20rem auto;
+  column-gap: var(--e-4);
+}
+
+/* Nombre y nota fluyen como texto corrido. Con inline-flex y wrap la
+   nota se caía sola al renglón de abajo en cuanto el nombre era
+   largo, y quedaba un escalón raro en medio de la columna. */
+.mapa__lista li {
+  break-inside: avoid;
+  padding-block: .4rem;
+  line-height: 1.5;
+}
+
+/* El enlace envuelve nombre y nota: el área clicable es la línea
+   entera, que es bastante más fácil de acertar que una sola palabra.
+   Van como inline normal, no como flex: con flex y wrap la nota se
+   caía sola al renglón de abajo en cuanto el nombre era largo. */
+.mapa__lista a {
+  color: var(--texto);
+  border-bottom: 1px solid transparent;
+  transition: color var(--transicion), border-color var(--transicion);
+}
+
+.mapa__lista a:hover { color: var(--acento-claro); border-bottom-color: var(--acento); }
+
+.mapa__lista a[aria-current="page"] { color: var(--acento); }
+
+/* El nombre es lo que se viene a buscar: un escalón más grande que la
+   nota alcanza para que la vista caiga ahí primero. */
+.mapa__nombre { font-size: var(--t-lg); }
+
+/* La nota acompaña, no compite. Antes iba en la tipografía de rótulos,
+   en mayúsculas y con letter-spacing: se leía antes que el nombre. */
+.mapa__nota {
+  font-size: var(--t-sm);
+  font-style: italic;
+  color: var(--texto-suave);
+}
+
+/* El guión separador lo pone el CSS y no el dato: así el campo sigue
+   sirviendo en la tarjeta o en la ficha sin arrastrarlo puesto. */
+.mapa__nota::before { content: " — "; }
+
+/* Al pasar el mouse la nota acompaña al nombre en vez de quedarse
+   apagada: es un solo enlace, tiene que reaccionar como uno solo. */
+.mapa__lista a:hover .mapa__nota { color: inherit; opacity: .8; }
+
+/* Sigrún mientras el consejo siga abierto: se ve que existe, pero no
+   lleva a ningún lado. */
+.mapa__bloqueada {
+  color: var(--texto-suave);
+  opacity: .7;
+  cursor: not-allowed;
+}
+
+.mapa__bloqueada::before {
+  content: "🔒";
+  font-size: var(--t-sm);
+  margin-right: .35rem;
+}
+
+/* Son enlaces de texto dentro de un bloque de texto, así que no llevan
+   los 44px de alto: con 53 entradas la página se volvería inmanejable.
+   Lo que sí necesitan es aire entre renglones para no errarle al dedo. */
+@media (pointer: coarse), (max-width: 900px) {
+  .mapa__lista li { padding-block: .6rem; }
+}
+
 /* ---------- Página 404 ---------- */
 
 .error {

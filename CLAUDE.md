@@ -39,6 +39,7 @@ juego.html          Ficha individual (recibe ?id=gow-2018)
 valquirias.html     Página especial con el juego del consejo
 galeria.html        Mosaico con lightbox
 contacto.html       Formulario de contacto (valida en el navegador, no envía)
+mapa.html           Mapa del sitio: todas las páginas y las 53 fichas
 404.html
 
 css/variables.css   Tokens: paleta, tipografías, escalas. Incluye el swap de temas.
@@ -301,6 +302,41 @@ Requisitos:
 ### Galería
 Mosaico con lightbox y filtro por saga. El pie de cada foto dice de qué juego es
 la escena y la ubica en una o dos líneas.
+
+### Mapa del sitio
+
+Las páginas van escritas a mano en el HTML —son estructura, no contenido, y así
+la lista principal sigue estando aunque falle el script—. Las fichas se generan
+desde los `data-*.js`, que es lo que evita que el mapa se desactualice cada vez
+que se suma una entidad.
+
+Cada entrada es nombre más una nota: el epíteto, el tipo o el año. Las dos van
+adentro del enlace, así el área clicable es la línea entera. Nombre y nota son
+inline normales, **nunca un flex con wrap**: así la nota se caía sola al renglón
+de abajo en cuanto el nombre era largo.
+
+El nombre va un escalón más grande (`--t-lg`) y la nota en cursiva apagada
+(`--t-sm`). No usar la tipografía de rótulos para la nota: en mayúsculas y con
+letter-spacing se lee antes que el nombre, que es lo que se viene a buscar.
+El guión separador lo pone `.mapa__nota::before`, no el dato.
+
+Las columnas arrancan en `20rem`. Con menos entran cuatro en pantalla grande y
+las entradas más largas parten en dos.
+
+Dos reglas propias:
+
+- **Sigrún no aparece entre los personajes.** Está marcada como `oculta` y
+  listarla ahí destaparía el secreto del consejo.
+- **Sí aparece en el consejo**, porque `valquirias.html` ya la muestra con
+  candado, pero sin enlace hasta que el consejo esté cerrado. El mapa consulta
+  `consejoCompleto()` al pintar.
+
+Para que las valquirias fueran enlazables hubo que darle **enlace profundo** a
+`valquirias.html`: acepta `?id=gunnr` y abre esa ficha directo. No hace falta
+validar el bloqueo ahí porque `activar()` ya rechaza a Sigrún con el consejo
+abierto, así que escribir la URL a mano no saltea nada. Al elegir una valquiria
+la URL se actualiza con `replaceState` para poder compartirla; desde `file://`
+el navegador no lo permite, y por eso va dentro de un `try`.
 
 ### Contacto
 Formulario con nombre, correo, motivo, bando y mensaje. Valida en español, marca

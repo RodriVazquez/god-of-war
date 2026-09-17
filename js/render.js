@@ -149,6 +149,20 @@ function hitoJuego(j) {
     </li>`;
 }
 
+/* ---------- Mapa del sitio ---------- */
+
+/* Una entrada del mapa. Sin destino se pinta apagada y sin enlace:
+   es lo que le toca a Sigrún mientras el consejo esté incompleto. */
+function entradaMapa(destino, nombre, nota) {
+  const cuerpo = `<span class="mapa__nombre">${escapar(nombre)}</span>` +
+    (nota ? `<span class="mapa__nota">${escapar(nota)}</span>` : "");
+
+  if (!destino) {
+    return `<li><span class="mapa__bloqueada">${cuerpo}</span></li>`;
+  }
+  return `<li><a href="${escapar(destino)}">${cuerpo}</a></li>`;
+}
+
 /* ---------- Utilidad de pintado ---------- */
 
 /* Pinta una lista de elementos dentro de un contenedor.

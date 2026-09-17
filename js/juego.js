@@ -118,6 +118,19 @@
     activaId = id;
     pintarLista();
     pintarFicha(id, seCompletoAhora);
+    recordarEnLaURL(id);
+  }
+
+  /* Deja la valquiria abierta en la barra de direcciones para poder
+     compartir el enlace. Desde file:// el navegador no deja reescribir
+     la URL, así que si falla seguimos sin ella: es un extra, no algo
+     de lo que dependa la página. */
+  function recordarEnLaURL(id) {
+    try {
+      history.replaceState(null, "", "?id=" + encodeURIComponent(id));
+    } catch (e) {
+      /* file:// no lo permite */
+    }
   }
 
   listaEl.addEventListener("click", (e) => {
@@ -144,4 +157,19 @@
 
   pintarLista();
   fichaEl.innerHTML = estadoVacio();
+
+  /* Enlace profundo: valquirias.html?id=gunnr abre esa ficha derecho.
+     Lo usa el mapa del sitio y sirve para compartir una en particular.
+
+     No hace falta validar el bloqueo acá: activar() ya rechaza a
+     Sigrún si el consejo no está completo, así que escribir la URL a
+     mano no saltea nada. */
+  const idPedido = new URLSearchParams(location.search).get("id");
+  if (idPedido && VALQUIRIAS.some((v) => v.id === idPedido)) {
+    activar(idPedido);
+
+    // En pantalla angosta la ficha queda abajo de la lista: si no la
+    // acercamos, el enlace aterriza en una página aparentemente vacía.
+    if (activaId === idPedido) fichaEl.scrollIntoView({ block: "nearest" });
+  }
 })();

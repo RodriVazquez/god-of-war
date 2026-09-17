@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cronología — God of War</title>
-  <meta name="description" content="Los nueve juegos de la saga: por año de lanzamiento o por el orden en que ocurre la historia.">
+  <title>Mapa del sitio — God of War</title>
+  <meta name="description" content="Todas las páginas y fichas del sitio en una sola lista: personajes, lugares, juegos y el consejo de las valquirias.">
 
   <link rel="icon" href="assets/img/favicon.ico" sizes="any">
 
@@ -26,7 +26,7 @@
         <a href="index.html">Inicio</a>
         <a href="personajes.html">Personajes</a>
         <a href="lugares.html">Lugares</a>
-        <a href="cronologia.html" aria-current="page">Cronología</a>
+        <a href="cronologia.html">Cronología</a>
         <a href="galeria.html">Galería</a>
         <a href="contacto.html">Contacto</a>
       </nav>
@@ -45,21 +45,54 @@
   <main class="contenedor" style="padding-block: var(--e-5)">
 
     <div class="seccion__encabezado">
-      <p class="rotulo" id="cronologia-rotulo">Orden de salida</p>
-      <h2>Cronología</h2>
-      <p id="cronologia-bajada">Dieciocho años de una sola historia contada en desorden. La saga saltó de consola en consola, se fue para atrás cuando quiso y cambió de mitología a mitad de camino, pero nunca cambió de protagonista.</p>
+      <p class="rotulo">Todo de una</p>
+      <h2>Mapa del sitio</h2>
+      <p>
+        Nueve juegos dejaron mucha gente y muchos reinos atrás. Acá está todo
+        junto, sin filtros ni buscador: las páginas, las fichas y el consejo
+        entero, en una sola lista.
+      </p>
     </div>
 
-    <div class="controles">
-      <div class="filtros" role="group" aria-label="Elegir orden">
-        <button class="filtro" type="button" data-orden="salida" aria-pressed="true">Por año de salida</button>
-        <button class="filtro" type="button" data-orden="historia" aria-pressed="false">Por orden de la historia</button>
-      </div>
+    <div class="mapa">
 
-      <p class="rotulo" id="contador-juegos" aria-live="polite"></p>
+      <!-- Las páginas van escritas a mano: son estructura, no contenido,
+           y así la lista principal sigue estando aunque falle el script. -->
+      <section class="mapa__grupo">
+        <h3>Páginas</h3>
+        <ul class="mapa__lista">
+          <li><a href="index.html"><span class="mapa__nombre">Inicio</span><span class="mapa__nota">la portada</span></a></li>
+          <li><a href="personajes.html"><span class="mapa__nombre">Personajes</span><span class="mapa__nota">con filtros y buscador</span></a></li>
+          <li><a href="lugares.html"><span class="mapa__nombre">Lugares</span><span class="mapa__nota">reinos y ciudades</span></a></li>
+          <li><a href="cronologia.html"><span class="mapa__nombre">Cronología</span><span class="mapa__nota">los nueve juegos</span></a></li>
+          <li><a href="galeria.html"><span class="mapa__nombre">Galería</span><span class="mapa__nota">mosaico con lightbox</span></a></li>
+          <li><a href="valquirias.html"><span class="mapa__nombre">Las Valquirias</span><span class="mapa__nota">el consejo</span></a></li>
+          <li><a href="contacto.html"><span class="mapa__nombre">Contacto</span><span class="mapa__nota">mandar un cuervo</span></a></li>
+          <li><a href="mapa.html" aria-current="page"><span class="mapa__nombre">Mapa del sitio</span><span class="mapa__nota">estás acá</span></a></li>
+        </ul>
+      </section>
+
+      <section class="mapa__grupo">
+        <h3>Personajes <span class="mapa__cuenta" id="cuenta-personajes"></span></h3>
+        <ul class="mapa__lista" id="mapa-personajes"></ul>
+      </section>
+
+      <section class="mapa__grupo">
+        <h3>Lugares <span class="mapa__cuenta" id="cuenta-lugares"></span></h3>
+        <ul class="mapa__lista" id="mapa-lugares"></ul>
+      </section>
+
+      <section class="mapa__grupo">
+        <h3>Juegos <span class="mapa__cuenta" id="cuenta-juegos"></span></h3>
+        <ul class="mapa__lista" id="mapa-juegos"></ul>
+      </section>
+
+      <section class="mapa__grupo">
+        <h3>El consejo de las Valquirias <span class="mapa__cuenta" id="cuenta-valquirias"></span></h3>
+        <ul class="mapa__lista" id="mapa-valquirias"></ul>
+      </section>
+
     </div>
-
-    <ol class="cronologia" id="cronologia-completa"></ol>
 
   </main>
 
@@ -79,7 +112,7 @@
         <ul>
           <li><a href="personajes.html">Personajes</a></li>
           <li><a href="lugares.html">Lugares</a></li>
-          <li><a href="cronologia.html" aria-current="page">Cronología</a></li>
+          <li><a href="cronologia.html">Cronología</a></li>
           <li><a href="galeria.html">Galería</a></li>
         </ul>
       </nav>
@@ -89,7 +122,7 @@
         <ul>
           <li><a href="valquirias.html">El consejo de las valquirias</a></li>
           <li><a href="contacto.html">Contacto</a></li>
-          <li><a href="mapa.html">Mapa del sitio</a></li>
+          <li><a href="mapa.html" aria-current="page">Mapa del sitio</a></li>
           <li><a href="index.html#cronologia-seccion">Los nueve juegos</a></li>
           <li><a href="index.html#reinos-seccion">Los Nueve Reinos</a></li>
         </ul>

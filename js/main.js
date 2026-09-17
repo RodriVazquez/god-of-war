@@ -907,6 +907,50 @@ function iniciarContacto() {
     .addEventListener("click", volverAlFormularioContacto);
 }
 
+/* ---------- 11. Mapa del sitio ----------
+   Se arma desde los data-*.js para que no haya que tocarlo cada vez
+   que se suma una ficha. Las páginas, en cambio, están escritas en el
+   HTML: son estructura, no contenido, y así la lista principal sigue
+   estando aunque el JavaScript no cargue. */
+
+function pintarGrupoDelMapa(selector, selectorCuenta, entradas) {
+  const destino = document.querySelector(selector);
+  if (destino) destino.innerHTML = entradas.join("");
+
+  const cuenta = document.querySelector(selectorCuenta);
+  if (cuenta) cuenta.textContent = entradas.length;
+}
+
+function iniciarMapa() {
+  if (!document.querySelector("#mapa-personajes")) return;
+
+  // Sigrún no va: está marcada como oculta y listarla acá destaparía
+  // el secreto del consejo antes de tiempo.
+  pintarGrupoDelMapa("#mapa-personajes", "#cuenta-personajes",
+    personajesReales().map((p) => entradaMapa("personaje.html?id=" + p.id, p.nombre, p.epiteto)));
+
+  pintarGrupoDelMapa("#mapa-lugares", "#cuenta-lugares",
+    LUGARES.map((l) => entradaMapa("lugar.html?id=" + l.id, l.nombre, l.tipo)));
+
+  pintarGrupoDelMapa("#mapa-juegos", "#cuenta-juegos",
+    JUEGOS.slice().sort((a, b) => a.anio - b.anio)
+      .map((j) => entradaMapa("juego.html?id=" + j.id, j.titulo, String(j.anio))));
+
+  /* Las valquirias no tienen ficha propia: viven en el panel de
+     valquirias.html, que ahora acepta ?id=. Sigrún sí aparece en esta
+     lista porque la página ya la muestra con candado, pero sin enlace
+     hasta que el consejo esté cerrado. */
+  pintarGrupoDelMapa("#mapa-valquirias", "#cuenta-valquirias",
+    VALQUIRIAS.map((v) => {
+      const bloqueada = v.reina && !consejoCompleto();
+      return entradaMapa(
+        bloqueada ? "" : "valquirias.html?id=" + v.id,
+        v.nombre,
+        bloqueada ? "bloqueada" : (v.reina ? "reina" : v.reino)
+      );
+    }));
+}
+
 /* ---------- Arranque ---------- */
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -922,4 +966,5 @@ document.addEventListener("DOMContentLoaded", () => {
   iniciarFichaLugar();
   iniciarFichaJuego();
   iniciarContacto();
+  iniciarMapa();
 });
