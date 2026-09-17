@@ -269,6 +269,15 @@ depende de que la tipografía lo tenga.
 Las secciones llevan `scroll-margin-top` del alto de la cabecera. Sin eso,
 cualquier salto a un ancla deja el título tapado abajo de la barra fija.
 
+La portada lleva una **imagen de fondo contextual** al tema, en el token
+`--fondo-portada`: el Árbol del Mundo para la nórdica, las Espadas del Caos
+para la griega. Va como `::before` y no como fondo de `.portada` para poder
+darle opacidad propia sin arrastrar al contenido, con un degradado encima que
+apaga los bordes contra la cabecera y la sección siguiente.
+
+Si el archivo no existe, no se ve nada raro: queda el fondo liso. Lo único es
+un 404 en la consola hasta que se sume la imagen.
+
 ### Personajes
 Rejilla de 21 tarjetas: 20 personajes más una tarjeta especial "Las Valquirias"
 que lleva a `valquirias.html`. Filtro por saga, buscador en vivo, contador de
@@ -314,8 +323,19 @@ Requisitos:
   Una sola función `estaBloqueado(id)` usada en los dos lugares.
 
 ### Galería
-Mosaico con lightbox y filtro por saga. El pie de cada foto dice de qué juego es
-la escena y la ubica en una o dos líneas.
+Mosaico **asimétrico** de 20 piezas, con lightbox y filtro por saga. El pie de
+cada foto dice de qué juego es la escena y la ubica en una o dos líneas.
+
+Lo asimétrico sale del campo `formato` de cada pieza: `ancha` (16:9, ocupa dos
+columnas), `alta` (4:5) o `cuadrada` (1:1). La rejilla usa `grid-auto-flow:
+dense` para que las chicas rellenen los huecos que dejan las anchas.
+
+**Para acomodar una foto se cambia el `formato` en los datos, nunca el CSS.**
+Y el archivo tiene que venir en esa proporción o sale recortado: las medidas
+están en `assets/img/LEEME-galeria.txt`.
+
+El lightbox toma la proporción de la pieza desde el JS. Con un marco 3/4 fijo,
+una foto apaisada quedaba con dos franjas negras a los costados.
 
 ### Mapa del sitio
 
@@ -384,6 +404,9 @@ No es opcional, es parte de la nota.
 
 - Funciones de `render.js` devuelven strings de HTML, no tocan el DOM.
 - Escapar siempre el contenido dinámico con la función `escapar()`.
+- Los buscadores comparan con `sinAcentos()`. Nadie escribe "Mímir" con tilde,
+  y el sitio está lleno de nombres así: Sigrún, Hércules, Perséfone, Calíope,
+  Jötunheim, Odín. Sin eso, buscar "mimir" no devolvía nada.
 - Estados vacíos con instrucciones útiles, nunca un mensaje seco.
 - Comentarios en español, explicando el porqué y no el qué.
 - Nada de `!important` salvo en el bloque de `prefers-reduced-motion`.
@@ -411,21 +434,37 @@ Un commit por unidad de trabajo terminada, no uno por sesión.
 
 ## Estado actual
 
-Ya existe una base funcionando con: `index.html`, `personajes.html`,
-`detalle.html`, los tres CSS, y `data.js` / `render.js` / `main.js` con seis
-personajes de ejemplo, los nueve reinos y los nueve juegos.
+El sitio está **terminado y probado**. Las doce páginas funcionan, las 54 fichas
+tienen texto, y no queda ningún `[completar]` en los datos.
 
-Lo que falta:
+Lo único pendiente son imágenes:
 
-- [ ] Renombrar `detalle.html` a `personaje.html` y partir `data.js` por colección
-- [ ] Completar los 20 personajes y escribir las biografías
-- [ ] Sección de lugares: listado y ficha
-- [ ] Sección de cronología: listado y ficha, con las dos vistas de orden
-- [ ] Página de valquirias con el juego
-- [ ] Galería con lightbox
-- [ ] Migas de pan en las fichas (`Inicio › Personajes › Kratos`)
-- [ ] Página 404
-- [ ] Conseguir y optimizar las imágenes (600×800, JPG, menos de 200 KB)
+- [ ] Las 12 de la galería que faltan. La lista, con formato y medidas, está en
+      `assets/img/LEEME-galeria.txt`.
+- [ ] `vanaheim.jpg`, el único de los 15 lugares sin foto.
+- [ ] `yggdrasil.jpg` y `fondo-espadas.jpg`, los fondos de portada. Hasta que
+      estén, la portada se ve lisa y la consola tira dos 404.
+
+Mientras el campo `imagen` esté vacío, el marco rayado muestra qué archivo
+falta. Es a propósito: sirve de lista de pendientes visible.
+
+### Cómo se probó
+
+Con iframes a distintos anchos, midiendo valores computados en vez de mirar
+capturas. Cubre 320, 375, 414, 540, 768, 900, 1024, 1280, 1440 y 1920, en los
+dos temas: desborde horizontal, alto de la cabecera, restos de `[completar]` o
+`undefined`, logos, favicon y pie.
+
+Aparte, lo funcional: filtros y buscador, el toggle de la cronología, el ciclo
+completo del consejo de las valquirias con el desbloqueo de Sigrún, la
+validación del formulario, el lightbox y los enlaces profundos con ids
+inválidos.
+
+**Al medir, esperar a que la página esté lista en vez de usar un `setTimeout`
+fijo.** Con veinte iframes compitiendo, una espera de medio segundo da falsos
+negativos. Y al probar el consejo hay que volver a consultar el DOM en cada
+clic: `pintarLista()` reemplaza los botones y las referencias viejas quedan
+muertas.
 
 ---
 

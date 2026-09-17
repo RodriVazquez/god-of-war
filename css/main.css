@@ -14,6 +14,31 @@
   padding-block: var(--e-6);
 }
 
+/* Capa de fondo, detrás del anillo y del texto. Va como pseudoelemento
+   y no como background de .portada para poder darle opacidad propia sin
+   arrastrar al contenido.
+
+   El degradado de encima apaga los bordes: sin él, la foto choca contra
+   la cabecera arriba y contra la primera sección abajo. Si el archivo
+   todavía no existe, no se ve nada raro: queda el fondo liso de siempre. */
+.portada::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-image:
+    linear-gradient(to bottom,
+      var(--fondo) 0%,
+      transparent 25%,
+      transparent 60%,
+      var(--fondo) 100%),
+    var(--fondo-portada);
+  background-size: cover, cover;
+  background-position: center, center;
+  opacity: .22;
+  pointer-events: none;
+}
+
 .portada__texto { position: relative; z-index: 2; }
 
 .portada h1 {
@@ -28,7 +53,18 @@
   max-width: 44ch;
   margin-inline: auto;
   color: var(--texto-suave);
-  font-size: var(--t-lg);
+  /* El titular va de 40px en celular a 112px en escritorio: casi el
+     triple. Si la bajada no acompaña esa caída, en pantalla chica
+     queda pesando casi lo mismo que el título.
+
+     Va en tres escalones explícitos y no con clamp: un salto en el
+     punto de corte se ve, una rampa de 3px repartida en 800px de
+     ancho no. Los escalones están abajo, con el resto del responsive.
+
+     La interlínea es más corta que la del resto del sitio: son tres
+     renglones debajo del titular, no un párrafo para leer largo. */
+  font-size: .9375rem;   /* 15px — celular */
+  line-height: 1.55;
 }
 
 /* El anillo: círculos concéntricos que giran a distinta velocidad.
@@ -798,18 +834,33 @@
 
 /* ---------- Galería ---------- */
 
+/* Mosaico asimétrico. Las columnas son todas iguales; lo que cambia
+   es cuántas ocupa cada pieza y qué proporción tiene adentro. Con
+   dense, las piezas chicas rellenan los huecos que dejan las anchas
+   en vez de dejar la fila cortada. */
 .galeria {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-auto-flow: dense;
   gap: var(--e-2);
   padding: 0;
   list-style: none;
 }
 
+.galeria__celda { display: grid; }
+
+/* La ancha ocupa dos columnas. En una sola columna el span se ignora
+   solo, así que no hace falta media query. */
+.galeria__celda--ancha { grid-column: span 2; }
+
+.galeria__celda--ancha    .galeria__item { aspect-ratio: 16 / 9; }
+.galeria__celda--alta     .galeria__item { aspect-ratio: 4 / 5; }
+.galeria__celda--cuadrada .galeria__item { aspect-ratio: 1 / 1; }
+
 .galeria__item {
   position: relative;
-  aspect-ratio: 3 / 4;
   width: 100%;
+  height: 100%;
   padding: 0;
   border: 1px solid var(--borde);
   overflow: hidden;
@@ -911,7 +962,9 @@
 }
 
 .lightbox__marco {
-  aspect-ratio: 3 / 4;
+  /* La proporción la fija el JS según el formato de la pieza: una
+   foto ancha metida en un marco 3/4 quedaba con dos franjas negras. */
+  aspect-ratio: var(--proporcion, 4 / 5);
   max-height: calc(90vh - 100px);
   background:
     repeating-linear-gradient(
@@ -1020,9 +1073,25 @@
   .buscador { margin-left: 0; width: 100%; }
 }
 
+/* La bajada de la portada sube en dos escalones. Es lo único del
+   sitio que crece con el ancho en vez de achicarse: el titular pasa de
+   40 a 112px y la bajada tiene que acompañar esa caída, o en celular
+   pesa casi tanto como el título. */
+@media (min-width: 700px) {
+  .portada__bajada { font-size: 1.0625rem; }   /* 17px — tablet */
+}
+
+@media (min-width: 1100px) {
+  .portada__bajada { font-size: 1.125rem; }    /* 18px — escritorio */
+}
+
 /* ---------- Ajustes de pantalla chica ---------- */
 
 @media (max-width: 560px) {
+  /* Dos columnas fijas: con auto-fill de 200px entraría una sola y el
+     mosaico se volvería una tira. Las anchas siguen ocupando las dos. */
+  .galeria { grid-template-columns: repeat(2, 1fr); }
+
   /* Anterior y siguiente lado a lado dejaban 160px por título:
      los nombres largos quedaban en cuatro renglones. */
   .nav-juegos { grid-template-columns: 1fr; }

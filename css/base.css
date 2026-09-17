@@ -215,9 +215,22 @@ h1, h2, h3 {
   transition: color var(--transicion), background-color var(--transicion);
 }
 
+/* El inactivo se aclara y levanta el fondo; el activo, que ya está
+   lleno, pasa al acento claro. Sin esto el interruptor no avisaba que
+   era interactivo hasta que lo apretabas. */
+.interruptor button:hover {
+  color: var(--texto);
+  background: var(--superficie-alta);
+}
+
 .interruptor button[aria-pressed="true"] {
   color: var(--fondo);
   background: var(--acento);
+}
+
+.interruptor button[aria-pressed="true"]:hover {
+  color: var(--fondo);
+  background: var(--acento-claro);
 }
 
 /* ---------- Pie ---------- */

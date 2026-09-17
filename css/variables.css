@@ -42,6 +42,11 @@
   --e-5: 4rem;
   --e-6: 6rem;
 
+  /* Fondo contextual de la portada, uno por saga. Se declara acá y no
+     en el CSS de la portada porque es parte de la identidad del tema,
+     igual que la paleta: cambia con data-saga y nada más. */
+  --fondo-portada: url("../assets/img/yggdrasil.jpg");
+
   --ancho-max: 1160px;
   --alto-cabecera: 68px;   /* lo usan los paneles pegajosos como tope */
   --radio: 2px;          /* casi nulo: piedra tallada, no botón de app */
@@ -64,6 +69,7 @@
 
 /* --- Saga griega: ceniza, ocre, sangre --- */
 [data-saga="griega"] {
+  --fondo-portada: url("../assets/img/fondo-espadas.jpg");
   --fondo:          #120e0b;
   --superficie:     #1c1611;
   --superficie-alta:#261e17;

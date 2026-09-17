@@ -129,8 +129,12 @@ function itemGaleria(g, indice) {
     ? `<img src="${escapar(g.imagen)}" alt="${escapar(g.titulo)}" loading="lazy">`
     : `<p class="galeria__item__falta">Falta imagen<br>${escapar(g.titulo)}</p>`;
 
+  // El formato decide cuánto ocupa la pieza en el mosaico. Si falta
+  // el dato cae en "alta", que es el que menos molesta.
+  const formato = g.formato || "alta";
+
   return `
-    <li>
+    <li class="galeria__celda galeria__celda--${escapar(formato)}">
       <button type="button" class="galeria__item" data-galeria-indice="${indice}" aria-label="${escapar(g.titulo)}">
         ${cuerpo}
         <span class="galeria__item__saga">${rotulo}</span>

@@ -219,6 +219,16 @@ function iniciarPortada() {
 
 /* ---------- 4. Página de personajes: filtros + buscador ---------- */
 
+/* Compara sin acentos. Nadie escribe "Mímir" con tilde en un buscador,
+   y el sitio está lleno de nombres así: Sigrún, Hércules, Perséfone,
+   Calíope, Jötunheim, Odín. Antes, buscar "mimir" no devolvía nada. */
+function sinAcentos(texto) {
+  return String(texto)
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase();
+}
+
 let filtroPersonajes = "todos";
 let busquedaPersonajes = "";
 
@@ -232,8 +242,8 @@ function personajesReales() {
 function personajesVisibles() {
   return personajesReales().filter((p) => {
     const pasaFiltro = filtroPersonajes === "todos" || p.saga.includes(filtroPersonajes);
-    const texto = (p.nombre + " " + p.epiteto + " " + p.resumen).toLowerCase();
-    return pasaFiltro && texto.includes(busquedaPersonajes);
+    const texto = sinAcentos(p.nombre + " " + p.epiteto + " " + p.resumen);
+    return pasaFiltro && texto.includes(sinAcentos(busquedaPersonajes));
   });
 }
 
@@ -241,8 +251,8 @@ function personajesVisibles() {
    listado. Participa del filtro (es nórdica) y del buscador. */
 function coleccionValquiriasEncaja() {
   const pasaFiltro = filtroPersonajes === "todos" || filtroPersonajes === "nordica";
-  const texto = "las valquirias consejo colección nórdica";
-  return pasaFiltro && texto.includes(busquedaPersonajes);
+  const texto = sinAcentos("las valquirias consejo colección nórdica");
+  return pasaFiltro && texto.includes(sinAcentos(busquedaPersonajes));
 }
 
 function actualizarListadoPersonajes() {
@@ -306,8 +316,8 @@ let busquedaLugares = "";
 function lugaresVisibles() {
   return LUGARES.filter((l) => {
     const pasaFiltro = filtroLugares === "todos" || l.region === filtroLugares;
-    const texto = (l.nombre + " " + l.tipo + " " + l.resumen).toLowerCase();
-    return pasaFiltro && texto.includes(busquedaLugares);
+    const texto = sinAcentos(l.nombre + " " + l.tipo + " " + l.resumen);
+    return pasaFiltro && texto.includes(sinAcentos(busquedaLugares));
   });
 }
 
@@ -552,6 +562,11 @@ function pintarLightbox() {
   if (!g) return;
 
   const marco = document.querySelector("#lightbox-marco");
+
+  // Sin esto, una foto 16:9 se mostraba dentro de un marco vertical.
+  const proporciones = { ancha: "16 / 9", alta: "4 / 5", cuadrada: "1 / 1" };
+  marco.style.setProperty("--proporcion", proporciones[g.formato] || "4 / 5");
+
   marco.innerHTML = g.imagen
     ? `<img src="${escapar(g.imagen)}" alt="${escapar(g.titulo)}">`
     : `<p class="lightbox__marco__falta">Falta la imagen ${escapar(g.id)}</p>`;
