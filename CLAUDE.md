@@ -115,6 +115,20 @@ uno recortado, hay que volver a medirlo y ajustar el `aspect-ratio` y el
 El ancho baja de 180px a 132px abajo de 900px y a 104px abajo de 380px, para que
 en la misma fila entren también el interruptor de saga y el botón del menú.
 
+### El pie
+
+Cuatro columnas —marca, dos bloques de enlaces y el interruptor de saga— y
+abajo una franja con tres cosas: el **aviso de spoilers**, la línea legal y el
+enlace al mapa del sitio.
+
+El aviso va encuadrado y no como una línea más de letra chica: es lo único de
+esa franja que alguien necesita leer **antes** de entrar a una ficha, no
+después. Las biografías cuentan los nueve juegos enteros, finales incluidos.
+
+El mapa del sitio vive solo en esa franja, que es donde se lo busca por
+convención. No repetirlo en la columna "Más": es el mismo pie y quedaría dos
+veces.
+
 ### El favicon
 
 `assets/img/favicon.ico`: el Omega rojo sobre círculo negro. Cuatro tamaños

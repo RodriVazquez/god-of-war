@@ -283,6 +283,39 @@ h1, h2, h3 {
 
 .pie__legal p + p { margin-top: .35rem; }
 
+/* Aviso de spoilers. Va encuadrado y no como una línea más de letra
+   chica: es lo único de esta franja que alguien necesita leer ANTES
+   de entrar a una ficha, no después. */
+.pie__spoilers {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: center;
+  gap: .5rem;
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+  padding: var(--e-1) var(--e-2);
+  margin-bottom: var(--e-2);
+  color: var(--texto);
+  font-size: var(--t-sm);
+  text-align: left;
+}
+
+.pie__legal a {
+  color: var(--texto-suave);
+  border-bottom: 1px solid var(--borde);
+  transition: color var(--transicion), border-color var(--transicion);
+}
+
+.pie__legal a:hover { color: var(--texto); border-bottom-color: var(--acento); }
+
+@media (pointer: coarse), (max-width: 900px) {
+  .pie__legal a {
+    display: inline-block;
+    padding-block: .5rem;
+  }
+}
+
 @media (max-width: 900px) {
   .pie__interior { grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); }
   .pie__marca { grid-column: 1 / -1; max-width: none; }

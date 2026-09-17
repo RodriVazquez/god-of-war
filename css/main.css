@@ -695,7 +695,6 @@
 
 .error {
   padding-block: var(--e-6);
-  max-width: 62ch;
 }
 
 .error h1 {
