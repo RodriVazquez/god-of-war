@@ -19,8 +19,13 @@ function aplicarSaga(saga) {
 }
 
 function iniciarInterruptor() {
-  const guardada = localStorage.getItem(CLAVE_SAGA) || "nordica";
-  aplicarSaga(guardada);
+  /* tema.js ya aplicó la saga antes del primer pintado; esto vuelve a
+     pasarla para que el aria-pressed de los botones y el evento de
+     cambio queden en su lugar. Se valida con la misma función, o un
+     valor editado a mano entraría por acá después de que tema.js lo
+     rechazó. */
+  const guardada = localStorage.getItem(CLAVE_SAGA);
+  aplicarSaga(sagaValida(guardada) ? guardada : "nordica");
 
   document.querySelectorAll("[data-cambiar-saga]").forEach((boton) => {
     boton.addEventListener("click", () => aplicarSaga(boton.dataset.cambiarSaga));
@@ -75,7 +80,7 @@ function reiniciarConsejo() {
 }
 
 /* ---------- 1c. Menú plegable de la cabecera ----------
-   Abajo de 900px la navegación no entra en la fila, así que se
+   Abajo de 960px la navegación no entra en la fila, así que se
    guarda detrás de un botón. El CSS la esconde con display:none,
    que además la saca del recorrido del tabulador mientras está
    cerrada: no queremos foco en enlaces invisibles. */
@@ -119,7 +124,7 @@ function iniciarMenu() {
 
   // Si la pantalla crece, el panel desaparece por CSS. Sin esto el
   // botón volvería marcado como abierto al achicar de nuevo.
-  const anchoGrande = window.matchMedia("(min-width: 901px)");
+  const anchoGrande = window.matchMedia("(min-width: 961px)");
   anchoGrande.addEventListener("change", (e) => { if (e.matches) cerrarMenu(); });
 
   cerrarMenu();
@@ -967,11 +972,147 @@ function iniciarMapa() {
     }));
 }
 
+/* ---------- 12. Menú desplegable de la navegación ----------
+
+   Tres de las seis secciones tienen fichas adentro y abren un panel
+   con la lista completa; galería y contacto son una página sola y no
+   tienen nada que desplegar, e inicio es el punto de partida. Que la
+   flechita aparezca en tres y no en seis es información, no una
+   inconsistencia: marca cuáles tienen contenido abajo.
+
+   Se arma desde acá y no en el HTML por lo mismo de siempre: son doce
+   páginas con la misma cabecera, y sumar un personaje no puede obligar
+   a editar doce archivos. */
+
+const MENUS_NAV = [
+  {
+    menu: "personajes",
+    pagina: "personajes.html",
+    verTodo: "Ver todos los personajes",
+    /* Sigrún queda afuera, igual que en el mapa: listarla acá
+       destaparía el secreto del consejo desde cualquier página. La
+       tarjeta de la colección sí va, porque personajes.html la
+       muestra como una más de la rejilla. */
+    entradas: () => personajesReales()
+      .map((p) => entradaMapa("personaje.html?id=" + p.id, p.nombre, p.epiteto))
+      .concat(entradaMapa("valquirias.html", "Las Valquirias", "colección"))
+  },
+  {
+    menu: "lugares",
+    pagina: "lugares.html",
+    verTodo: "Ver todos los lugares",
+    entradas: () => LUGARES.map((l) => entradaMapa("lugar.html?id=" + l.id, l.nombre, l.tipo))
+  },
+  {
+    menu: "cronologia",
+    pagina: "cronologia.html",
+    verTodo: "Ver la cronología completa",
+    /* Por año de salida, que es el orden en que se abre la página. */
+    entradas: () => JUEGOS.slice().sort((a, b) => a.anio - b.anio)
+      .map((j) => entradaMapa("juego.html?id=" + j.id, j.titulo, String(j.anio)))
+  }
+];
+
+function iniciarMenuNavegacion() {
+  const nav = document.querySelector("#menu-principal");
+  if (!nav) return;
+
+  /* Abajo de 960px la navegación entera ya vive detrás del botón
+     hamburguesa: un desplegable adentro de otro desplegable, en una
+     pantalla de 360px, no ayuda a nadie. El CSS lo esconde y esto
+     evita además que se abra por un toque mal interpretado.
+
+     Se consulta al abrir y no al arrancar, así redimensionar la
+     ventana no deja el menú en el estado equivocado. */
+  const escritorio = window.matchMedia("(min-width: 961px) and (hover: hover)");
+
+  let abierto = null;
+  let temporizador = 0;
+
+  function disparador(item) {
+    return item.querySelector(".navegacion__disparador");
+  }
+
+  function abrir(item) {
+    if (!escritorio.matches) return;
+    clearTimeout(temporizador);
+    if (abierto && abierto !== item) cerrar(abierto);
+    item.dataset.abierto = "si";
+    disparador(item).setAttribute("aria-expanded", "true");
+    abierto = item;
+  }
+
+  function cerrar(item) {
+    if (!item) return;
+    delete item.dataset.abierto;
+    disparador(item).setAttribute("aria-expanded", "false");
+    if (abierto === item) abierto = null;
+  }
+
+  MENUS_NAV.forEach((def) => {
+    /* Se busca por data-menu y no por el href: el atributo es lo que
+       ya dibujó la flechita, así que si alguno no coincide se nota
+       enseguida en vez de quedar una flecha sin panel. */
+    const enlace = nav.querySelector('a[data-menu="' + def.menu + '"]');
+    if (!enlace) return;
+
+    const entradas = def.entradas();
+    if (!entradas.length) return;
+
+    const id = "menu-" + def.menu;
+
+    /* El enlace pasa a vivir adentro de un contenedor junto al panel.
+       Sigue siendo el mismo nodo, así que conserva su aria-current y
+       todo lo que ya le puso el CSS. */
+    const item = document.createElement("div");
+    item.className = "navegacion__item";
+    enlace.replaceWith(item);
+    item.appendChild(enlace);
+
+    enlace.classList.add("navegacion__disparador");
+    enlace.setAttribute("aria-expanded", "false");
+    enlace.setAttribute("aria-controls", id);
+
+    item.insertAdjacentHTML("beforeend", panelMenu(id, entradas, def.pagina, def.verTodo));
+
+    /* Entre el enlace y el panel hay un hueco —el panel cuelga del
+       borde de la cabecera, no del enlace—, así que bajar el mouse
+       dispara un mouseleave. La demora corta cubre ese tramo: sin
+       ella el panel se cierra justo cuando lo vas a usar. */
+    item.addEventListener("mouseenter", () => abrir(item));
+    item.addEventListener("mouseleave", () => {
+      clearTimeout(temporizador);
+      temporizador = setTimeout(() => cerrar(item), 180);
+    });
+
+    /* Con teclado no hay hover: se abre al entrar el foco y se cierra
+       recién cuando el foco se va del item entero, no de un enlace
+       suelto de la lista. */
+    item.addEventListener("focusin", () => abrir(item));
+    item.addEventListener("focusout", (evento) => {
+      if (!item.contains(evento.relatedTarget)) cerrar(item);
+    });
+
+    /* Escape cierra y devuelve el foco al disparador, o quedaría
+       perdido en un panel que ya no se ve. */
+    item.addEventListener("keydown", (evento) => {
+      if (evento.key !== "Escape" || !item.dataset.abierto) return;
+      cerrar(item);
+      disparador(item).focus();
+    });
+  });
+
+  /* Al achicar la ventana el panel abierto tiene que irse solo: el
+     CSS lo esconde, pero el aria-expanded quedaría mintiendo. */
+  escritorio.addEventListener("change", () => cerrar(abierto));
+}
+
 /* ---------- Arranque ---------- */
 
 document.addEventListener("DOMContentLoaded", () => {
   iniciarInterruptor();
   iniciarMenu();
+  iniciarMenuNavegacion();
   iniciarRevelado();
   iniciarPortada();
   iniciarPersonajes();

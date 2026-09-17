@@ -150,6 +150,129 @@ h1, h2, h3 {
   border-bottom-color: var(--acento);
 }
 
+/* ---------- Menú desplegable de la navegación ----------
+   Personajes, Lugares y Cronología despliegan la lista de sus fichas.
+   El panel cuelga del borde de abajo de la cabecera y ocupa el ancho
+   entero: son veintiuna entradas y en una columna angosta no entran.
+
+   Va acá arriba y no al final del archivo a propósito: el bloque de
+   960px lo apaga, y para eso tiene que venir después. */
+
+.navegacion__item {
+  display: flex;
+  align-items: center;
+}
+
+/* La flechita es la única pista de que ahí hay algo más. Sin ella el
+   panel lo encuentra solo quien pasa el mouse de casualidad.
+
+   Sale de data-menu, que ya viene en el marcado, y no de una clase que
+   ponga el JS: así se dibuja en el primer pintado. Cuando dependía del
+   JS la barra aparecía sin flechitas y se acomodaba sola un instante
+   después, y el salto se veía en cada clic. */
+.navegacion a[data-menu]::after {
+  content: "";
+  display: inline-block;
+  width: .32em;
+  height: .32em;
+  margin-left: .45em;
+  border-right: 1px solid currentColor;
+  border-bottom: 1px solid currentColor;
+  rotate: 45deg;
+  translate: 0 -.18em;
+  transition: rotate var(--transicion), translate var(--transicion);
+}
+
+.navegacion__item[data-abierto] a[data-menu]::after {
+  rotate: -135deg;
+  translate: 0 .05em;
+}
+
+/* Con el panel abierto el disparador queda marcado como si estuviera
+   en hover: si no, el mouse ya está abajo en la lista y arriba nada
+   dice de dónde salió. */
+.navegacion__item[data-abierto] .navegacion__disparador {
+  color: var(--texto);
+  border-bottom-color: var(--acento);
+}
+
+/* El panel se ancla a .cabecera, que es sticky y por eso sirve de
+   referencia, y no al item: tiene que ocupar el ancho entero y no el
+   de la palabra sobre la que se pasó el mouse. */
+.megamenu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: var(--fondo);
+  border-top: 1px solid var(--borde);
+  border-bottom: 1px solid var(--borde);
+  box-shadow: 0 18px 34px var(--sombra);
+
+  /* La navegación va en mayúsculas, angosta y espaciada. Adentro del
+     panel eso es texto corrido y hay que devolverlo a normal, o los
+     nombres se leen como rótulos. */
+  font-family: var(--cuerpo);
+  text-transform: none;
+  letter-spacing: normal;
+
+  /* Se pliega con visibility y no con display, que no se puede
+     animar. visibility saca los enlaces del tabulador igual que
+     display: none. Es el mismo recurso del menú hamburguesa. */
+  opacity: 0;
+  visibility: hidden;
+  translate: 0 -.4rem;
+  transition: opacity 180ms ease, translate 180ms ease, visibility 180ms;
+}
+
+.navegacion__item[data-abierto] .megamenu {
+  opacity: 1;
+  visibility: visible;
+  translate: 0 0;
+}
+
+.megamenu__interior {
+  padding-block: var(--e-3);
+  /* Si la lista no entra en pantalla se desplaza sola, en vez de
+     quedar cortada abajo del pliegue. */
+  max-height: calc(100vh - var(--alto-cabecera) - var(--e-4));
+  overflow-y: auto;
+}
+
+/* Columnas más angostas que las del mapa: ahí el ancho lo manda el
+   contenido de la página y acá lo manda la cabecera, y con 20rem
+   quedaban dos columnas larguísimas colgando del encabezado.
+   Va con dos clases para ganarle a .mapa__lista, que vive en main.css
+   y se carga después de este archivo. */
+.megamenu .mapa__lista {
+  columns: 15rem auto;
+}
+
+/* Cierra el panel repitiendo el destino del disparador. El que llegó
+   con el teclado termina de recorrer la lista y lo encuentra ahí, sin
+   tener que volver arriba. */
+.megamenu__todo {
+  display: block;
+  margin-top: var(--e-2);
+  padding-top: var(--e-2);
+  border-top: 1px solid var(--borde);
+  font-family: var(--utilidad);
+  font-size: var(--t-sm);
+  text-transform: uppercase;
+  letter-spacing: .14em;
+  color: var(--acento-claro);
+}
+
+.megamenu__todo:hover { color: var(--texto); }
+
+/* En pantalla táctil no hay hover que valga: el toque navega y el
+   panel nunca llega a abrirse. Mejor que no anuncie lo que no puede
+   hacer. */
+@media (hover: none) {
+  .megamenu,
+  .navegacion a[data-menu]::after { display: none; }
+}
+
 /* ---------- Botón del menú (solo en pantallas chicas) ----------
    Con seis secciones la navegación ya no entra en una fila de
    celular: antes se desbordaba con un scroll horizontal que nadie
@@ -223,12 +346,24 @@ h1, h2, h3 {
   background: var(--superficie-alta);
 }
 
-.interruptor button[aria-pressed="true"] {
+/* El resaltado sale de data-saga y NO del aria-pressed del botón.
+   Los dos dicen lo mismo, pero no al mismo tiempo: data-saga ya está
+   bien en el primer pintado porque lo deja tema.js desde el <head>,
+   mientras que el aria-pressed viene escrito a mano en el marcado
+   —siempre con Nórdica en true— y lo corrige main.js recién al final
+   del body. Colgado del aria-pressed, el botón de Nórdica se encendía
+   un instante en cada carga aunque la página ya estuviera en griega.
+
+   El aria-pressed sigue ahí y main.js lo sigue actualizando: es lo que
+   lee un lector de pantalla. Lo que ya no hace es decidir el color. */
+[data-saga="griega"]  .interruptor button[data-cambiar-saga="griega"],
+[data-saga="nordica"] .interruptor button[data-cambiar-saga="nordica"] {
   color: var(--fondo);
   background: var(--acento);
 }
 
-.interruptor button[aria-pressed="true"]:hover {
+[data-saga="griega"]  .interruptor button[data-cambiar-saga="griega"]:hover,
+[data-saga="nordica"] .interruptor button[data-cambiar-saga="nordica"]:hover {
   color: var(--fondo);
   background: var(--acento-claro);
 }
@@ -341,7 +476,7 @@ h1, h2, h3 {
 
 /* ---------- Objetivos táctiles de cabecera y pie ---------- */
 
-@media (pointer: coarse), (max-width: 900px) {
+@media (pointer: coarse), (max-width: 960px) {
   .navegacion a {
     display: flex;
     align-items: center;
@@ -370,7 +505,12 @@ h1, h2, h3 {
   }
 }
 
-@media (max-width: 900px) {
+/* El corte de la cabecera. Fue 900px hasta que se midió en serio: en
+   la fila entran la marca (180px), las seis secciones (530px) y el
+   interruptor (160px) más dos huecos, y eso pide 948px de contenido.
+   Entre 901 y 941 la barra volvía a una sola fila sin entrar, y se
+   desbordaba 40px a la derecha en las doce páginas. 960 deja margen. */
+@media (max-width: 960px) {
   /* Una sola fila: la barra mantiene su alto y su centrado pase lo
      que pase con el panel. */
   .cabecera__interior { flex-wrap: nowrap; column-gap: var(--e-2); }
@@ -378,6 +518,13 @@ h1, h2, h3 {
   .cabecera__interior .marca { width: 132px; }
 
   .menu { display: grid; }
+
+  /* Acá la navegación entera ya está detrás del botón hamburguesa, y
+     un desplegable adentro de otro desplegable en 360px no ayuda a
+     nadie. Las fichas se buscan por el listado o por el mapa. */
+  .navegacion__item { display: block; }
+  .megamenu,
+  .navegacion a[data-menu]::after { display: none; }
 
   /* El interruptor se comprime para que marca, sagas y botón entren
      en una sola fila hasta en pantallas de 320px. */
@@ -442,7 +589,7 @@ h1, h2, h3 {
 
 /* Pantallas muy angostas: el logo cede ancho para que entren el
    interruptor y el boton del menu en la misma fila. Va despues del
-   bloque de 900px a proposito: misma especificidad, gana el ultimo. */
+   bloque de 960px a proposito: misma especificidad, gana el ultimo. */
 @media (max-width: 380px) {
   .cabecera__interior .marca { width: 104px; }
   .cabecera__interior .interruptor button { padding: .4rem .4rem; letter-spacing: .04em; }

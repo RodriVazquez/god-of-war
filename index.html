@@ -12,6 +12,11 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600&family=Eczar:wght@600;800&family=Spectral:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
 
+  <!-- Antes de los estilos y sin defer: aplica la saga guardada
+       antes del primer pintado. Si no, cada página se pinta en
+       nórdica y salta a griega cuando arranca main.js. -->
+  <script src="js/tema.js"></script>
+
   <link rel="stylesheet" href="css/variables.css">
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/main.css">
@@ -24,9 +29,9 @@
 
       <nav class="navegacion" id="menu-principal" aria-label="Principal">
         <a href="index.html" aria-current="page">Inicio</a>
-        <a href="personajes.html">Personajes</a>
-        <a href="lugares.html">Lugares</a>
-        <a href="cronologia.html">Cronología</a>
+        <a href="personajes.html" data-menu="personajes">Personajes</a>
+        <a href="lugares.html" data-menu="lugares">Lugares</a>
+        <a href="cronologia.html" data-menu="cronologia">Cronología</a>
         <a href="galeria.html">Galería</a>
         <a href="contacto.html">Contacto</a>
       </nav>

@@ -167,6 +167,25 @@ function entradaMapa(destino, nombre, nota) {
   return `<li><a href="${escapar(destino)}">${cuerpo}</a></li>`;
 }
 
+/* ---------- Panel desplegable de la navegación ---------- */
+
+/* El panel de la cabecera muestra la misma lista que el mapa del
+   sitio, así que reusa sus clases en vez de tener un estilo propio:
+   es el mismo contenido en otro lugar, y duplicar el estilo sería
+   tener dos verdades sobre cómo se ve una lista de fichas.
+
+   Recibe las entradas ya armadas con entradaMapa(), que es lo que
+   mantiene las dos listas consistentes sin que ninguna lo sepa. */
+function panelMenu(id, entradas, destino, verTodo) {
+  return `
+    <div class="megamenu" id="${escapar(id)}">
+      <div class="contenedor megamenu__interior">
+        <ul class="mapa__lista">${entradas.join("")}</ul>
+        <a class="megamenu__todo" href="${escapar(destino)}">${escapar(verTodo)}</a>
+      </div>
+    </div>`;
+}
+
 /* ---------- Utilidad de pintado ---------- */
 
 /* Pinta una lista de elementos dentro de un contenedor.

@@ -47,6 +47,7 @@ css/base.css        Reset, tipografía global, cabecera, pie, accesibilidad
 css/main.css        Secciones, tarjetas, cronología, anillo, controles
 css/juego.css       Estilos exclusivos de la página de valquirias
 
+js/tema.js         Aplica la saga guardada antes del primer pintado
 js/data-personajes.js
 js/data-lugares.js
 js/data-juegos.js
@@ -76,6 +77,31 @@ sagas tienen identidades cromáticas opuestas y eso es información, no adorno.
 - Griega: ceniza cálida, ocre, sangre
 
 La preferencia se guarda en `localStorage` bajo la clave `gow-saga`.
+
+**La saga guardada se aplica en el `<head>`, con `js/tema.js`.** Ese archivo existe
+por un solo motivo: correr antes que nada. El resto del JS se carga al final del
+body, así que para cuando `main.js` leía `localStorage` la página ya se había
+pintado entera con la saga del marcado, y el cambio se veía como un parpadeo de
+nórdica a griega en **cada clic a cada enlace**.
+
+Va sin `defer` y sin `async`, y antes de las hojas de estilo. Es un archivo aparte
+y no una función de `main.js` porque bloquear el pintado con main.js entero sería
+peor que el parpadeo. **Si se agrega una página nueva hay que copiarle ese
+`<script>` al head**, o esa página sola parpadea.
+
+**El botón encendido del interruptor sale de `data-saga`, no del `aria-pressed`.**
+Los dos dicen lo mismo pero no al mismo tiempo: `data-saga` ya está bien en el
+primer pintado, mientras que el `aria-pressed` viene escrito a mano en el marcado
+—siempre con Nórdica en `true`— y lo corrige `main.js` al final del body. Colgado
+del `aria-pressed`, el botón de Nórdica se encendía un instante en cada carga
+aunque la página ya estuviera en griega: el tema no parpadeaba, el interruptor sí.
+El `aria-pressed` sigue ahí y main.js lo sigue actualizando, porque es lo que lee
+un lector de pantalla. Lo que ya no hace es decidir el color.
+
+Qué es una saga válida lo decide `sagaValida()`, definida ahí y usada también por
+`iniciarInterruptor()`. Estaba en un solo lado y main.js aceptaba cualquier cosa:
+con un valor editado a mano en `localStorage`, `data-saga` quedaba en algo que
+ningún tema define y los dos botones del interruptor sin marcar.
 
 **Nunca escribir colores literales en el CSS.** Todo sale de las variables de
 `variables.css`, o el cambio de tema se rompe.
@@ -115,6 +141,44 @@ uno recortado, hay que volver a medirlo y ajustar el `aspect-ratio` y el
 El ancho baja de 180px a 132px abajo de 900px y a 104px abajo de 380px, para que
 en la misma fila entren también el interruptor de saga y el botón del menú.
 
+### El menú de la cabecera
+
+Personajes, Lugares y Cronología despliegan al pasar el mouse un panel con la
+lista completa de sus fichas. Galería y Contacto no: son una página sola y no
+tienen nada abajo. Que la flechita aparezca en tres de seis **es información**,
+no una inconsistencia: marca cuáles tienen contenido adentro.
+
+El panel reusa las clases del mapa del sitio (`.mapa__lista`, `.mapa__nombre`, `.mapa__nota`).
+Es el mismo contenido en otro lugar: dos estilos para la misma lista serían dos
+verdades. Las entradas salen de `entradaMapa()`, igual que el mapa, así que las dos
+listas se mantienen consistentes sin que ninguna sepa de la otra. Y **Sigrún no
+está**, por la misma razón que no está en el mapa.
+
+Se arma desde `iniciarMenuNavegacion()` y no en el marcado: son doce páginas con
+la misma cabecera, y sumar un personaje no puede obligar a editar doce archivos.
+El enlace original no se reemplaza, se muda adentro de un `.navegacion__item`, así
+conserva su `aria-current` y sigue navegando a la sección.
+
+Detalles que no son negociables:
+
+- **La flechita sale de `data-menu`**, un atributo que ya viene en el marcado de
+  los tres enlaces, y no de una clase que ponga el JS. Así se dibuja en el
+  primer pintado. Cuando dependía del JS la barra aparecía sin flechitas y se
+  acomodaba sola un instante después: el salto se veía en cada carga. El valor
+  del atributo tiene que coincidir con el campo `menu` de `MENUS_NAV`.
+- **Se abre también con el foco**, no solo con el mouse, y cierra recién cuando
+  el foco sale del item entero. Escape lo cierra y devuelve el foco al
+  disparador, que si no queda perdido en un panel invisible.
+- El cierre por `mouseleave` tiene 180ms de gracia. El panel cuelga del borde de
+  la cabecera y no del enlace, así que entre los dos hay un hueco: sin la
+  demora se cierra justo cuando vas bajando a usarlo.
+- Plegado va con `visibility`, no con `display`, por lo mismo que el menú
+  hamburguesa: `display` no se anima y `visibility` igual saca los enlaces del
+  tabulador.
+- **Apagado abajo de 960px y en `(hover: none)`.** Ahí la navegación entera ya
+  vive detrás del botón hamburguesa, y un desplegable adentro de otro
+  desplegable no ayuda a nadie.
+
 ### El pie
 
 Cuatro columnas —marca, dos bloques de enlaces y el interruptor de saga— y
@@ -150,9 +214,16 @@ cualquier ruta.
 
 ### Responsive
 
-- **900px** es el corte de la cabecera: abajo de ahí la navegación se guarda
+- **960px** es el corte de la cabecera: abajo de ahí la navegación se guarda
   detrás del botón `#btn-menu` y la fila queda en `--alto-cabecera` (68px).
   Con seis secciones ya no entra en una fila de celular.
+
+  Fue 900px hasta que se midió en serio. En la fila entran la marca (180px),
+  las seis secciones (530px) y el interruptor (160px) más dos huecos: pide
+  948px de contenido. Entre **901 y 941** la barra volvía a una sola fila sin
+  entrar y se desbordaba 40px a la derecha, en las doce páginas. Era una franja
+  angosta y ninguno de los anchos que se venían probando caía adentro. Si algún
+  día se suma una séptima sección hay que volver a medir esto.
 - El panel cuelga **fuera del flujo** (`position: absolute` debajo de la
   cabecera) y se despliega sobre el contenido. Como segundo renglón del flex se
   repartía el alto con la barra, la descentraba, y al abrirse la empujaba hacia
@@ -479,6 +550,12 @@ Aparte, lo funcional: filtros y buscador, el toggle de la cronología, el ciclo
 completo del consejo de las valquirias con el desbloqueo de Sigrún, la
 validación del formulario, el lightbox y los enlaces profundos con ids
 inválidos.
+
+**No medir estados que dependan de una transición con el panel del navegador
+oculto.** Ahí `requestAnimationFrame` no dispara, las transiciones no avanzan y
+`getComputedStyle` devuelve el valor congelado a mitad de camino: parece un bug
+del sitio y es del entorno de medición. Para comprobar un estado final, apagar la
+transición con una regla temporal y forzar un reflujo.
 
 **Al medir, esperar a que la página esté lista en vez de usar un `setTimeout`
 fijo.** Con veinte iframes compitiendo, una espera de medio segundo da falsos
